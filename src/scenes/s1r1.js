@@ -11,7 +11,10 @@ export default class s1r1 extends Phaser.Scene {
 
   preload () {
     // Preload assets
-    this.load.image('logo', './assets/logo.png');
+    this.load.spritesheet('player', './assets/spriteSheets/player.png', {
+		frameHeight: 32,
+		frameWidth: 32,
+	});
 
     // Declare variables for center of the scene
     this.centerX = this.cameras.main.width / 2;
@@ -26,6 +29,12 @@ export default class s1r1 extends Phaser.Scene {
 
 	// Shows Stage-Room in corner
 	let srDebug = this.add.text(0, 0, 'Stage 1, Room 1');
+
+	// Adds character into the scene
+	this.player = this.physics.add.sprite(300, 400, 'player');
+	this.player.setCollideWorldBounds(true);
+	this.player.setScale(2);
+
 
   }
 

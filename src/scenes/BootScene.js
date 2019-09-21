@@ -11,7 +11,7 @@ export default class BootScene extends Phaser.Scene {
 
   preload () {
     // Preload assets
-    this.load.image('logo', './assets/logo.png');
+    this.load.image('logo', './assets/images/logo.png');
 
     // Declare variables for center of the scene
     this.centerX = this.cameras.main.width / 2;
@@ -25,8 +25,11 @@ export default class BootScene extends Phaser.Scene {
 	// Placeholder background color
     this.cameras.main.setBackgroundColor(0x008080);
 
+	// Placeholder logo
+	var logo = this.add.image(this.centerX, this.centerY, 'logo');
+
 	// Shows Stage-Room in corner
-	let srDebug = this.add.text(0, 0, 'Boot Scene');
+	var srDebug = this.add.text(0, 0, 'Boot Scene');
 
 
   }
