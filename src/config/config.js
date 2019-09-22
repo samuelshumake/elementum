@@ -12,8 +12,8 @@ export default {
   physics: {
     default: 'arcade',
     arcade: {
-        gravity: { y: 400 },
-        debug: true
+        gravity: { y: 800 },
+        debug: false
     }
   },
 pixelArt: true

@@ -39,6 +39,32 @@ export default class s1r1 extends Phaser.Scene {
   }
 
   update (time, delta) {
-    // Update the scene
+
+	  // Initialize movement variables
+	  var cursors = this.input.keyboard.createCursorKeys();
+	  var speed = 5;
+
+	  // Give the player left and right movement
+	  if (cursors.left.isDown) {
+		  this.player.x -= speed;
+		  this.player.flipX = true;
+	  } else if (cursors.right.isDown) {
+		  this.player.x += speed;
+		  this.player.flipX = false
+	  }
+
+	  // Give the player jumping movement
+	  if (cursors.up.isDown && this.player.body.onFloor()) {
+		  this.player.setVelocityY(-500);
+		  this.player.setAccelerationY(1500);
+	  }
+
+	  /* Test idea: flip the gravity */
+	  // if (cursors.down.isDown) {
+		//   this.player.setGravity(0, -1200);
+		//   this.player.flipY = true;
+	  // }
+
+
   }
 }
