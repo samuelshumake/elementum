@@ -1,8 +1,8 @@
 /*global Phaser*/
 import * as ChangeScene from './ChangeScene.js';
-export default class s1r3 extends Phaser.Scene {
+export default class templateScene extends Phaser.Scene {
   constructor () {
-    super('s1r3');
+    super('templateScene');
   }
 
   init (data) {
@@ -33,12 +33,14 @@ export default class s1r3 extends Phaser.Scene {
 	this.player.setScale(2);
 
 	// Shows Stage-Room number and player position for debugging purposes
-	this.posDebug = this.add.text(this.cameras.main.width - 175, 0,'');
+	this.posDebug = this.add.text(this.cameras.main.width - 175, 0, '');
+	var srDebug = this.add.text(0, 0, 'Stage 1, Room 1');
 
   }
 
   update (time, delta) {
-	  // Initialize movement variables
+
+	// Initialize movement variables
   	var cursors = this.input.keyboard.createCursorKeys();
   	var speed = 5;
 
