@@ -121,11 +121,6 @@ export default class s1r1 extends Phaser.Scene {
 		  this.player.setAccelerationY(1500);
 	  }
 
-<<<<<<< HEAD
-	  // TODO: Fix shooting mechanic
-	  if (cursors.space.isDown) {
-		  this.shoot()
-=======
 	  // Makes the shoot function
 	  this.shoot = function(player, direction){
 
@@ -151,30 +146,10 @@ export default class s1r1 extends Phaser.Scene {
 		  if (cursors.space.isDown) {
 			  this.shoot(this.player, this.player.flipX, this.shoot);
 		  }
->>>>>>> shootingBug
 	  }
 
 	  catch(err) {}
 
-<<<<<<< HEAD
-	// TODO: Fix shooting and hitEnemy mechanics
-  shoot(pointer) {
-	  console.log('Shoot!');
-	  var velocity = Phaser.Math.Vector2();
-	  var fireball = this.fireballs.get();
-	  fireball.setGravity(0, -800);
-	  fireball
-	  	.enableBody(true, this.player.x, this.player.y, true, true)
-		.setAngle(180)
-		.setVelocityX(500);
-  }
-
-  hitEnemy(fireball, enemy){
-	  console.log('Hit!');
-	  enemy.disableBody(true, true);
-	  fireball.disableBody(true, true);
-  }
-=======
   }
 
 
@@ -185,5 +160,4 @@ export default class s1r1 extends Phaser.Scene {
 		fireball.disableBody(true, true);
 	}
 
->>>>>>> shootingBug
 }
