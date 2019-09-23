@@ -19,6 +19,10 @@ export default class s1r1 extends Phaser.Scene {
 	this.load.image('ground2', './assets/sprites/ground2.png');
 	this.load.image('fireball', './assets/sprites/fireball.png');
 	this.load.image('enemy', './assets/sprites/slime.png');
+  this.load.spritesheet('lever', './assets/spriteSheets/lever.png',{
+    frameHeight: 6,
+    frameWidth: 9
+  });
 
     // Declare variables for center of the scene and player position
     this.centerX = this.cameras.main.width / 2;
@@ -41,10 +45,22 @@ export default class s1r1 extends Phaser.Scene {
     // this.matter.world.convertTilemapLayer(layer);
 
 	// Adds character into the scene
+  // Add Level to Scene
+  this.lever1 = this.physics.add.sprite(100,500,  'lever');
+  this.lever1.setScale(4);
+  this.lever1.setCollideWorldBounds(true);
+
 	this.player = this.physics.add.sprite(10, 500, 'player');
 	this.playerPos = [this.player.x-32, (-1*this.player.y-568).toFixed(0)];
 	this.player.setCollideWorldBounds(true);
 	this.player.setScale(2);
+
+  //collisionn between
+  this.physics.add.collider(this.player, this.lever);
+
+
+
+
 
 	var fireball, fireballs, enemy, enemyGroup;
 	this.nextFire = 0;
@@ -77,12 +93,21 @@ export default class s1r1 extends Phaser.Scene {
 	// Shows Stage-Room number and player position for debugging purposes
 	this.posDebug = this.add.text(this.cameras.main.width - 175, 0, '');
 	var srDebug = this.add.text(0, 0, 'Stage 1, Room 1');
+
+  //Animations
+  this.anims.create({
+    key: "flipRight",
+    frames: this.anims.generateFrameNumbers("lever", {start:0, end:3}),
+    frameRate: 15,
+    repeat: 0
+  });
   }
 
   update (time, delta) {
 
 	  // Initialize movement variables
 	  var cursors = this.input.keyboard.createCursorKeys();
+    this.eKey = this.input.keyboard.addKey('E');
 	  var speed = 5;
 
 	  // Give the player left and right movement
@@ -104,10 +129,17 @@ export default class s1r1 extends Phaser.Scene {
 	  if (cursors.space.isDown) {
 		  this.shoot()
 	  }
+    else{
+      this.lever1.anims.play("flipRight",true)
+    }
+
+
 
 	  // Updates the player position debug text
 	  this.posDebug.setText(`Position: ${this.player.x-32}, ${-1*(this.player.y-568).toFixed(0)}`);
   }
+
+
 
 	// TODO: Fix shooting and hitEnemy mechanics
   shoot(pointer) {
@@ -125,5 +157,7 @@ export default class s1r1 extends Phaser.Scene {
 	  console.log('Hit!');
 	  enemy.disableBody(true, true);
 	  fireball.disableBody(true, true);
+
   }
+
 }
