@@ -21,6 +21,10 @@ export default class s1r1 extends Phaser.Scene {
 	// Load enemy and fireball sprite
 	this.load.image('fireball', './assets/sprites/fireball.png');
 	this.load.image('enemy', './assets/sprites/slime.png');
+  this.load.spritesheet('lever', './assets/spriteSheets/lever.png',{
+    frameHeight: 6,
+    frameWidth: 9
+  });
 
     // Declare variables for center of the scene and player position
     this.centerX = this.cameras.main.width / 2;
@@ -39,11 +43,37 @@ export default class s1r1 extends Phaser.Scene {
 	this.cameras.main.setBackgroundColor(0xb0d6c4);
 
 	// Adds character into the scene
+  // Add Level to Scene
+  this.lever1 = this.physics.add.sprite(100,500,  'lever');
+  this.lever1.setScale(4);
+  this.lever1.setCollideWorldBounds(true);
+
 	this.player = this.physics.add.sprite(10, 500, 'player');
 	this.playerPos = [this.player.x-32, (-1*this.player.y-568).toFixed(0)];
 	this.player.setCollideWorldBounds(true);
 	this.player.setScale(2);
+<<<<<<< HEAD
 	this.player.setGravity(0, 800);
+=======
+
+  //collisionn between
+  this.physics.add.collider(this.player, this.lever);
+
+
+
+
+
+	var fireball, fireballs, enemy, enemyGroup;
+	this.nextFire = 0;
+	this.fireRate = 200;
+	this.bulletSpeed = 1000;
+
+	// Add fireball group in
+	this.fireballs = this.physics.add.group({
+		defaultKey: 'fireball',
+		maxSize: 100							// 100 fireballs maximum
+	});
+>>>>>>> ef03751d907941a7802cffae8df34b2736435c87
 
 	// Add enemy group in
 	this.enemyGroup = this.physics.add.group({
@@ -63,11 +93,26 @@ export default class s1r1 extends Phaser.Scene {
 		child.setGravity(0, 800);
 	});
 
+<<<<<<< HEAD
 	this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 	this.fireballs = this.physics.add.group({
 		defaultKey: 'fireball',
 		maxSize: 1
 	});
+=======
+
+	// Shows Stage-Room number and player position for debugging purposes
+	this.posDebug = this.add.text(this.cameras.main.width - 175, 0, '');
+	var srDebug = this.add.text(0, 0, 'Stage 1, Room 1');
+
+  //Animations
+  this.anims.create({
+    key: "flipRight",
+    frames: this.anims.generateFrameNumbers("lever", {start:0, end:3}),
+    frameRate: 15,
+    repeat: 0
+  });
+>>>>>>> ef03751d907941a7802cffae8df34b2736435c87
   }
 
 
@@ -98,6 +143,7 @@ export default class s1r1 extends Phaser.Scene {
 
 	  // Initialize movement variables
 	  var cursors = this.input.keyboard.createCursorKeys();
+    this.eKey = this.input.keyboard.addKey('E');
 	  var speed = 5;
 
 
@@ -142,9 +188,15 @@ export default class s1r1 extends Phaser.Scene {
 			  this.shoot(this.player, this.player.flipX, this.shoot);
 		  }
 	  }
+    else{
+      this.lever1.anims.play("flipRight",true)
+    }
+
+
 
 	  catch(err) {}
 
+<<<<<<< HEAD
   }
 
 
@@ -154,5 +206,27 @@ export default class s1r1 extends Phaser.Scene {
 		enemy.disableBody(true, true);
 		fireball.disableBody(true, true);
 	}
+=======
+
+
+	// TODO: Fix shooting and hitEnemy mechanics
+  shoot(pointer) {
+	  console.log('Shoot!');
+	  var velocity = Phaser.Math.Vector2();
+	  var fireball = this.fireballs.get();
+	  fireball.setGravity(0, -800);
+	  fireball
+	  	.enableBody(true, this.player.x, this.player.y, true, true)
+		.setAngle(180)
+		.setVelocityX(500);
+  }
+
+  hitEnemy(fireball, enemy){
+	  console.log('Hit!');
+	  enemy.disableBody(true, true);
+	  fireball.disableBody(true, true);
+
+  }
+>>>>>>> ef03751d907941a7802cffae8df34b2736435c87
 
 }
