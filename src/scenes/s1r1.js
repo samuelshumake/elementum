@@ -5,18 +5,20 @@ export default class s1r1 extends Phaser.Scene {
     super('s1r1');
   }
 
+
   init (data) {
     // Initialization code goes here
   }
 
+
   preload () {
-    // Preload assets
+    // Load player sprite
     this.load.spritesheet('player', './assets/spriteSheets/player.png', {
 		frameHeight: 32,
 		frameWidth: 32,
 	});
 
-	this.load.image('ground2', './assets/sprites/ground2.png');
+	// Load enemy and fireball sprite
 	this.load.image('fireball', './assets/sprites/fireball.png');
 	this.load.image('enemy', './assets/sprites/slime.png');
 
@@ -25,37 +27,23 @@ export default class s1r1 extends Phaser.Scene {
     this.centerY = this.cameras.main.height / 2;
   }
 
+
   create (data) {
     ChangeScene.addSceneEventListeners(this);
 
+	// Shows Stage-Room number and player position for debugging purposes
+	this.posDebug = this.add.text(this.cameras.main.width - 175, 0, '');
+	var srDebug = this.add.text(0, 0, 'Stage 1, Room 1');
+
 	// Placeholder background color
 	this.cameras.main.setBackgroundColor(0xb0d6c4);
-
-	// // Creates the ground layer
-	// var map = this.make.tilemap({ key: 'map' });
-    // var tileset = map.addTilesetImage('kenney_redux_64x64');
-    // var layer = map.createDynamicLayer(0, tileset, 0, 0);
-	//
-    // // Set up the layer to have matter bodies. Any colliding tiles will be given a Matter body.
-    // map.setCollisionByProperty({ collides: true });
-    // this.matter.world.convertTilemapLayer(layer);
 
 	// Adds character into the scene
 	this.player = this.physics.add.sprite(10, 500, 'player');
 	this.playerPos = [this.player.x-32, (-1*this.player.y-568).toFixed(0)];
 	this.player.setCollideWorldBounds(true);
 	this.player.setScale(2);
-
-	var fireball, fireballs, enemy, enemyGroup;
-	this.nextFire = 0;
-	this.fireRate = 200;
-	this.bulletSpeed = 1000;
-
-	// Add fireball group in
-	this.fireballs = this.physics.add.group({
-		defaultKey: 'fireball',
-		maxSize: 100							// 100 fireballs maximum
-	});
+	this.player.setGravity(0, 800);
 
 	// Add enemy group in
 	this.enemyGroup = this.physics.add.group({
@@ -66,24 +54,57 @@ export default class s1r1 extends Phaser.Scene {
 			y: 500,
 			stepX: 100
 		},
-
 	});
+	// Modify the enemies
 	this.enemyGroup.children.iterate( child => {
 		child.setScale(2);
 		child.setCollideWorldBounds(true);
+		child.setGravity(0, 800);
+	});
+
+	var fireball;
+
+	this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+	this.fireballs = this.physics.add.group({
+		defaultKey: 'fireball',
+		maxSize: 1
 	});
 
 
-	// Shows Stage-Room number and player position for debugging purposes
-	this.posDebug = this.add.text(this.cameras.main.width - 175, 0, '');
-	var srDebug = this.add.text(0, 0, 'Stage 1, Room 1');
+	this.timer = 0;
+	this.fireThreshold = 0;
   }
 
+
   update (time, delta) {
+
+	  // Updates the player position debug text
+	  this.posDebug.setText(`Position: ${this.player.x-32}, ${-1*(this.player.y-568).toFixed(0)}`);
+
+
+	  this.fireballs.children.each(
+		  (b) => {
+			  if (b.active) {
+				  this.physics.add.overlap(
+					  b,
+					  this.enemyGroup,
+					  this.hitEnemy,
+					  null,
+					  this
+				  );
+				  if (b.x < 0) {
+					  b.setActive(false);
+				  } else if (b.x > this.cameras.main.width) {
+					  b.setActive(false);
+				  }
+			  }
+		  }
+	  );
 
 	  // Initialize movement variables
 	  var cursors = this.input.keyboard.createCursorKeys();
 	  var speed = 5;
+
 
 	  // Give the player left and right movement
 	  if (cursors.left.isDown) {
@@ -100,15 +121,42 @@ export default class s1r1 extends Phaser.Scene {
 		  this.player.setAccelerationY(1500);
 	  }
 
+<<<<<<< HEAD
 	  // TODO: Fix shooting mechanic
 	  if (cursors.space.isDown) {
 		  this.shoot()
+=======
+	  // Makes the shoot function
+	  this.shoot = function(player, direction){
+
+		// Initializes the fireball
+	  	var fireball = this.fireballs.get();
+    	fireball
+    		.enableBody(true, player.x, player.y, true, true, true)
+
+		// Checks to see which direction the fireball shoots
+    	switch (direction) {
+    		case true:
+    			fireball.setVelocityX(-600);
+    			break;
+    		case false:
+    			fireball.setVelocityX(600);
+    			break;
+	  	}
+ 	  }
+
+	  // Try to shoot, if there's already an active fireball, an error will
+	  // arise, in which case the catch block will just pass
+	  try {
+		  if (cursors.space.isDown) {
+			  this.shoot(this.player, this.player.flipX, this.shoot);
+		  }
+>>>>>>> shootingBug
 	  }
 
-	  // Updates the player position debug text
-	  this.posDebug.setText(`Position: ${this.player.x-32}, ${-1*(this.player.y-568).toFixed(0)}`);
-  }
+	  catch(err) {}
 
+<<<<<<< HEAD
 	// TODO: Fix shooting and hitEnemy mechanics
   shoot(pointer) {
 	  console.log('Shoot!');
@@ -126,4 +174,16 @@ export default class s1r1 extends Phaser.Scene {
 	  enemy.disableBody(true, true);
 	  fireball.disableBody(true, true);
   }
+=======
+  }
+
+
+	// Function for disabling an enemy when hit
+	hitEnemy (fireball, enemy) {
+		console.log('hit');
+		enemy.disableBody(true, true);
+		fireball.disableBody(true, true);
+	}
+
+>>>>>>> shootingBug
 }
