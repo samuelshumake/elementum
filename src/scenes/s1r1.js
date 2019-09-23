@@ -52,9 +52,7 @@ export default class s1r1 extends Phaser.Scene {
 	this.playerPos = [this.player.x-32, (-1*this.player.y-568).toFixed(0)];
 	this.player.setCollideWorldBounds(true);
 	this.player.setScale(2);
-<<<<<<< HEAD
 	this.player.setGravity(0, 800);
-=======
 
   //collisionn between
   this.physics.add.collider(this.player, this.lever);
@@ -73,7 +71,6 @@ export default class s1r1 extends Phaser.Scene {
 		defaultKey: 'fireball',
 		maxSize: 100							// 100 fireballs maximum
 	});
->>>>>>> ef03751d907941a7802cffae8df34b2736435c87
 
 	// Add enemy group in
 	this.enemyGroup = this.physics.add.group({
@@ -93,13 +90,11 @@ export default class s1r1 extends Phaser.Scene {
 		child.setGravity(0, 800);
 	});
 
-<<<<<<< HEAD
 	this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 	this.fireballs = this.physics.add.group({
 		defaultKey: 'fireball',
 		maxSize: 1
 	});
-=======
 
 	// Shows Stage-Room number and player position for debugging purposes
 	this.posDebug = this.add.text(this.cameras.main.width - 175, 0, '');
@@ -112,7 +107,6 @@ export default class s1r1 extends Phaser.Scene {
     frameRate: 15,
     repeat: 0
   });
->>>>>>> ef03751d907941a7802cffae8df34b2736435c87
   }
 
 
@@ -188,15 +182,10 @@ export default class s1r1 extends Phaser.Scene {
 			  this.shoot(this.player, this.player.flipX, this.shoot);
 		  }
 	  }
-    else{
+	  catch(err) {}
+    if(true){
       this.lever1.anims.play("flipRight",true)
     }
-
-
-
-	  catch(err) {}
-
-<<<<<<< HEAD
   }
 
 
@@ -206,7 +195,6 @@ export default class s1r1 extends Phaser.Scene {
 		enemy.disableBody(true, true);
 		fireball.disableBody(true, true);
 	}
-=======
 
 
 	// TODO: Fix shooting and hitEnemy mechanics
@@ -227,6 +215,5 @@ export default class s1r1 extends Phaser.Scene {
 	  fireball.disableBody(true, true);
 
   }
->>>>>>> ef03751d907941a7802cffae8df34b2736435c87
 
 }
