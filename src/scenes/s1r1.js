@@ -55,6 +55,7 @@ export default class s1r1 extends Phaser.Scene {
 			stepX: 100
 		},
 	});
+
 	// Modify the enemies
 	this.enemyGroup.children.iterate( child => {
 		child.setScale(2);
@@ -62,17 +63,11 @@ export default class s1r1 extends Phaser.Scene {
 		child.setGravity(0, 800);
 	});
 
-	var fireball;
-
 	this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 	this.fireballs = this.physics.add.group({
 		defaultKey: 'fireball',
 		maxSize: 1
 	});
-
-
-	this.timer = 0;
-	this.fireThreshold = 0;
   }
 
 
