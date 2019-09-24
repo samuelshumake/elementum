@@ -29,6 +29,7 @@ export default class s1r1 extends Phaser.Scene {
     frameHeight: 6,
     frameWidth: 9
   });
+  this.load.image('bubble', './assets/sprites/bubble.png')
 
     // Declare variables for center of the scene and player position
     this.centerX = this.cameras.main.width / 2;
@@ -67,7 +68,7 @@ export default class s1r1 extends Phaser.Scene {
 
 
 
-	var fireball, fireballs, enemy, enemyGroup;
+	var fireball, fireballs, enemy, enemyGroup, bubble, bubbles;
 	this.nextFire = 0;
 	this.fireRate = 200;
 	this.bulletSpeed = 1000;
@@ -77,6 +78,11 @@ export default class s1r1 extends Phaser.Scene {
 		defaultKey: 'fireball',
 		maxSize: 100							// 100 fireballs maximum
 	});
+
+  this.bubble = this.physics.add.group({
+    defaultKey: 'bubble',
+    maxSize:100
+  })
 
 	// Add enemy group in
 	this.enemyGroup = this.physics.add.group({
@@ -101,6 +107,13 @@ export default class s1r1 extends Phaser.Scene {
 		defaultKey: 'fireball',
 		maxSize: 1
 	});
+
+  //create bubble group and assign it a keyboard key
+  this.bKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
+  this.bubbles = this.physics.add.group({
+    defaultKey: 'bubble',
+    maxSize: 1
+  })
 
 	// Shows Stage-Room number and player position for debugging purposes
 	this.posDebug = this.add.text(this.cameras.main.width - 175, 0, '');
@@ -148,10 +161,30 @@ export default class s1r1 extends Phaser.Scene {
 		  }
 	  );
 
+    this.bubbles.children.each(
+      (b) => {
+        if (b.active) {
+          this.physics.add.overlap(
+            b,
+            this.enemyGroup,
+            this.suspendEnemy,
+            null,
+            this
+          );
+          if (b.x <0) {
+            b.setActive(false);
+          } else if (b.x > this.cameras.main.width) {
+            b.setActive(false);
+          }
+        }
+      }
+    );
+
 
 	  // Initialize movement variables
 	  var cursors = this.input.keyboard.createCursorKeys();
     this.eKey = this.input.keyboard.addKey('E');
+    this.bKey = this.input.keyboard.addKey('B');
 	  var speed = 5;
 
 
@@ -189,11 +222,36 @@ export default class s1r1 extends Phaser.Scene {
 	  	}
  	  }
 
+    this.shootWater = function(player, direction){
+
+      //Initialize shootWater
+      var bubble = this.bubbles.get();
+      bubble
+        .enableBody(true,player.x,player,y, true, true, true)
+
+      // Check which direction the fireball shoots
+      switch (direction){
+        case true:
+          bubble.setVelocityX(-600);
+          break;
+        case false:
+          bubble.setVelocityX(600);
+          break;
+      }
+    }
+
 	  // Try to shoot, if there's already an active fireball, an error will
 	  // arise, in which case the catch block will just pass
 	  try {
 		  if (cursors.space.isDown) {
 			  this.shoot(this.player, this.player.flipX, this.shoot);
+		  }
+	  }
+	  catch(err) {}
+
+    try {
+		  if (cursors.bKey.isDown) {
+			  this.shootWater(this.player, this.player.flipX, this.shoot);
 		  }
 	  }
 	  catch(err) {}
@@ -225,6 +283,16 @@ export default class s1r1 extends Phaser.Scene {
 		.setAngle(180)
 		.setVelocityX(500);
   }
+  shootWater(pointer){
+    console.log('Shoot!');
+	  var velocity = Phaser.Math.Vector2();
+	  var bubble = this.bubbles.get();
+	  bubble.setGravity(0, -400);
+	  bubble
+	  	.enableBody(true, this.player.x, this.player.y, true, true)
+		.setAngle(180)
+		.setVelocityX(500);
+  }
 
   hitEnemy(fireball, enemy){
 	  console.log('Hit!');
@@ -233,6 +301,12 @@ export default class s1r1 extends Phaser.Scene {
 
   }
 
+  suspendEnemy(bubble, enemy){
+    console.log('suspend!');
+    enemy.y += 20
+    enemy.setGravity(0, 0)
+    bubble.disableBody(true, true);
+  }
 
   pullLever(){
     if (this.eKey.isDown){
