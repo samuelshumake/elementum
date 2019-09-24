@@ -25,6 +25,10 @@ export default class s1r1 extends Phaser.Scene {
     frameHeight: 6,
     frameWidth: 9
   });
+  this.load.spritesheet('leverBack', './assets/spriteSheets/leverBack.png',{
+    frameHeight: 6,
+    frameWidth: 9
+  });
 
     // Declare variables for center of the scene and player position
     this.centerX = this.cameras.main.width / 2;
@@ -44,9 +48,11 @@ export default class s1r1 extends Phaser.Scene {
 
 	// Adds character into the scene
   // Add Level to Scene
-  this.lever1 = this.physics.add.sprite(100,500,  'lever');
-  this.lever1.setScale(4);
-  this.lever1.setCollideWorldBounds(true);
+  this.lever = this.physics.add.sprite(100,500,  'lever');
+  this.lever.setScale(4);
+  this.lever.setCollideWorldBounds(true);
+  this.lever.setGravity(0, 1000);
+  this.flipped = 0;
 
 	this.player = this.physics.add.sprite(10, 500, 'player');
 	this.playerPos = [this.player.x-32, (-1*this.player.y-568).toFixed(0)];
@@ -107,6 +113,13 @@ export default class s1r1 extends Phaser.Scene {
     frameRate: 15,
     repeat: 0
   });
+  this.anims.create({
+    key: "flipLeft",
+    frames: this.anims.generateFrameNumbers("leverBack", {start:0, end:3}),
+    frameRate: 15,
+    repeat: 0
+  });
+
   }
 
 
@@ -134,6 +147,7 @@ export default class s1r1 extends Phaser.Scene {
 			  }
 		  }
 	  );
+
 
 	  // Initialize movement variables
 	  var cursors = this.input.keyboard.createCursorKeys();
@@ -183,10 +197,13 @@ export default class s1r1 extends Phaser.Scene {
 		  }
 	  }
 	  catch(err) {}
-    if(true){
-      this.lever1.anims.play("flipRight",true)
+    //lever mechanic
+    //TODO: Lever gravity is too high rn
+    if (this.eKey.isDown){
+      this.physics.add.overlap(this.lever, this.player, this.pullLever,null, this);
     }
   }
+
 
 
 	// Function for disabling an enemy when hit
@@ -214,6 +231,16 @@ export default class s1r1 extends Phaser.Scene {
 	  enemy.disableBody(true, true);
 	  fireball.disableBody(true, true);
 
+  }
+
+
+  pullLever(){
+    if (this.eKey.isDown){
+      if(this.flipped == 0){
+        this.lever.anims.play("flipRight",true);
+        this.flipped = 1;
+      }
+    }
   }
 
 }
