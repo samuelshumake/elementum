@@ -81,7 +81,7 @@ export default class s1r1 extends Phaser.Scene {
 
   this.bubble = this.physics.add.group({
     defaultKey: 'bubble',
-    maxSize:100
+    maxSize: 100
   })
 
 	// Add enemy group in
@@ -109,7 +109,7 @@ export default class s1r1 extends Phaser.Scene {
 	});
 
   //create bubble group and assign it a keyboard key
-  this.bKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
+  //this.bKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
   this.bubbles = this.physics.add.group({
     defaultKey: 'bubble',
     maxSize: 1
@@ -162,19 +162,19 @@ export default class s1r1 extends Phaser.Scene {
 	  );
 
     this.bubbles.children.each(
-      (b) => {
-        if (b.active) {
+      (a) => {
+        if (a.active) {
           this.physics.add.overlap(
-            b,
+            a,
             this.enemyGroup,
             this.suspendEnemy,
             null,
             this
           );
-          if (b.x <0) {
-            b.setActive(false);
-          } else if (b.x > this.cameras.main.width) {
-            b.setActive(false);
+          if (a.x <0) {
+            a.setActive(false);
+          } else if (a.x > this.cameras.main.width) {
+            a.setActive(false);
           }
         }
       }
@@ -227,7 +227,7 @@ export default class s1r1 extends Phaser.Scene {
       //Initialize shootWater
       var bubble = this.bubbles.get();
       bubble
-        .enableBody(true,player.x,player,y, true, true, true)
+        .enableBody(true,player.x,player.y, true, true, true)
 
       // Check which direction the fireball shoots
       switch (direction){
@@ -250,8 +250,8 @@ export default class s1r1 extends Phaser.Scene {
 	  catch(err) {}
 
     try {
-		  if (cursors.bKey.isDown) {
-			  this.shootWater(this.player, this.player.flipX, this.shoot);
+		  if (this.bKey.isDown) {
+			  this.shootWater(this.player, this.player.flipX, this.shootWater);
 		  }
 	  }
 	  catch(err) {}
@@ -267,7 +267,7 @@ export default class s1r1 extends Phaser.Scene {
 	// Function for disabling an enemy when hit
 	hitEnemy (fireball, enemy) {
 		console.log('hit');
-		enemy.disableBody(true, true);
+		enemy.disableBody(true, true);b
 		fireball.disableBody(true, true);
 	}
 
@@ -284,10 +284,10 @@ export default class s1r1 extends Phaser.Scene {
 		.setVelocityX(500);
   }
   shootWater(pointer){
-    console.log('Shoot!');
+    console.log('ShootWater!');
 	  var velocity = Phaser.Math.Vector2();
 	  var bubble = this.bubbles.get();
-	  bubble.setGravity(0, -400);
+	  bubble.setGravity(0, -800);
 	  bubble
 	  	.enableBody(true, this.player.x, this.player.y, true, true)
 		.setAngle(180)
@@ -303,7 +303,7 @@ export default class s1r1 extends Phaser.Scene {
 
   suspendEnemy(bubble, enemy){
     console.log('suspend!');
-    enemy.y += 20
+    enemy.y -= 100
     enemy.setGravity(0, 0)
     bubble.disableBody(true, true);
   }
