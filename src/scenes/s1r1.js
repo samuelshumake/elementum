@@ -21,7 +21,6 @@ export default class s1r1 extends Phaser.Scene {
 	// Load enemy and fireball sprite
 	this.load.image('fireball', './assets/sprites/fireball.png');
 	this.load.image('enemy', './assets/sprites/slime.png');
-<<<<<<< HEAD
   this.load.spritesheet('lever', './assets/spriteSheets/lever.png',{
     frameHeight: 6,
     frameWidth: 9
@@ -31,10 +30,8 @@ export default class s1r1 extends Phaser.Scene {
     frameWidth: 9
   });
   this.load.image('bubble', './assets/sprites/bubble.png')
-=======
 	this.load.image('platform', './assets/sprites/ground2.png');
 	this.load.image('airwave', './assets/sprites/airwave.png');
->>>>>>> origin/samDev
 
     // Declare variables for center of the scene and player position
     this.centerX = this.cameras.main.width / 2;
@@ -54,7 +51,6 @@ export default class s1r1 extends Phaser.Scene {
 	this.cameras.main.setBackgroundColor(0xb0d6c4);
 
 	// Adds character into the scene
-<<<<<<< HEAD
   // Add Level to Scene
   this.lever = this.physics.add.sprite(100,500,  'lever');
   this.lever.setScale(4);
@@ -62,14 +58,11 @@ export default class s1r1 extends Phaser.Scene {
   this.lever.setGravity(0, 1000);
   this.flipped = 0;
 
-=======
->>>>>>> origin/samDev
 	this.player = this.physics.add.sprite(10, 500, 'player');
 	this.playerPos = [this.player.x-32, (-1*this.player.y-568).toFixed(0)];
 	this.player.setCollideWorldBounds(true);
 	this.player.setScale(2);
 	this.player.setGravity(0, 800);
-<<<<<<< HEAD
 
   //collisionn between
   this.physics.add.collider(this.player, this.lever);
@@ -93,8 +86,6 @@ export default class s1r1 extends Phaser.Scene {
     defaultKey: 'bubble',
     maxSize: 100
   })
-=======
->>>>>>> origin/samDev
 
 	// Add enemy group in
 	this.enemyGroup = this.physics.add.group({
@@ -114,10 +105,7 @@ export default class s1r1 extends Phaser.Scene {
 		child.setGravity(0, 800);
 	});
 
-<<<<<<< HEAD
-=======
 	// Adds space key as "use spell"
->>>>>>> origin/samDev
 	this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
 	// Adds fireballs and limits to 1 on screen
@@ -125,7 +113,6 @@ export default class s1r1 extends Phaser.Scene {
 		defaultKey: 'fireball',
 		maxSize: 1
 	});
-<<<<<<< HEAD
 
   //create bubble group and assign it a keyboard key
   //this.bKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
@@ -133,8 +120,6 @@ export default class s1r1 extends Phaser.Scene {
     defaultKey: 'bubble',
     maxSize: 1
   })
-=======
->>>>>>> origin/samDev
 
 	// Adds earth platform and limits to 1 on screen
 	this.platforms = this.physics.add.group({
@@ -142,7 +127,6 @@ export default class s1r1 extends Phaser.Scene {
 		maxSize: 1
 	});
 
-<<<<<<< HEAD
   //Animations
   this.anims.create({
     key: "flipRight",
@@ -157,13 +141,11 @@ export default class s1r1 extends Phaser.Scene {
     repeat: 0
   });
 
-=======
 	// Adds air waves and limits to 1 on screen
 	this.airwaves = this.physics.add.group({
 		defaultKey: 'airwave',
 		maxSize: 1
 	});
->>>>>>> origin/samDev
   }
 
 
@@ -192,7 +174,6 @@ export default class s1r1 extends Phaser.Scene {
 		  }
 	  );
 
-<<<<<<< HEAD
     this.bubbles.children.each(
       (a) => {
         if (a.active) {
@@ -217,7 +198,6 @@ export default class s1r1 extends Phaser.Scene {
 	  var cursors = this.input.keyboard.createCursorKeys();
     this.eKey = this.input.keyboard.addKey('E');
     this.bKey = this.input.keyboard.addKey('B');
-=======
 	  this.airwaves.children.each(
 		  (b) => {
 			  if (b.active) {
@@ -239,7 +219,6 @@ export default class s1r1 extends Phaser.Scene {
 
 	  // Initialize movement variables
 	  var cursors = this.input.keyboard.createCursorKeys();
->>>>>>> origin/samDev
 	  var speed = 5;
 
 
@@ -277,7 +256,6 @@ export default class s1r1 extends Phaser.Scene {
 	  	}
  	  }
 
-<<<<<<< HEAD
     this.shootWater = function(player, direction){
 
       //Initialize shootWater
@@ -295,7 +273,6 @@ export default class s1r1 extends Phaser.Scene {
           break;
       }
     }
-=======
 	  // Activates air spell
 	  this.shootAir = (player, direction) => {
 
@@ -341,7 +318,6 @@ export default class s1r1 extends Phaser.Scene {
 	  }
 
 
->>>>>>> origin/samDev
 
 	  // Try to shoot, if there's already an active fireball, an error will
 	  // arise, in which case the catch block will just pass
@@ -351,7 +327,6 @@ export default class s1r1 extends Phaser.Scene {
 		  }
 	  }
 	  catch(err) {}
-<<<<<<< HEAD
 
     try {
 		  if (this.bKey.isDown) {
@@ -364,8 +339,6 @@ export default class s1r1 extends Phaser.Scene {
     if (this.eKey.isDown){
       this.physics.add.overlap(this.lever, this.player, this.pullLever,null, this);
     }
-=======
->>>>>>> origin/samDev
   }
 
 
@@ -376,7 +349,6 @@ export default class s1r1 extends Phaser.Scene {
 		enemy.disableBody(true, true);b
 		fireball.disableBody(true, true);
 	}
-<<<<<<< HEAD
 
 
 	// TODO: Fix shooting and hitEnemy mechanics
@@ -400,8 +372,6 @@ export default class s1r1 extends Phaser.Scene {
 		.setAngle(180)
 		.setVelocityX(500);
   }
-=======
->>>>>>> origin/samDev
 
 	// TODO: Wait for tiles then use collideSpriteVsTilemapLayer
 	pushEnemy (airwave, enemy) {
@@ -412,7 +382,6 @@ export default class s1r1 extends Phaser.Scene {
 		}
 		airwave.disableBody(true, true);
 
-<<<<<<< HEAD
   }
 
   suspendEnemy(bubble, enemy){
@@ -430,8 +399,5 @@ export default class s1r1 extends Phaser.Scene {
       }
     }
   }
-=======
-	}
->>>>>>> origin/samDev
 
 }
