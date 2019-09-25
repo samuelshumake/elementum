@@ -46,26 +46,19 @@ export default class s1r1 extends Phaser.Scene {
 
   create (data) {
     ChangeScene.addSceneEventListeners(this);
-
-<<<<<<< HEAD
     const map = this.make.tilemap({key: "map"});
     const tileset = map.addTilesetImage("Tiles_32x32", "tiles");
     const layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
     layer.setCollisionByProperty({ collides: true });
-=======
 
 	// Shows Stage-Room number and player position for debugging purposes
 	this.posDebug = this.add.text(this.cameras.main.width - 175, 0, '');
 	var srDebug = this.add.text(0, 0, 'Stage 1, Room 1');
->>>>>>> dev
 
 	// Placeholder background color
 	this.cameras.main.setBackgroundColor(0xb0d6c4);
 
 	// Adds character into the scene
-<<<<<<< HEAD
-	this.player = this.physics.add.sprite(10, -500, 'player');
-=======
   // Add Level to Scene
   this.lever = this.physics.add.sprite(100,500,  'lever');
   this.lever.setScale(4);
@@ -74,26 +67,20 @@ export default class s1r1 extends Phaser.Scene {
   this.flipped = 0;
 
 	this.player = this.physics.add.sprite(10, 500, 'player');
->>>>>>> dev
 	this.playerPos = [this.player.x-32, (-1*this.player.y-568).toFixed(0)];
 	this.player.setCollideWorldBounds(true);
 	this.player.setScale(2);
 	this.player.setGravity(0, 800);
 
-<<<<<<< HEAD
-  this.physics.add.collider(this.player, layer);
-
-	var fireball, fireballs, enemy, enemyGroup;
-=======
   //collisionn between
   this.physics.add.collider(this.player, this.lever);
+  this.physics.add.collider(this.player, layer);
 
 
 
 
 
 	var fireball, fireballs, enemy, enemyGroup, bubble, bubbles;
->>>>>>> dev
 	this.nextFire = 0;
 	this.fireRate = 200;
 	this.bulletSpeed = 1000;
