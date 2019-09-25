@@ -263,7 +263,7 @@ export default class s1r1 extends Phaser.Scene {
 		// Earth
 		try {
 			if (this.vKey.isDown) {
-				this.raisePlatform(this.player);
+				this.raiseEarth(this.player);
 			}
 		} catch(err) {}
 
@@ -330,14 +330,14 @@ export default class s1r1 extends Phaser.Scene {
 			this.tweens.add({
 				targets: platform,
 				x: player.x,
-				y: 590,
+				y: 580,
 				ease: 'Linear',
 				duration: 200
 			});
 			// Player
 			this.tweens.add({
 				targets: player,
-				y: 520,
+				y: 510,
 				ease: 'Linear',
 				duration: 160
 			});
