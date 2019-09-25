@@ -13,9 +13,9 @@ export default class s1r1 extends Phaser.Scene {
 
   preload () {
     // Load player sprite
-    this.load.spritesheet('player', './assets/spriteSheets/player.png', {
-		frameHeight: 32,
-		frameWidth: 32,
+    this.load.spritesheet('player', './assets/spriteSheets/idleSprite.png', {
+		frameHeight: 39,
+		frameWidth: 34,
 	});
 
 	// Load enemy and fireball sprite
@@ -29,6 +29,11 @@ export default class s1r1 extends Phaser.Scene {
     frameHeight: 6,
     frameWidth: 9
   });
+  this.load.spritesheet('run', './assets/spriteSheets/run sprite.png',{
+    frameHeight: 39,
+    frameWidth: 34
+  });
+
   this.load.image('bubble', './assets/sprites/bubble.png')
 	this.load.image('platform', './assets/sprites/ground2.png');
 	this.load.image('airwave', './assets/sprites/airwave.png');
@@ -61,7 +66,7 @@ export default class s1r1 extends Phaser.Scene {
 
 	// Adds character into the scene
   // Add Level to Scene
-  this.lever = this.physics.add.sprite(100,500,  'lever');
+  this.lever = this.physics.add.sprite(100,500,'lever');
   this.lever.setScale(4);
   this.lever.setCollideWorldBounds(true);
   this.lever.setGravity(0, 1000);
@@ -151,6 +156,21 @@ export default class s1r1 extends Phaser.Scene {
     repeat: 0
   });
 
+  this.anims.create({
+    key: "run",
+    frames: this.anims.generateFrameNumbers("run", {start:0, end:7}),
+    frameRate: 15,
+    repeat: 0
+  });
+
+  this.anims.create({
+    key: "idle",
+    frames: this.anims.generateFrameNumbers("player", {start:0, end:0}),
+    frameRate: 15,
+    repeat: 0
+  });
+
+
 	// Adds air waves and limits to 1 on screen
 	this.airwaves = this.physics.add.group({
 		defaultKey: 'airwave',
@@ -239,11 +259,14 @@ export default class s1r1 extends Phaser.Scene {
 	  if (cursors.left.isDown) {
 		  this.player.x -= speed;
 		  this.player.flipX = true;
+      this.player.play("run",true);
 	  } else if (cursors.right.isDown) {
 		  this.player.x += speed;
 		  this.player.flipX = false
-	  }
-
+      this.player.play("run",true);
+	  } else {
+      this.player.play("idle",true);
+    }
 	  // Give the player jumping movement
 	  if (cursors.up.isDown && this.player.body.onFloor()){
 		  this.player.setVelocityY(-500);
@@ -357,7 +380,7 @@ export default class s1r1 extends Phaser.Scene {
 	  }
 	  catch(err) {}
     try {
-		  if (this.eKey.isDown) {
+		  if (this.vKey.isDown) {
 			  this.raisePlatform(this.player, this.raisePlatform);
 		  }
 	  }
