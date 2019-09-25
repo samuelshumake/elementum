@@ -23,10 +23,20 @@ export default class s1r1 extends Phaser.Scene {
     // Declare variables for center of the scene and player position
     this.centerX = this.cameras.main.width / 2;
     this.centerY = this.cameras.main.height / 2;
+
+    // Load level
+    this.load.image("tiles", "./assets/map/Tiles_32x32.png");
+    this.load.tilemapTiledJSON("map", "./assets/map/map.json");
+
   }
 
   create (data) {
     ChangeScene.addSceneEventListeners(this);
+
+    const map = this.make.tilemap({key: "map"});
+    const tileset = map.addTilesetImage("Tiles_32x32", "tiles");
+    const layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
+    layer.setCollisionByProperty({ collides: true });
 
 	// Placeholder background color
 	this.cameras.main.setBackgroundColor(0xb0d6c4);
@@ -41,10 +51,12 @@ export default class s1r1 extends Phaser.Scene {
     // this.matter.world.convertTilemapLayer(layer);
 
 	// Adds character into the scene
-	this.player = this.physics.add.sprite(10, 500, 'player');
+	this.player = this.physics.add.sprite(10, -500, 'player');
 	this.playerPos = [this.player.x-32, (-1*this.player.y-568).toFixed(0)];
 	this.player.setCollideWorldBounds(true);
 	this.player.setScale(2);
+
+  this.physics.add.collider(this.player, layer);
 
 	var fireball, fireballs, enemy, enemyGroup;
 	this.nextFire = 0;
