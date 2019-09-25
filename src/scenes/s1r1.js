@@ -75,6 +75,7 @@ export default class s1r1 extends Phaser.Scene {
 
   //collisionn between
   this.physics.add.collider(this.player, this.lever);
+  this.physics.add.collider(this.lever, layer);
   this.physics.add.collider(this.player, layer);
 
 
