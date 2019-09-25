@@ -208,6 +208,8 @@ export default class s1r1 extends Phaser.Scene {
 	  var cursors = this.input.keyboard.createCursorKeys();
     this.eKey = this.input.keyboard.addKey('E');
     this.bKey = this.input.keyboard.addKey('B');
+    this.vKey = this.input.keyboard.addKey('V');
+    this.fKey = this.input.keyboard.addKey('F');
 	  this.airwaves.children.each(
 		  (b) => {
 			  if (b.active) {
@@ -226,6 +228,7 @@ export default class s1r1 extends Phaser.Scene {
 			  }
 		  }
 	  );
+
 
 	  // Initialize movement variables
 	  var cursors = this.input.keyboard.createCursorKeys();
@@ -346,17 +349,26 @@ export default class s1r1 extends Phaser.Scene {
 	  catch(err) {}
     //lever mechanic
     //TODO: Lever gravity is too high rn
-    if (this.eKey.isDown){
-      this.physics.add.overlap(this.lever, this.player, this.pullLever,null, this);
+
+    try {
+		  if (this.fKey.isDown) {
+			  this.shoot(this.player, this.player.flipX, this.shoot);
+		  }
+	  }
+	  catch(err) {}
+    try {
+		  if (this.eKey.isDown) {
+			  this.raisePlatform(this.player, this.raisePlatform);
+		  }
+	  }
+	  catch(err) {}
+
     }
-  }
-
-
 
 	// Function for disabling an enemy when hit
 	hitEnemy (fireball, enemy) {
 		console.log('hit');
-		enemy.disableBody(true, true);b
+		enemy.disableBody(true, true);
 		fireball.disableBody(true, true);
 	}
 
