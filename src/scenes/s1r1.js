@@ -47,6 +47,7 @@ export default class s1r1 extends Phaser.Scene {
   create (data) {
     ChangeScene.addSceneEventListeners(this);
     const map = this.make.tilemap({key: "map"});
+    // Tileset art image taken from https://opengameart.org/content/platform-tileset-nature
     const tileset = map.addTilesetImage("Tiles_32x32", "tiles");
     const layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
     layer.setCollisionByProperty({ collides: true });
