@@ -74,14 +74,14 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- CREATES PLAYER AND ENEMIES ---------- */
 		// Adds character into the scene
-		this.player = this.physics.add.sprite(10, 500, 'player');
+		this.player = this.matter.add.sprite(10, 500, 'player');
 		this.playerPos = [this.player.x-32, (-1*this.player.y-568).toFixed(0)];
-		this.player.setCollideWorldBounds(true);
+//this.player.setCollideWorldBounds(true);
 		this.player.setScale(2);
-		this.player.setGravity(0, 800);
+//this.player.setGravity(0, 800);
 
 		// Add enemy group in
-		this.enemyGroup = this.physics.add.group({
+		this.enemyGroup = this.matter.add.group({
 			key: 'enemy',
 			repeat: 2,
 			setXY: {
@@ -99,34 +99,34 @@ export default class s1r1 extends Phaser.Scene {
 
 
 		/* ---------- CREATES LEVERS ---------- */
-		this.lever = this.physics.add.sprite(100,500,'lever');
+		this.lever = this.matter.add.sprite(100,500,'lever');
 		this.lever.setScale(4);
 		this.lever.setCollideWorldBounds(true);
 		this.lever.setGravity(0, 1000);
 		this.flipped = 0;
-		this.physics.add.collider(this.player, this.lever);
-		this.physics.add.collider(this.lever, layer);
-		this.physics.add.collider(this.player, layer);
+		this.matter.add.collider(this.player, this.lever);
+		this.matter.add.collider(this.lever, layer);
+		this.matter.add.collider(this.player, layer);
 
 
 		/* ---------- CREATES SPELLS ---------- */
 		// Adds fireballs and limits to 1 on screen
-		this.fireballs = this.physics.add.group({
+		this.fireballs = this.matter.add.group({
 			defaultKey: 'fireball',
 			maxSize: 1
 		});
 		// Adds bubbles and limits to 1 on screen
-		this.bubbles = this.physics.add.group({
+		this.bubbles = this.matter.add.group({
 	      defaultKey: 'bubble',
 	      maxSize: 1
 		});
 		// Adds earth platform and limits to 1 on screen
-		this.platforms = this.physics.add.group({
+		this.platforms = this.matter.add.group({
 			defaultKey: 'platform',
 			maxSize: 1
 		});
 		// Adds air waves and limits to 1 on screen
-		this.airwaves = this.physics.add.group({
+		this.airwaves = this.matter.add.group({
 			defaultKey: 'airwave',
 			maxSize: 1
 		});
@@ -177,7 +177,7 @@ export default class s1r1 extends Phaser.Scene {
 		this.fireballs.children.each(
 			(b) => {
 				if (b.active) {
-					this.physics.add.overlap(
+					this.matter.add.overlap(
 						b,
 						this.enemyGroup,
 						this.hitEnemy,
@@ -195,7 +195,7 @@ export default class s1r1 extends Phaser.Scene {
 		this.bubbles.children.each(
 			(a) => {
 				if (a.active) {
-					this.physics.add.overlap(
+					this.matter.add.overlap(
 						a,
 						this.enemyGroup,
 						this.suspendEnemy,
@@ -214,7 +214,7 @@ export default class s1r1 extends Phaser.Scene {
 		this.airwaves.children.each(
 			(b) => {
 				if (b.active) {
-					this.physics.add.overlap(
+					this.matter.add.overlap(
 						b,
 						this.enemyGroup,
 						this.pushEnemy,
@@ -237,11 +237,12 @@ export default class s1r1 extends Phaser.Scene {
 	    this.bKey = this.input.keyboard.addKey('B');
 	    this.vKey = this.input.keyboard.addKey('V');
 	    this.fKey = this.input.keyboard.addKey('F');
+		this.aKey = this.input.keyboard.addKey('A');
 
 			/* ----- SHOOT FUNCTIONS ----- */
 		// Air
 		try {
-			if (cursors.space.isDown) {
+			if (this.aKey.isDown) {
 				this.shootAir(this.player, this.player.flipX);
 			}
 		} catch(err) {}
@@ -264,6 +265,11 @@ export default class s1r1 extends Phaser.Scene {
 		try {
 			if (this.vKey.isDown) {
 				this.raiseEarth(this.player);
+			}
+		} catch(err) {}
+		try {
+			if (this.eKey.isDown) {
+				this.pullLever();
 			}
 		} catch(err) {}
 
@@ -322,7 +328,7 @@ export default class s1r1 extends Phaser.Scene {
 			platform
 				.enableBody(true, player.x, player.y + 40, true, true, false);
 			platform.setScale(1, 2);
-			this.physics.add.collider(player, platform);
+			this.matter.add.collider(player, platform);
 			platform.setImmovable(true);
 
 			/* ----- ANIMATIONS ----- */
