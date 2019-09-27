@@ -237,11 +237,12 @@ export default class s1r1 extends Phaser.Scene {
 	    this.bKey = this.input.keyboard.addKey('B');
 	    this.vKey = this.input.keyboard.addKey('V');
 	    this.fKey = this.input.keyboard.addKey('F');
+		this.aKey = this.input.keyboard.addKey('A');
 
 			/* ----- SHOOT FUNCTIONS ----- */
 		// Air
 		try {
-			if (cursors.space.isDown) {
+			if (this.aKey.isDown) {
 				this.shootAir(this.player, this.player.flipX);
 			}
 		} catch(err) {}
@@ -264,6 +265,12 @@ export default class s1r1 extends Phaser.Scene {
 		try {
 			if (this.vKey.isDown) {
 				this.raiseEarth(this.player);
+			}
+		} catch(err) {}
+
+		try {
+			if (this.eKey.isDown) {
+				this.pullLever(this.player);
 			}
 		} catch(err) {}
 
