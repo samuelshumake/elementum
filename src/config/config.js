@@ -10,10 +10,10 @@ export default {
   width: 800,
   height: 600,
   physics: {
-    default: 'arcade',
-    arcade: {
-        gravity: { y: 0 },
-        debug: true
+    default: 'matter',
+    matter: {
+		debug: true,
+        gravity: { y: 300 }
     }
   },
 pixelArt: true
