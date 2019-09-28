@@ -1,5 +1,8 @@
 /*global Phaser*/
 import * as ChangeScene from './ChangeScene.js';
+import Player from '../sprites/Player.js';
+import Spell from '../sprites/Spell.js';
+
 export default class s1r1 extends Phaser.Scene {
 	constructor () {
 		super('s1r1');
@@ -45,21 +48,22 @@ export default class s1r1 extends Phaser.Scene {
 	    this.load.image("tiles", "./assets/map/Tiles_32x32.png");
 	    this.load.tilemapTiledJSON("map", "./assets/map/level.json");
 
-
-	    // Declare variables for center of the scene and player position
-	    this.centerX = this.cameras.main.width / 2;
-	    this.centerY = this.cameras.main.height / 2;
 	}
 
 
 	create (data) {
 	    ChangeScene.addSceneEventListeners(this);
-
+		
+		this.spellActive = {
+			fire: false,
+			earth: false,
+			water: false,
+			air: false
+		}
 
 		/* ---------- STAGE-ROOM DEBUGGER ---------- */
 		this.posDebug = this.add.text(this.cameras.main.width - 175, 0, '');
 		var srDebug = this.add.text(0, 0, 'Stage 1, Room 1');
-
 
 		/* ---------- CREATES MAP ---------- */
 		// Placeholder background color
@@ -72,97 +76,40 @@ export default class s1r1 extends Phaser.Scene {
 	    layer.setCollisionByProperty({ collides: true });
 
 
-		/* ---------- CREATES PLAYER AND ENEMIES ---------- */
-		// Adds character into the scene
-		this.player = this.physics.add.sprite(10, 500, 'player');
-		this.playerPos = [this.player.x-32, (-1*this.player.y-568).toFixed(0)];
-		this.player.setCollideWorldBounds(true);
-		this.player.setScale(2);
-		this.player.setGravity(0, 800);
-
-		// Add enemy group in
-		this.enemyGroup = this.physics.add.group({
-			key: 'enemy',
-			repeat: 2,
-			setXY: {
-				x: 500,
-				y: 500,
-				stepX: 100
-			},
-		});
-		// Modify the enemies
-		this.enemyGroup.children.iterate( child => {
-			child.setScale(2);
-			child.setCollideWorldBounds(true);
-			child.setGravity(0, 800);
-		});
-
-
-		/* ---------- CREATES LEVERS ---------- */
-		this.lever = this.physics.add.sprite(100,500,'lever');
-		this.lever.setScale(4);
-		this.lever.setCollideWorldBounds(true);
-		this.lever.setGravity(0, 1000);
-		this.flipped = 0;
-		this.physics.add.collider(this.player, this.lever);
-		this.physics.add.collider(this.lever, layer);
+		/* ---------- CREATES PLAYER ---------- */
+		this.player = new Player(this, 10, 500, 'player');
 		this.physics.add.collider(this.player, layer);
-
-
-		/* ---------- CREATES SPELLS ---------- */
-		// Adds fireballs and limits to 1 on screen
-		this.fireballs = this.physics.add.group({
-			defaultKey: 'fireball',
-			maxSize: 1
-		});
-		// Adds bubbles and limits to 1 on screen
-		this.bubbles = this.physics.add.group({
-	      defaultKey: 'bubble',
-	      maxSize: 1
-		});
-		// Adds earth platform and limits to 1 on screen
-		this.platforms = this.physics.add.group({
-			defaultKey: 'platform',
-			maxSize: 1
-		});
-		// Adds air waves and limits to 1 on screen
-		this.airwaves = this.physics.add.group({
-			defaultKey: 'airwave',
-			maxSize: 1
-		});
 
 
 		/* ---------- CREATES ANIMATIONS ---------- */
 			/* ----- LEVER ----- */
-		this.anims.create({
-			key: "flipRight",
-			frames: this.anims.generateFrameNumbers("lever", {start:0, end:3}),
-			frameRate: 15,
-			repeat: 0
-		});
-		this.anims.create({
-			key: "flipLeft",
-			frames: this.anims.generateFrameNumbers("leverBack", {start:0, end:3}),
-			frameRate: 15,
-			repeat: 0
-		});
-			/* ----- PLAYER ----- */
-		this.anims.create({
-			key: "run",
-			frames: this.anims.generateFrameNumbers("run", {start:0, end:7}),
-			frameRate: 15,
-			repeat: 0
-		});
-		this.anims.create({
-			key: "idle",
-			frames: this.anims.generateFrameNumbers("player", {start:0, end:0}),
-			frameRate: 15,
-			repeat: 0
-		});
+		// this.anims.create({
+		// 	key: "flipRight",
+		// 	frames: this.anims.generateFrameNumbers("lever", {start:0, end:3}),
+		// 	frameRate: 15,
+		// 	repeat: 0
+		// });
+		// this.anims.create({
+		// 	key: "flipLeft",
+		// 	frames: this.anims.generateFrameNumbers("leverBack", {start:0, end:3}),
+		// 	frameRate: 15,
+		// 	repeat: 0
+		// });
+		// 	/* ----- PLAYER ----- */
+		// this.anims.create({
+		// 	key: "run",
+		// 	frames: this.anims.generateFrameNumbers("run", {start:0, end:7}),
+		// 	frameRate: 15,
+		// 	repeat: 0
+		// });
+		// this.anims.create({
+		// 	key: "idle",
+		// 	frames: this.anims.generateFrameNumbers("player", {start:0, end:0}),
+		// 	frameRate: 15,
+		// 	repeat: 0
+		// });
 
 
-		/* ---------- CREATES 'FIRE' KEYSTROKE ---------- */
-		this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 	}
 
 
@@ -171,207 +118,52 @@ export default class s1r1 extends Phaser.Scene {
 		/* ---------- POSITION DEBUGGER ---------- */
 		this.posDebug.setText(`Position: ${this.player.x-32}, ${-1*(this.player.y-568).toFixed(0)}`);
 
+		this.player.move();
 
-		/* ---------- CHECKS TO SEE IF AIR/FIRE/WATER SPELLS HAVE HIT ---------- */
-		// Checks to see if fireballs have hit an enemy
-		this.fireballs.children.each(
-			(b) => {
-				if (b.active) {
-					this.physics.add.overlap(
-						b,
-						this.enemyGroup,
-						this.hitEnemy,
-						null,
-						this
-					);
-					if (b.x < 0) {
-						b.setActive(false);
-					} else if (b.x > this.cameras.main.width) {
-						b.setActive(false);
-					}
-				}
-			});
-		// Checks to see if bubbles have hit an enemy
-		this.bubbles.children.each(
-			(a) => {
-				if (a.active) {
-					this.physics.add.overlap(
-						a,
-						this.enemyGroup,
-						this.suspendEnemy,
-						null,
-						this
-					);
-				if (a.x <0) {
-					a.setActive(false);
-				} else if (a.x > this.cameras.main.width) {
-					a.setActive(false);
-				}
+
+		if (this.spellActive['fire']) {
+			if (this.player.fireball.x < 0 || this.player.fireball.x > this.cameras.main.width) {
+				this.player.fireball.destroy();
+				this.spellActive['fire'] = false
 			}
+		}
+		if (this.spellActive['water']) {
+			if (this.player.bubble.x < 0 || this.player.bubble.x > this.cameras.main.width) {
+				this.player.bubble.destroy();
+				this.spellActive['water'] = false;
 			}
-		);
-		// Checks to see if airwaves have hit an enemy
-		this.airwaves.children.each(
-			(b) => {
-				if (b.active) {
-					this.physics.add.overlap(
-						b,
-						this.enemyGroup,
-						this.pushEnemy,
-						null,
-						this
-					);
-					if (b.x < 0) {
-						b.setActive(false);
-					} else if (b.x > this.cameras.main.width) {
-						b.setActive(false);
-					}
-				}
+		}
+		if (this.spellActive['air']) {
+			if (this.player.airWave.x < 0 || this.player.airWave.x > this.cameras.main.width) {
+				this.player.airWave.destroy();
+				this.spellActive['air'] = false;
 			}
-		);
+		}
 
 
 		/* ---------- CASTING SPELLS ---------- */
 		// Keys for shooting
-		this.eKey = this.input.keyboard.addKey('E');
-	    this.bKey = this.input.keyboard.addKey('B');
-	    this.vKey = this.input.keyboard.addKey('V');
-	    this.fKey = this.input.keyboard.addKey('F');
-		this.aKey = this.input.keyboard.addKey('A');
+		this.switchFire = this.input.keyboard.addKey('one');
+	    this.switchEarth = this.input.keyboard.addKey('two');
+	    this.switchWater = this.input.keyboard.addKey('three');
+	    this.switchAir = this.input.keyboard.addKey('four');
+		this.castSpell = this.input.keyboard.addKey('space');
 
-			/* ----- SHOOT FUNCTIONS ----- */
-		// Air
-		try {
-			if (this.aKey.isDown) {
-				this.shootAir(this.player, this.player.flipX);
-			}
-		} catch(err) {}
-
-		// Water
-		try {
-			if (this.bKey.isDown) {
-				this.shootWater(this.player, this.player.flipX);
-			}
-		} catch(err) {}
-
-		// Fire
-		try {
-			if (this.fKey.isDown) {
-				this.shootFire(this.player, this.player.flipX);
-			}
-		} catch(err) {}
-
-		// Earth
-		try {
-			if (this.vKey.isDown) {
-				this.raiseEarth(this.player);
-			}
-		} catch(err) {}
-		try {
-			if (this.eKey.isDown) {
-				this.pullLever();
-			}
-		} catch(err) {}
-
-			/* ----- SPELL FUNCTIONS ----- */
-		// Shooting fire
-		this.shootFire = (player, direction) => {
-			var fireball = this.fireballs.get();
-			fireball
-				.enableBody(true, player.x, player.y, true, true, true);
-
-			// Checks to see which direction the fireball shoots
-			switch (direction) {
-				case true:
-					fireball.setVelocityX(-600);
-					break;
-				case false:
-					fireball.setVelocityX(600);
-					break;
-			}
-		}
-		// Shooting water
-		this.shootWater = (player, direction) => {
-			var bubble = this.bubbles.get();
-			bubble
-				.enableBody(true, player.x, player.y, true, true, true)
-
-			// Check which direction the bubble shoots
-			switch (direction){
-				case true:
-					bubble.setVelocityX(-600);
-					break;
-				case false:
-					bubble.setVelocityX(600);
-					break;
-			}
-		}
-		// Shoots air
-		this.shootAir = (player, direction) => {
-			var airwave = this.airwaves.get();
-			airwave
-				.enableBody(true, player.x, player.y, true, true, true);
-
-			// Checks to see which direction the fireball shoots
-			switch (direction) {
-				case true:
-					airwave.setVelocityX(-600);
-					break;
-				case false:
-					airwave.setVelocityX(600);
-					break;
-			}
-		}
-		// Raises earth
-		this.raiseEarth = (player) => {
-			var platform = this.platforms.get();
-			platform
-				.enableBody(true, player.x, player.y + 40, true, true, false);
-			platform.setScale(1, 2);
-			this.physics.add.collider(player, platform);
-			platform.setImmovable(true);
-
-			/* ----- ANIMATIONS ----- */
-			// Platform
-			this.tweens.add({
-				targets: platform,
-				x: player.x,
-				y: 580,
-				ease: 'Linear',
-				duration: 200
-			});
-			// Player
-			this.tweens.add({
-				targets: player,
-				y: 510,
-				ease: 'Linear',
-				duration: 160
-			});
+		if (this.switchFire.isDown) {
+			this.player.currentSpell = 'fire';
+		} else if (this.switchEarth.isDown) {
+			this.player.currentSpell = 'earth';
+		} else if (this.switchWater.isDown) {
+			this.player.currentSpell = 'water';
+		} else if (this.switchAir.isDown) {
+			this.player.currentSpell = 'air';
 		}
 
+		if (this.castSpell.isDown) {
+			this.player.cast(this, this.player.currentSpell, this.player.flipX);
+	 	}
 
-		/* ---------- MOVEMENT FUNCTIONS ---------- */
-		var cursors = this.input.keyboard.createCursorKeys();
-		var speed = 5;
 
-		// Give the player left and right movement
-		if (cursors.left.isDown) {
-			this.player.x -= speed;
-			this.player.flipX = true;
-			this.player.play("run",true);
-		} else if (cursors.right.isDown) {
-			this.player.x += speed;
-			this.player.flipX = false
-			this.player.play("run",true);
-		} else {
-			this.player.play("idle",true);
-		}
-
-		// Give the player jumping movement
-		if (cursors.up.isDown && this.player.body.onFloor()){
-			this.player.setVelocityY(-500);
-			this.player.setAccelerationY(1500);
-		}
 
     }
 
