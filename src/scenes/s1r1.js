@@ -55,6 +55,8 @@ export default class s1r1 extends Phaser.Scene {
 	create (data) {
 	    ChangeScene.addSceneEventListeners(this);
 
+		this.spellTimer = 0;
+
 		this.spellActive = {
 			fire: false,
 			earth: false,
@@ -92,6 +94,8 @@ export default class s1r1 extends Phaser.Scene {
 
 
 	update (time, delta) {
+
+		this.spellTimer++;
 
 		/* ---------- POSITION DEBUGGER ---------- */
 		this.posDebug.setText(`Position: ${this.player.x-32}, ${-1*(this.player.y-568).toFixed(0)}`);
@@ -147,7 +151,7 @@ export default class s1r1 extends Phaser.Scene {
 			}
 		}
 
-	
+
 
 
 		/* ---------- CASTING SPELLS ---------- */
@@ -168,7 +172,8 @@ export default class s1r1 extends Phaser.Scene {
 			this.player.currentSpell = 'air';
 		}
 
-		if (this.castSpell.isDown) {
+		if (this.castSpell.isDown && this.spellTimer > 50) {
+			this.spellTimer = 0
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
 	 	}
 
