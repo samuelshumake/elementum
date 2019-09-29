@@ -7,6 +7,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		scene.sys.displayList.add(this);
 
 		scene.physics.world.enableBody(this, 0);
+		scene.physics.add.collider(this, scene.layer);
 		this.body.setGravity(0, 600);
 		this.setScale(2);
 
@@ -69,6 +70,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 	/* ---------- SPELL-CASTING FUNCTIONS ---------- */
 	cast(scene, spell, direction = false) {
+		this.direction = direction;
 		switch (spell) {
 
 			/* ----- FIRE ----- */

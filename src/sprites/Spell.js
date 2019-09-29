@@ -19,6 +19,8 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 
 	}
 
+	// TODO: Raising earth platform isn't consistent, plus you can cheese it
+	//		 by continously casting the spell to go to the top of the screen
 	raise(scene, player) {
 		scene.physics.add.collider(player, this);
 		scene.tweens.add({
@@ -28,5 +30,35 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 			duration: 800
 		});
 	}
+
+	suspend(scene, enemy) {
+		scene.tweens.add({
+			targets: enemy,
+			y: enemy.y - 400,
+			ease: 'Linear',
+			duration: 400
+		});
+		enemy.body.setGravity(0, 0);
+	}
+
+	push(scene, enemy, direction) {
+
+		if (direction) {
+			scene.tweens.add({
+				targets: enemy,
+				x: enemy.x - 100,
+				ease: 'Linear',
+				duration: 400
+			});
+		} else {
+			scene.tweens.add({
+				targets: enemy,
+				x: enemy.x + 100,
+				ease: 'Linear',
+				duration: 400
+			});
+		}
+	}
+
 
 }
