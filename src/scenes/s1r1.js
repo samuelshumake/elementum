@@ -147,6 +147,8 @@ export default class s1r1 extends Phaser.Scene {
 			}
 		}
 
+	
+
 
 		/* ---------- CASTING SPELLS ---------- */
 		// Keys for shooting

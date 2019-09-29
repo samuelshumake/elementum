@@ -6,7 +6,6 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 
 		scene.physics.world.enableBody(this, 0);
 		this.body.setImmovable(true);
-
 	}
 
 	shoot(direction) {
@@ -22,12 +21,14 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 	// TODO: Raising earth platform isn't consistent, plus you can cheese it
 	//		 by continously casting the spell to go to the top of the screen
 	raise(scene, player) {
-		scene.physics.add.collider(player, this);
+		this.setScale(1.8, 3)
+		scene.physics.add.collider(player, this)
+
 		scene.tweens.add({
 			targets: this,
 			y: player.y - 30,
 			ease: 'Linear',
-			duration: 800
+			duration: 900
 		});
 	}
 
