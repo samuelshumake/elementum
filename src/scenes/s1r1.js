@@ -80,19 +80,8 @@ export default class s1r1 extends Phaser.Scene {
 	    const map = this.make.tilemap({key: "map"});
 	    const tileset = map.addTilesetImage("tileset", "tiles");
 	    this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
-<<<<<<< HEAD
 		this.layer.setCollisionByProperty({ collides: true });
 		this.spikes = map.createStaticLayer('spikes', tileset, 0, 630);
-=======
-			const spikes = map.createStaticLayer("Spikes", tileset, 0, 0);
-			console.log(spikes);
-			// map.forEach( function(tile) {
-			// 	if (tile.index == 0 || tile.index == 1) {
-			// 		tile.collideDown = false;
-			// 	}
-			// }, this, 0, 0, map.width, map.height, this.layer);
-	    this.layer.setCollisionByProperty({ collides: true });
->>>>>>> fb1a14082658519c2382a517084847f90aec2a8d
 
 
 		/* ---------- CREATES PLAYER ---------- */
@@ -199,22 +188,9 @@ export default class s1r1 extends Phaser.Scene {
 
     }	// ----- END OF UPDATE ----- //
 
-<<<<<<< HEAD
 }	// ----- END OF PHASER SCENE ----- //
 
 
-// function resetLevel(scene) {
-// 	console.log("restart");
-// 	this.scene.restart();
-// }
-
-=======
-function resetLevel() {
-	console.log("restart");
-	this.scene.start("s1r1");
-	return;
-}
->>>>>>> fb1a14082658519c2382a517084847f90aec2a8d
 
 function getClosestEnemy(spell, enemyGroup) {
 
