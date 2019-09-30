@@ -46,7 +46,7 @@ export default class s1r1 extends Phaser.Scene {
 
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
-	    this.load.image("tiles", "./assets/map/Tiles_32x32.png");
+	    this.load.image("tiles", "./assets/map/tileset.png");
 	    this.load.tilemapTiledJSON("map", "./assets/map/level.json");
 
 	}
@@ -54,7 +54,6 @@ export default class s1r1 extends Phaser.Scene {
 
 	create (data) {
 	    ChangeScene.addSceneEventListeners(this);
-
 		this.spellTimer = 0;
 
 		this.spellActive = {
@@ -75,8 +74,16 @@ export default class s1r1 extends Phaser.Scene {
 
 		// Tileset art image taken from https://opengameart.org/content/platform-tileset-nature
 	    const map = this.make.tilemap({key: "map"});
-	    const tileset = map.addTilesetImage("Tiles_32x32", "tiles");
+	    const tileset = map.addTilesetImage("tileset", "tiles");
 	    this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
+			const spikes = map.createStaticLayer("Spikes", tileset, 0, 0);
+			console.log(spikes);
+			// map.forEach( function(tile) {
+			// 	if (tile.index == 0 || tile.index == 1) {
+			// 		tile.collideDown = false;
+			// 	}
+			// }, this, 0, 0, map.width, map.height, this.layer);
+
 	    this.layer.setCollisionByProperty({ collides: true });
 
 
@@ -103,6 +110,9 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- MOVES PLAYER ---------- */
 		this.player.move(); // See: Player.js
+
+		/* ----------- SPIKES ----------- */
+		//if this.player
 
 
 		// TODO: Fix how spells are hitting two or more enemies if player is moving
@@ -179,6 +189,12 @@ export default class s1r1 extends Phaser.Scene {
 
 
     }
+
+}
+
+function resetLevel() {
+	console.log("restart");
+	this.scene.restart();
 
 }
 

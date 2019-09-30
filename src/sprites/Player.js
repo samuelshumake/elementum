@@ -9,7 +9,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		scene.physics.world.enableBody(this, 0);
 		scene.physics.add.collider(this, scene.layer);
 		this.body.setGravity(0, 600);
-		this.setScale(2);
+		this.body.setCollideWorldBounds(true);
+		scene.physics.add.overlap(this.body, scene.spikes, scene.resetLevel, null, scene);
+		this.setScale(1);
 
 		this.currentSpell = 'fire';
 
