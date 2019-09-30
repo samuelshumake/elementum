@@ -40,8 +40,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
 			repeat: 0
 		});
 		scene.anims.create({
-			key: "jump",
-			frames: scene.anims.generateFrameNumbers("jump", {start:0, end:10}),
+			key: "jumpPlayer",
+			frames: scene.anims.generateFrameNumbers("jumpPlayer", {start:0, end:10}),
 			frameRate: 15,
 			repeat: 0
 		});
@@ -57,12 +57,17 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		if (cursors.left.isDown) {
 			this.x -= speed;
 			this.flipX = true;
-			this.play("run",true);
+			if(this.body.onFloor()){
+				this.play("run",true);
+			}
 		} else if (cursors.right.isDown) {
 			this.x += speed;
 			this.flipX = false
-			this.play("run",true);
+			if(this.body.onFloor()){
+				this.play("run",true);
+			}
 		} else {
+			if(this.body.onFloor())
 			this.play("idle",true);
 		}
 
@@ -71,7 +76,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 			this.body.y -= 20;
 			this.body.setVelocityY(-500)
 			this.body.setAccelerationY(1300);
-			this.play("jump",true);
+			this.play("jumpPlayer",true);
 		}
 	}
 
