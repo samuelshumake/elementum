@@ -43,7 +43,10 @@ export default class s1r1 extends Phaser.Scene {
 			frameHeight: 44,
 			frameWidth:	 34
 		});
-
+		this.load.spritesheet('platforms', './assets/spriteSheets/platformMove.png',{
+			frameHeight: 32,
+			frameWidth:	 96
+		});
 
 
 		/* ---------- LOADS SPRITES FOR SPELLS ---------- */
@@ -64,8 +67,16 @@ export default class s1r1 extends Phaser.Scene {
 	create (data) {
 	    ChangeScene.addSceneEventListeners(this);
 
+
 		// Initializes spell cooldown timer
 		this.spellTimer = 0;
+
+
+		/* ---------- GLOBAL VARIABLES --------- */
+		this.RESET_LEVEL = false
+		var gameWidth = this.cameras.main.gameWidth;
+		var gameHeight = this.cameras.main.gameHeight;
+
 
 		// Array that keeps track of if a spell is active
 		this.spellActive = {
@@ -103,8 +114,11 @@ export default class s1r1 extends Phaser.Scene {
 			this.enemyGroup.push(new Enemy(this, 150 * i + 150, 500, 'slimeAni'));
 		}
 
-		/* ---------- GLOBAL VARIABLES --------- */
-		this.RESET_LEVEL = false
+
+		/* ----- CREATE PLATFORM SPRITES ------- */
+		this.platform1 = this.physics.add.sprite(500,500, "platforms");
+		this.physics.add.collider(this.player, this.platform1)
+
 
 	}	// ----- END OF CREATE ----- //
 
