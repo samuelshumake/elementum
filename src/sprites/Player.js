@@ -39,6 +39,12 @@ export default class Player extends Phaser.GameObjects.Sprite {
 			frameRate: 15,
 			repeat: 0
 		});
+		scene.anims.create({
+			key: "jump",
+			frames: scene.anims.generateFrameNumbers("jump", {start:0, end:10}),
+			frameRate: 15,
+			repeat: 0
+		});
 
 	}
 
@@ -65,6 +71,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 			this.body.y -= 20;
 			this.body.setVelocityY(-500)
 			this.body.setAccelerationY(1300);
+			this.play("jump",true);
 		}
 	}
 

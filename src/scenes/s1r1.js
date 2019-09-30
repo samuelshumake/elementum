@@ -39,6 +39,10 @@ export default class s1r1 extends Phaser.Scene {
 			frameHeight: 14,
 			frameWidth:	 21
 		});
+		this.load.spritesheet('jump', '.assets/spriteSheets/jump.png',{
+			frameHeight:44,
+			frameWidth:34
+		});
 
 
 		/* ---------- LOADS SPRITES FOR SPELLS ---------- */
