@@ -33,7 +33,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 		}
 		else{
 			this.body.x += .5;
-			this.flipX = true;
+			this.flipX = false;
 			this.play("jump",true);
 
 		}

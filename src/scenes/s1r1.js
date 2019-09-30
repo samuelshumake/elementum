@@ -96,8 +96,8 @@ export default class s1r1 extends Phaser.Scene {
 		this.enemyGroup = [];
 		for (let i = 0; i < 4; i++) {
 			this.enemyGroup.push(new Enemy(this, 150 * i + 150, 500, 'slimeAni'));
-
 		}
+
 		/* ---------- GLOBAL VARIABLES --------- */
 		this.RESET_LEVEL = false
 
