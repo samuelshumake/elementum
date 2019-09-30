@@ -35,6 +35,10 @@ export default class s1r1 extends Phaser.Scene {
 			frameHeight: 39,
 			frameWidth: 34
 	    });
+		this.load.spritesheet('slimeAni', './assets/spriteSheets/slimesprite.png',{
+			frameHeight: 14,
+			frameWidth:	 21
+		});
 
 
 		/* ---------- LOADS SPRITES FOR SPELLS ---------- */
@@ -93,8 +97,11 @@ export default class s1r1 extends Phaser.Scene {
 		/* ---------- CREATES ENEMIES ---------- */
 		this.enemyGroup = [];
 		for (let i = 0; i < 4; i++) {
-			this.enemyGroup.push(new Enemy(this, 150 * i + 150, 500, 'slime'));
+			this.enemyGroup.push(new Enemy(this, 150 * i + 150, 500, 'slimeAni'));
+
 		}
+		/* ---------- GLOBAL VARIABLES --------- */
+		this.RESET_LEVEL = false
 
 	}
 
@@ -110,12 +117,24 @@ export default class s1r1 extends Phaser.Scene {
 		/* ---------- MOVES PLAYER ---------- */
 		this.player.move(); // See: Player.js
 
+		/*----------- Enemy AI -------------- */
+		for(var x in this.enemyGroup){
+			this.enemyGroup[x].move(this.player);
+		}
+
 		/* ----------- SPIKES ----------- */
 		if (this.player.y >= 620 || (this.player.y > 550 && this.player.x > 550)) {
 			console.log("dead");
 			this.scene.start("s1r1");
 			return;
 		};
+		/* ----------- RESET SCENE -------*/
+
+		if (this.physics.overlap(Object.values(this.enemyGroup), this.player)){
+			console.log("restart");
+			this.scene.start("s1r1");
+			return;
+		}
 
 
 		// TODO: Fix how spells are hitting two or more enemies if player is moving
@@ -195,11 +214,7 @@ export default class s1r1 extends Phaser.Scene {
 
 }
 
-function resetLevel() {
-	console.log("restart");
-	this.scene.start("s1r1");
-	return;
-}
+
 
 function getClosestEnemy(spell, enemyGroup) {
 
