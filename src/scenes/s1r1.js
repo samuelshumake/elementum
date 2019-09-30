@@ -49,19 +49,23 @@ export default class s1r1 extends Phaser.Scene {
 	    this.load.image("tiles", "./assets/map/tileset.png");
 	    this.load.tilemapTiledJSON("map", "./assets/map/level.json");
 
-	}
+	}	// ----- END OF PRELOAD ----- //
 
 
 	create (data) {
 	    ChangeScene.addSceneEventListeners(this);
+
+		// Initializes spell cooldown timer
 		this.spellTimer = 0;
 
+		// Array that keeps track of if a spell is active
 		this.spellActive = {
 			fire: false,
 			earth: false,
 			water: false,
 			air: false
 		}
+
 
 		/* ---------- STAGE-ROOM DEBUGGER ---------- */
 		this.posDebug = this.add.text(this.cameras.main.width - 175, 0, '');
@@ -76,15 +80,8 @@ export default class s1r1 extends Phaser.Scene {
 	    const map = this.make.tilemap({key: "map"});
 	    const tileset = map.addTilesetImage("tileset", "tiles");
 	    this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
-			const spikes = map.createStaticLayer("Spikes", tileset, 0, 0);
-			console.log(spikes);
-			// map.forEach( function(tile) {
-			// 	if (tile.index == 0 || tile.index == 1) {
-			// 		tile.collideDown = false;
-			// 	}
-			// }, this, 0, 0, map.width, map.height, this.layer);
-
-	    this.layer.setCollisionByProperty({ collides: true });
+		this.layer.setCollisionByProperty({ collides: true });
+		this.spikes = map.createStaticLayer('spikes', tileset, 0, 630);
 
 
 		/* ---------- CREATES PLAYER ---------- */
@@ -94,14 +91,14 @@ export default class s1r1 extends Phaser.Scene {
 		/* ---------- CREATES ENEMIES ---------- */
 		this.enemyGroup = [];
 		for (let i = 0; i < 4; i++) {
-			this.enemyGroup.push(new Enemy(this, 150 * i + 150, 500, 'slime'));
+			this.enemyGroup.push(new Enemy(this, 150 * i + 150, 300, 'slime'));
 		}
 
-	}
+	}	// ----- END OF CREATE ----- //
 
 
 	update (time, delta) {
-
+		// Increments the spell cooldown timer
 		this.spellTimer++;
 
 		/* ---------- POSITION DEBUGGER ---------- */
@@ -115,12 +112,7 @@ export default class s1r1 extends Phaser.Scene {
 		//if this.player
 
 
-		// TODO: Fix how spells are hitting two or more enemies if player is moving
-		//		 or if he attacks anyone except the leader of the enemies.
-		//		 Possibly implement a separate function that conintuously loops through
-		//		 the enemies while a spell is active?
-
-		/* ---------- CHECKS IF SPELLS ARE OUT OF BOUNDS ---------- */
+		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
 		if (this.spellActive['fire']) {
 			if (this.player.fireball.x < 0 || this.player.fireball.x > this.cameras.main.width) {
 				this.player.fireball.destroy();
@@ -162,8 +154,6 @@ export default class s1r1 extends Phaser.Scene {
 		}
 
 
-
-
 		/* ---------- CASTING SPELLS ---------- */
 		// Keys for shooting
 		this.switchFire = this.input.keyboard.addKey('one');
@@ -172,6 +162,7 @@ export default class s1r1 extends Phaser.Scene {
 	    this.switchAir = this.input.keyboard.addKey('four');
 		this.castSpell = this.input.keyboard.addKey('space');
 
+		// Switches current spell
 		if (this.switchFire.isDown) {
 			this.player.currentSpell = 'fire';
 		} else if (this.switchEarth.isDown) {
@@ -182,21 +173,25 @@ export default class s1r1 extends Phaser.Scene {
 			this.player.currentSpell = 'air';
 		}
 
+		// Casts spell if cooldown timer has been met
 		if (this.castSpell.isDown && this.spellTimer > 50) {
 			this.spellTimer = 0
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
 	 	}
 
+		this.physics.add.overlap(this.player, this.spikes, () => {this.scene.restart()});
 
-    }
 
-}
+    }	// ----- END OF UPDATE ----- //
 
-function resetLevel() {
-	console.log("restart");
-	this.scene.restart();
+}	// ----- END OF PHASER SCENE ----- //
 
-}
+
+// function resetLevel(scene) {
+// 	console.log("restart");
+// 	this.scene.restart();
+// }
+
 
 function getClosestEnemy(spell, enemyGroup) {
 
