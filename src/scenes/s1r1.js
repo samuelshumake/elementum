@@ -83,7 +83,6 @@ export default class s1r1 extends Phaser.Scene {
 			// 		tile.collideDown = false;
 			// 	}
 			// }, this, 0, 0, map.width, map.height, this.layer);
-
 	    this.layer.setCollisionByProperty({ collides: true });
 
 
@@ -112,7 +111,11 @@ export default class s1r1 extends Phaser.Scene {
 		this.player.move(); // See: Player.js
 
 		/* ----------- SPIKES ----------- */
-		//if this.player
+		if (this.player.y >= 620 || (this.player.y > 550 && this.player.x > 550)) {
+			console.log("dead");
+			this.scene.start("s1r1");
+			return;
+		};
 
 
 		// TODO: Fix how spells are hitting two or more enemies if player is moving
@@ -194,8 +197,8 @@ export default class s1r1 extends Phaser.Scene {
 
 function resetLevel() {
 	console.log("restart");
-	this.scene.restart();
-
+	this.scene.start("s1r1");
+	return;
 }
 
 function getClosestEnemy(spell, enemyGroup) {
