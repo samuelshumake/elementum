@@ -3,7 +3,7 @@ import * as ChangeScene from './ChangeScene.js';
 import Player from '../sprites/Player.js';
 import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
-
+import Platform from '../sprites/Platform.js';
 export default class s1r1 extends Phaser.Scene {
 	constructor () {
 		super('s1r1');
@@ -19,7 +19,7 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- LOADS SPRITE SHEETS ---------- */
 	    // Load sprite sheets
-		this.load.spritesheet('player', './assets/spriteSheets/idleSprite.png', {
+		this.load.spritesheet('player', './assets/spriteSheets/idleFinal.png', {
 			frameHeight: 39,
 			frameWidth: 34,
 		});
@@ -43,7 +43,7 @@ export default class s1r1 extends Phaser.Scene {
 			frameHeight: 44,
 			frameWidth:	 34
 		});
-		this.load.spritesheet('platforms', './assets/spriteSheets/platformMove.png',{
+		this.load.spritesheet('tempPlatform', './assets/spriteSheets/platformMove.png',{
 			frameHeight: 32,
 			frameWidth:	 96
 		});
@@ -116,8 +116,8 @@ export default class s1r1 extends Phaser.Scene {
 
 
 		/* ----- CREATE PLATFORM SPRITES ------- */
-		this.platform1 = this.physics.add.sprite(500,500, "platforms");
-		this.physics.add.collider(this.player, this.platform1)
+		this.platform1 = new Platform(this, 500, 500, 'tempPlatform');
+
 
 
 	}	// ----- END OF CREATE ----- //
