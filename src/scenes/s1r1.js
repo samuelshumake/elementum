@@ -19,7 +19,7 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- LOADS SPRITE SHEETS ---------- */
 	    // Load sprite sheets
-		this.load.spritesheet('player', './assets/spriteSheets/idleSprite.png', {
+		this.load.spritesheet('player', './assets/spriteSheets/idleFinal.png', {
 			frameHeight: 39,
 			frameWidth: 34,
 		});

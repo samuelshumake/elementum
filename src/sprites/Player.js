@@ -54,8 +54,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 	}
 
 	create(scene){
-		scene.physics.add.collider(this, scene.platform1, function(this){
-		});
+		scene.physics.add.collider(this, scene.platform1);
 	}
 	/* ---------- MOVEMENT FUNCTIONS ---------- */
 	move() {
