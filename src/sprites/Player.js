@@ -7,11 +7,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		scene.sys.displayList.add(this);
 
 		/* ------CONSTANTS AND VARIBLES------- */
-		this.ON_PLATFORM = false;
+		this.ON_PLATFORM = true;
 
 		scene.physics.world.enableBody(this, 0);
 		scene.physics.add.collider(this, scene.layer);
-		scene.physics.add.collider(this, scene.platform1, this.ON_PLATFORM = true);
+
 
 		this.body.setGravity(0, 600);
 		this.body.setCollideWorldBounds(true);
@@ -53,6 +53,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 	}
 
+	create(scene){
+		scene.physics.add.collider(this, scene.platform1, function(this){
+		});
+	}
 	/* ---------- MOVEMENT FUNCTIONS ---------- */
 	move() {
 		var cursors = this.scene.input.keyboard.createCursorKeys();
@@ -78,7 +82,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 		// Give the player jumping movement
 		if (cursors.up.isDown && this.body.onFloor() ||
-		 cursors.up.isDown&& this.scene.ON_PLATFORM){
+		 		cursors.up.isDown && this.ON_PLATFORM){
 			this.body.y -= 20;
 			this.body.setVelocityY(-500)
 			this.body.setAccelerationY(1300);

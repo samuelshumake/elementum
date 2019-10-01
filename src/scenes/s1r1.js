@@ -19,7 +19,7 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- LOADS SPRITE SHEETS ---------- */
 	    // Load sprite sheets
-		this.load.spritesheet('player', './assets/spriteSheets/idleFinal.png', {
+		this.load.spritesheet('player', './assets/spriteSheets/idleSprite.png', {
 			frameHeight: 39,
 			frameWidth: 34,
 		});
@@ -104,8 +104,10 @@ export default class s1r1 extends Phaser.Scene {
 		this.spikes = map.createStaticLayer('spikes', tileset, 0, 630);
 
 
+
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 30, 550, 'player');
+		this.player.create(this);
 
 
 		/* ---------- CREATES ENEMIES ---------- */
@@ -152,6 +154,9 @@ export default class s1r1 extends Phaser.Scene {
 			this.scene.start("s1r1");
 			return;
 		}
+
+		/*----------Platform Mechanics----*/
+
 
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */

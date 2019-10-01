@@ -7,7 +7,6 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 		scene.physics.world.enableBody(this, 0);
 		this.body.setCollideWorldBounds(true);
 		scene.physics.add.collider(this, scene.layer);
-		scene.physics.add.collider(this, scene.player);
 		this.body.setCollideWorldBounds(true);
 		this.body.setGravity(0, 600);
 		this.setScale(1);
