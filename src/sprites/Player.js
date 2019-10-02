@@ -6,27 +6,31 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		scene.sys.updateList.add(this);
 		scene.sys.displayList.add(this);
 
-		/* ------CONSTANTS AND VARIBLES------- */
-		this.ON_PLATFORM = true;
 
+		/* ------CONSTANTS AND VARIBLES------- */
+		// Sets players physical body
 		scene.physics.world.enableBody(this, 0);
 		scene.physics.add.collider(this, scene.layer);
-
-
 		this.body.setGravity(0, 600);
 		this.body.setCollideWorldBounds(true);
 		this.setScale(1);
 
+		// Initializes player's current spell
 		this.currentSpell = 'fire';
 
+
+		/* ------ ANIMATIONS ------- */
 		scene.anims.create({
 			key: "flipRight",
 			frames: scene.anims.generateFrameNumbers("lever", {start:0, end:3}),
 			frameRate: 15,
 			repeat: 0
 		});
+<<<<<<< HEAD
 
 		   /* ----- PLAYER ----- */
+=======
+>>>>>>> devSam
 		scene.anims.create({
 			key: "run",
 			frames: scene.anims.generateFrameNumbers("run", {start:0, end:7}),
@@ -48,40 +52,38 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 	}
 
-	create(scene){
-		scene.physics.add.collider(this, scene.platform1);
-	}
+
 	/* ---------- MOVEMENT FUNCTIONS ---------- */
-	move() {
+	move(scene) {
 		var cursors = this.scene.input.keyboard.createCursorKeys();
-		var speed = 5;
 
 		// Give the player left and right movement
 		if (cursors.left.isDown) {
-			this.x -= speed;
+			this.body.setVelocityX(-250);
 			this.flipX = true;
-			if(this.body.onFloor()){
+			if (this.body.blocked.down || scene.physics.add.overlap(this.body, this.platform)) {
 				this.play("run",true);
 			}
 		} else if (cursors.right.isDown) {
-			this.x += speed;
+			this.body.setVelocityX(250);
 			this.flipX = false
-			if(this.body.onFloor()){
+			if (this.body.blocked.down || scene.physics.add.overlap(this.body, this.platform)) {
 				this.play("run",true);
 			}
 		} else {
-			if(this.body.onFloor())
-			this.play("idle",true);
+			this.body.setVelocityX(0);
+			if (this.body.blocked.down || scene.physics.add.overlap(this.body, this.platform)) {
+				this.play("idle",true);
+			}
 		}
 
 		// Give the player jumping movement
-		if (cursors.up.isDown && this.body.onFloor() ||
-		 		cursors.up.isDown && this.ON_PLATFORM){
+		if (cursors.up.isDown && (this.body.blocked.down || scene.jumpTimer > 40)) {
 			this.body.y -= 20;
+			scene.jumpTimer = 0;
 			this.body.setVelocityY(-500)
 			this.body.setAccelerationY(1300);
 			this.play("jumpPlayer",true);
-			this.ON_PLATFORM = false
 		}
 	}
 
@@ -104,13 +106,21 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 			/* ----- EARTH ----- */
 			case 'earth':
-				if (scene.spellActive['earth'] === true) {
-					this.platform.destroy();
-					scene.spellActive['earth'] = false;
+				if (this.body.blocked.down) {
+					if (scene.spellActive['earth'] === true) {
+						this.platform.body.setVelocityY(250);
+						scene.spellActive['earth'] = false;
+						setTimeout(() => {this.platform.destroy}, 700);
+						setTimeout(() => {
+							this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.y+100, 'platform'));
+							scene.spellActive['earth'] = true;
+							this.platform.raise(scene, this)}, 600);
+					} else {
+						this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.y+90, 'platform'));
+						scene.spellActive['earth'] = true;
+						this.platform.raise(scene, this);
+					}
 				}
-				this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.y+90, 'platform'));
-				scene.spellActive['earth'] = true;
-				this.platform.raise(scene, this)
 				break;
 
 
@@ -134,7 +144,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 				scene.spellActive['air'] = true;
 				this.airWave.shoot(direction);
 				break;
-		 }
+		}
 
 
 	}
