@@ -25,6 +25,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 			frameRate: 15,
 			repeat: 0
 		});
+
 		   /* ----- PLAYER ----- */
 		scene.anims.create({
 			key: "run",

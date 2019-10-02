@@ -1,3 +1,5 @@
+import Platform from './Platform.js'
+
 export default class Interactable extends Phaser.GameObjects.Sprite {
 
 	constructor(scene, x, y, key) {
@@ -9,12 +11,11 @@ export default class Interactable extends Phaser.GameObjects.Sprite {
 		this.ON_PLATFORM = true;
 
 		scene.physics.world.enableBody(this, 0);
-		scene.physics.add.collider(this, scene.layer);
-    	this.body.immovable = true
+
+    this.body.immovable = true;
 		this.body.setGravity(0, 600);
 		this.body.setCollideWorldBounds(true);
 		this.setScale(2);
-
 
 	    scene.anims.create({
 			key: "flipRight",
@@ -24,8 +25,14 @@ export default class Interactable extends Phaser.GameObjects.Sprite {
 			});
 
 	}
-	
-  flip(){
+
+
+  flip(scene){
+		var eKey = scene.input.keyboard.addKey("E");
+		if(eKey.isDown){
+				this.play("flipRight");
+
+		}
 
   }
 
@@ -34,6 +41,7 @@ export default class Interactable extends Phaser.GameObjects.Sprite {
   }
 
   interactSprite(spriteToMove, action){
+
 
   }
 

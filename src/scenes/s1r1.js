@@ -125,6 +125,7 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ----- CREATE LEVER ------------------ */
 		this.lever = new Interactable(this, 250,500, 'lever')
+		this.physics.add.collider(this.lever, this.layer);
 
 
 
@@ -162,6 +163,7 @@ export default class s1r1 extends Phaser.Scene {
 		}
 
 		/*----------Platform Mechanics----*/
+		this.physics.overlap(this.lever, this.player,this.lever.flip(this));
 
 
 
