@@ -21,9 +21,9 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 			repeat: 0
 		});
 
-		/* ---------- MOVEMENT FUNCTIONS ---------- */
-
 	}
+
+	/* ---------- MOVEMENT FUNCTIONS ---------- */
 	move(player) {
 		if(player.x < this.body.x){
 		this.body.x -= .5;
@@ -37,8 +37,9 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
 		}
 	}
+	
 		/* ---------- COLLISION FUNCTIONS ---------- */
 	resetLevel(){
-		scene.RESET_LEVEL = true;
+		scene.resetLevel = true;
 	}
 }

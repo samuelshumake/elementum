@@ -56,23 +56,24 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		if (cursors.left.isDown) {
 			this.body.setVelocityX(-250);
 			this.flipX = true;
-			if(this.body.onFloor()){
+			if (this.body.blocked.down || scene.physics.add.overlap(this.body, this.platform)) {
 				this.play("run",true);
 			}
 		} else if (cursors.right.isDown) {
 			this.body.setVelocityX(250);
 			this.flipX = false
-			if(this.body.onFloor()){
+			if (this.body.blocked.down || scene.physics.add.overlap(this.body, this.platform)) {
 				this.play("run",true);
 			}
 		} else {
 			this.body.setVelocityX(0);
-			if(this.body.onFloor())
-			this.play("idle",true);
+			if (this.body.blocked.down || scene.physics.add.overlap(this.body, this.platform)) {
+				this.play("idle",true);
+			}
 		}
 
 		// Give the player jumping movement
-		if (cursors.up.isDown && scene.jumpTimer > 40) {
+		if (cursors.up.isDown && (this.body.blocked.down || scene.jumpTimer > 40)) {
 			this.body.y -= 20;
 			scene.jumpTimer = 0;
 			this.body.setVelocityY(-500)
@@ -99,21 +100,23 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 
 			/* ----- EARTH ----- */
-			case 'earth':							// THINK ABOUT CALLBACK OR ASYNC FUNCTIONS
-				if (scene.spellActive['earth'] === true) {
-					this.platform.body.setVelocityY(200);
-					scene.spellActive['earth'] = false;
-					setTimeout(() => {this.platform.destroy}, 750);
-					this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.y+90, 'platform'));
-					scene.spellActive['earth'] = true;
-					this.platform.raise(scene, this);
-					break;
-				} else {
-					this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.y+90, 'platform'));
-					scene.spellActive['earth'] = true;
-					this.platform.raise(scene, this);
-					break;
+			case 'earth':
+				if (this.body.blocked.down) {
+					if (scene.spellActive['earth'] === true) {
+						this.platform.body.setVelocityY(250);
+						scene.spellActive['earth'] = false;
+						setTimeout(() => {this.platform.destroy}, 700);
+						setTimeout(() => {
+							this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.y+100, 'platform'));
+							scene.spellActive['earth'] = true;
+							this.platform.raise(scene, this)}, 600);
+					} else {
+						this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.y+90, 'platform'));
+						scene.spellActive['earth'] = true;
+						this.platform.raise(scene, this);
+					}
 				}
+				break;
 
 
 			/* ----- WATER ----- */

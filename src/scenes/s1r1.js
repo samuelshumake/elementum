@@ -7,9 +7,7 @@ import Platform from '../sprites/Platform.js';
 import Interactable from '../sprites/Interactable.js';
 export default class s1r1 extends Phaser.Scene {
 	constructor () {
-
 		super('s1r1');
-
 	}
 
 
@@ -72,9 +70,9 @@ export default class s1r1 extends Phaser.Scene {
 
 
 		/* ---------- GLOBAL VARIABLES --------- */
-		this.RESET_LEVEL = false
-		var gameWidth = this.cameras.main.gameWidth;
-		var gameHeight = this.cameras.main.gameHeight;
+		this.resetLevel = false
+		this.gameWidth = this.cameras.main.gameWidth;
+		this.gameHeight = this.cameras.main.gameHeight;
 
 
 		// Array that keeps track of if a spell is active
@@ -112,13 +110,13 @@ export default class s1r1 extends Phaser.Scene {
 
 		// Initializes jump cooldown timer
 		this.jumpTimer = 100;
-
+		console.log(this.player);
 
 		/* ---------- CREATES ENEMIES ---------- */
-		// this.enemyGroup = [];
-		// for (let i = 0; i < 4; i++) {
-		// 	this.enemyGroup.push(new Enemy(this, 150 * i + 150, 500, 'slimeAni'));
-		// }
+		this.enemyGroup = [];
+		for (let i = 0; i < 4; i++) {
+			this.enemyGroup.push(new Enemy(this, 150 * i + 150, 500, 'slimeAni'));
+		 }
 
 
 		/* ----- CREATE PLATFORM SPRITES ------- */
@@ -133,6 +131,10 @@ export default class s1r1 extends Phaser.Scene {
 
 
 	update (time, delta) {
+		if (this.resetLevel) {
+			this.scene.start('s1r1')
+		}
+
 		// Increments the spell cooldown timer
 		this.spellTimer++;
 		this.jumpTimer++;
@@ -140,31 +142,20 @@ export default class s1r1 extends Phaser.Scene {
 		/* ---------- POSITION DEBUGGER ---------- */
 		this.posDebug.setText(`Position: ${this.player.x-17}, ${-1*(this.player.y-568).toFixed(0)}`);
 
-
 		/* ---------- MOVES PLAYER ---------- */
-		this.player.move(this); // See: Player.js
+		this.player.move(this);
 
 		/*----------- Enemy AI -------------- */
 		for(var x in this.enemyGroup){
 			this.enemyGroup[x].move(this.player);
 		}
 
-		/* ----------- SPIKES ----------- */
-		if (this.player.y >= 620 || (this.player.y > 550 && this.player.x > 550)) {
-			console.log("dead");
-			this.scene.start("s1r1");
-			return;
-		};
-		/* ----------- RESET SCENE -------*/
+		/* ----------- PLAYER KILLERS ----------- */
+		this.physics.overlap(this.player, this.spikes, () => this.resetLevel = true);
+		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
 
-		// if (this.physics.overlap(Object.values(this.enemyGroup), this.player)){
-		// 	console.log("restart");
-		// 	this.scene.start("s1r1");
-		// 	return;
-		// }
 
-		/*----------Platform Mechanics----*/
-
+		/*---------- PLATFORM MECHANICS ----*/
 
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
@@ -209,7 +200,6 @@ export default class s1r1 extends Phaser.Scene {
 			}
 		}
 
-
 		/* ---------- CASTING SPELLS ---------- */
 		// Keys for shooting
 		this.switchFire = this.input.keyboard.addKey('one');
@@ -235,14 +225,12 @@ export default class s1r1 extends Phaser.Scene {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
 	 	}
 
-		this.physics.add.overlap(this.player, this.spikes, () => {this.scene.restart()});
-
+		// Checks if player hits spikes
+		this.physics.add.overlap(this.player, this.spikes, () => {this.resetLevel = true});
 
     }	// ----- END OF UPDATE ----- //
 
 }	// ----- END OF PHASER SCENE ----- //
-
-
 
 
 function getClosestEnemy(spell, enemyGroup) {

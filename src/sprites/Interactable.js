@@ -6,8 +6,6 @@ export default class Interactable extends Phaser.GameObjects.Sprite {
 		scene.sys.displayList.add(this);
 
 		/* ------CONSTANTS AND VARIBLES------- */
-		this.ON_PLATFORM = true;
-
 		scene.physics.world.enableBody(this, 0);
 		scene.physics.add.collider(this, scene.layer);
     	this.body.immovable = true
@@ -24,7 +22,7 @@ export default class Interactable extends Phaser.GameObjects.Sprite {
 			});
 
 	}
-	
+
   flip(){
 
   }

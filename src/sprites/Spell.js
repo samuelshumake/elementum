@@ -18,8 +18,6 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 
 	}
 
-	// TODO: Raising earth platform isn't consistent, plus you can cheese it
-	//		 by continously casting the spell to go to the top of the screen
 	raise(scene, player) {
 		this.setScale(1.8, 3)
 		scene.physics.add.collider(player, this);
