@@ -100,9 +100,9 @@ export default class s1r1 extends Phaser.Scene {
 		this.cameras.main.setBackgroundColor(0xb0d6c4);
 
 		// Tileset art image taken from https://opengameart.org/content/platform-tileset-nature
-	  const map = this.make.tilemap({key: "map"});
-	  const tileset = map.addTilesetImage("tileset", "tiles");
-	  this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
+	  	const map = this.make.tilemap({key: "map"});
+	  	const tileset = map.addTilesetImage("tileset", "tiles");
+	  	this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
 		this.spikes = map.createStaticLayer('spikes', tileset, 0, 630);
 
@@ -136,7 +136,7 @@ export default class s1r1 extends Phaser.Scene {
 		this.spellTimer++;
 
 		/* ---------- POSITION DEBUGGER ---------- */
-		this.posDebug.setText(`Position: ${this.player.x-32}, ${-1*(this.player.y-568).toFixed(0)}`);
+		this.posDebug.setText(`Position: ${this.player.x-17}, ${-1*(this.player.y-568).toFixed(0)}`);
 
 
 		/* ---------- MOVES PLAYER ---------- */
