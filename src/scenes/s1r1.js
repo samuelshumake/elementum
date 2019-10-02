@@ -71,10 +71,6 @@ export default class s1r1 extends Phaser.Scene {
 	    ChangeScene.addSceneEventListeners(this);
 
 
-		// Initializes spell cooldown timer
-		this.spellTimer = 0;
-
-
 		/* ---------- GLOBAL VARIABLES --------- */
 		this.RESET_LEVEL = false
 		var gameWidth = this.cameras.main.gameWidth;
@@ -104,20 +100,25 @@ export default class s1r1 extends Phaser.Scene {
 	  	const tileset = map.addTilesetImage("tileset", "tiles");
 	  	this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
-		this.spikes = map.createStaticLayer('spikes', tileset, 0, 630);
+		this.spikes = map.createStaticLayer('Spikes', tileset, 0, 630);
 
 
 
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 30, 550, 'player');
-		this.player.create(this);
+
+		// Initializes spell cooldown timer
+		this.spellTimer = 100;
+
+		// Initializes jump cooldown timer
+		this.jumpTimer = 100;
 
 
 		/* ---------- CREATES ENEMIES ---------- */
-		this.enemyGroup = [];
-		for (let i = 0; i < 4; i++) {
-			this.enemyGroup.push(new Enemy(this, 150 * i + 150, 500, 'slimeAni'));
-		}
+		// this.enemyGroup = [];
+		// for (let i = 0; i < 4; i++) {
+		// 	this.enemyGroup.push(new Enemy(this, 150 * i + 150, 500, 'slimeAni'));
+		// }
 
 
 		/* ----- CREATE PLATFORM SPRITES ------- */
@@ -134,13 +135,14 @@ export default class s1r1 extends Phaser.Scene {
 	update (time, delta) {
 		// Increments the spell cooldown timer
 		this.spellTimer++;
+		this.jumpTimer++;
 
 		/* ---------- POSITION DEBUGGER ---------- */
 		this.posDebug.setText(`Position: ${this.player.x-17}, ${-1*(this.player.y-568).toFixed(0)}`);
 
 
 		/* ---------- MOVES PLAYER ---------- */
-		this.player.move(); // See: Player.js
+		this.player.move(this); // See: Player.js
 
 		/*----------- Enemy AI -------------- */
 		for(var x in this.enemyGroup){
@@ -155,11 +157,11 @@ export default class s1r1 extends Phaser.Scene {
 		};
 		/* ----------- RESET SCENE -------*/
 
-		if (this.physics.overlap(Object.values(this.enemyGroup), this.player)){
-			console.log("restart");
-			this.scene.start("s1r1");
-			return;
-		}
+		// if (this.physics.overlap(Object.values(this.enemyGroup), this.player)){
+		// 	console.log("restart");
+		// 	this.scene.start("s1r1");
+		// 	return;
+		// }
 
 		/*----------Platform Mechanics----*/
 

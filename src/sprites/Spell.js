@@ -22,14 +22,9 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 	//		 by continously casting the spell to go to the top of the screen
 	raise(scene, player) {
 		this.setScale(1.8, 3)
-		scene.physics.add.collider(player, this)
-
-		scene.tweens.add({
-			targets: this,
-			y: player.y - 30,
-			ease: 'Linear',
-			duration: 900
-		});
+		scene.physics.add.collider(player, this);
+		this.body.setVelocityY(-150);
+		setTimeout(() => {this.body.setVelocityY(0)}, 750)
 	}
 
 	suspend(scene, enemy) {
