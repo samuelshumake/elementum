@@ -25,12 +25,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
 			frameRate: 15,
 			repeat: 0
 		});
-		scene.anims.create({
-			key: "flipLeft",
-			frames: scene.anims.generateFrameNumbers("leverBack", {start:0, end:3}),
-			frameRate: 15,
-			repeat: 0
-		});
 		   /* ----- PLAYER ----- */
 		scene.anims.create({
 			key: "run",

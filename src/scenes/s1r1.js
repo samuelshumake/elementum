@@ -4,9 +4,12 @@ import Player from '../sprites/Player.js';
 import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
+import Interactable from '../sprites/Interactable.js';
 export default class s1r1 extends Phaser.Scene {
 	constructor () {
+
 		super('s1r1');
+
 	}
 
 
@@ -97,9 +100,9 @@ export default class s1r1 extends Phaser.Scene {
 		this.cameras.main.setBackgroundColor(0xb0d6c4);
 
 		// Tileset art image taken from https://opengameart.org/content/platform-tileset-nature
-	    const map = this.make.tilemap({key: "map"});
-	    const tileset = map.addTilesetImage("tileset", "tiles");
-	    this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
+	  const map = this.make.tilemap({key: "map"});
+	  const tileset = map.addTilesetImage("tileset", "tiles");
+	  this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
 		this.spikes = map.createStaticLayer('spikes', tileset, 0, 630);
 
@@ -119,6 +122,9 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ----- CREATE PLATFORM SPRITES ------- */
 		this.platform1 = new Platform(this, 500, 500, 'tempPlatform');
+
+		/* ----- CREATE LEVER ------------------ */
+		this.lever = new Interactable(this, 250,500, 'lever')
 
 
 
@@ -197,6 +203,7 @@ export default class s1r1 extends Phaser.Scene {
 				this.player.airWave.push(this, this.enemyGroup[closestInd], this.player.direction);
 				this.player.airWave.destroy();
 				this.spellActive['air'] = false;
+
 			}
 		}
 

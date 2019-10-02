@@ -3,12 +3,13 @@ export default class Platform extends Phaser.GameObjects.Sprite {
 		super(scene, x, y, key);
     scene.sys.updateList.add(this);
 		scene.sys.displayList.add(this);
-
++
 		scene.physics.world.enableBody(this, 0);
     scene.physics.add.collider(this, scene.player);
 
     this.body.immovable = true
 		this.setScale(1);
+
 
     scene.anims.create({
       key: "platformR",
@@ -36,15 +37,34 @@ export default class Platform extends Phaser.GameObjects.Sprite {
     });
 
   }
-  moveRight(){
+	action(key, distance){
+		if(key == 0){
+			moveRight(distance);
+
+		}if(key == 1){
+			moveLeft(distance);
+
+		}if(key == 2){
+			moveUp(distance);
+
+		}if(key == 3){
+			moveDown(distance);
+		}
+
+	}
+  moveRight(distance){
+
 
   }
+
   moveLeft(){
 
   }
+
   moveUp(){
 
   }
+
   moveDown(){
 
   }
