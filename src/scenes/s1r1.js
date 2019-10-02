@@ -110,7 +110,6 @@ export default class s1r1 extends Phaser.Scene {
 
 		// Initializes jump cooldown timer
 		this.jumpTimer = 100;
-		console.log(this.player);
 
 		/* ---------- CREATES ENEMIES ---------- */
 		this.enemyGroup = [];

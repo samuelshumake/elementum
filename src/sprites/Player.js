@@ -6,8 +6,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		scene.sys.updateList.add(this);
 		scene.sys.displayList.add(this);
 
-		/* ------CONSTANTS AND VARIBLES------- */
 
+		/* ------CONSTANTS AND VARIBLES------- */
 		// Sets players physical body
 		scene.physics.world.enableBody(this, 0);
 		scene.physics.add.collider(this, scene.layer);

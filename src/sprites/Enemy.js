@@ -25,21 +25,15 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
 	/* ---------- MOVEMENT FUNCTIONS ---------- */
 	move(player) {
-		if(player.x < this.body.x){
-		this.body.x -= .5;
-		this.flipX = true;
-		this.play("jump",true);
-		}
-		else{
-			this.body.x += .5;
+		if (player.x < this.body.x) {
+			this.body.setVelocityX(-20);
+			this.flipX = true;
+			this.play("jump",true);
+		} else {
+			this.body.setVelocityX(20);
 			this.flipX = false;
 			this.play("jump",true);
-
 		}
 	}
-	
-		/* ---------- COLLISION FUNCTIONS ---------- */
-	resetLevel(){
-		scene.resetLevel = true;
-	}
+
 }
