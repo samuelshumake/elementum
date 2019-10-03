@@ -125,7 +125,6 @@ export default class s1r1 extends Phaser.Scene {
 		this.lever = new Interactable(this, 250,500, 'lever')
 
 
-
 	}	// ----- END OF CREATE ----- //
 
 
@@ -219,7 +218,7 @@ export default class s1r1 extends Phaser.Scene {
 		}
 
 		// Casts spell if cooldown timer has been met
-		if (this.castSpell.isDown && this.spellTimer > 50) {
+		if (this.castSpell.isDown && this.spellTimer > 100) {
 			this.spellTimer = 0
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
 	 	}
@@ -238,7 +237,8 @@ function getClosestEnemy(spell, enemyGroup) {
 	var closestEnemy;
 
 	for (let i = 0; i < enemyGroup.length; i++) {
-		if (Math.max(spell.x, enemyGroup[i].x) - Math.min(spell.x, enemyGroup[i].x) < closest) {
+		let dx = spell.x - enemyGroup[i].x
+		if (Math.sqrt(dx * dx) < closest) {
 			closest = Math.max(spell.x, enemyGroup[i].x) - Math.min(spell.x, enemyGroup[i].x)
 			closestEnemy = i
 		}

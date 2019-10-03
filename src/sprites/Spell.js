@@ -25,18 +25,22 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 	}
 
 	suspend(scene, enemy) {
+		enemy.canMove = false;
 		enemy.body.setGravity(0, 0);
+		enemy.body.setVelocityX(0);
 		enemy.body.setVelocityY(-200);
-		setTimeout(() => {enemy.body.setGravity(0, 600)}, 1200);
+		setTimeout(() => {enemy.body.setGravity(0, 600); enemy.canMove = true}, 1200);
 	}
 
 	push(scene, enemy, direction) {
+		enemy.canMove = false;
 		if (direction) {
 			enemy.body.setVelocityX(-150);
 		} else {
 			enemy.body.setVelocityX(150);
 		}
-		setTimeout(() => {enemy.body.setVelocityX(0)}, 1200);
+		setTimeout(() => {enemy.body.setVelocityX(0); enemy.canMove = true}, 1200);
+
 	}
 
 
