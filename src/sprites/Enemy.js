@@ -34,10 +34,10 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 			} else {
 				this.body.setVelocityX(-40)
 			}
-
-
-			this.play("jump",true);
+		} else {
+			// move back and forth
 		}
+		this.play("jump",true);
 		// if (player.x < this.body.x) {
 		// 	this.body.setVelocityX(-20);
 		// 	this.flipX = true;
