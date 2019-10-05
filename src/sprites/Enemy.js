@@ -11,6 +11,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 		this.body.setGravity(0, 600);
 		this.setScale(1);
 
+
 		/* -------------ANIMATION CREATION---------- */
 		scene.anims.create({
 			key: "jump",
@@ -47,19 +48,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 				this.moveTimer = 0;
 			}
 		}
-
-
-
 		this.play("jump",true);
-		// if (player.x < this.body.x) {
-		// 	this.body.setVelocityX(-20);
-		// 	this.flipX = true;
-		// 	this.play("jump",true);
-		// } else {
-		// 	this.body.setVelocityX(20);
-		// 	this.flipX = false;
-		// 	this.play("jump",true);
-		// }
 	}
 
 }

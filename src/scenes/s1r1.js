@@ -140,7 +140,7 @@ export default class s1r1 extends Phaser.Scene {
 		/* ----- CREATE LEVER ------------------ */
 		this.lever = new Interactable(this, 250,500, 'lever');
 
-		// Keys for shooting
+		// Keys for interacting
 		this.switchFire = this.input.keyboard.addKey('one');
 	    this.switchEarth = this.input.keyboard.addKey('two');
 	    this.switchWater = this.input.keyboard.addKey('three');
@@ -223,8 +223,6 @@ export default class s1r1 extends Phaser.Scene {
 		}
 
 		/* ---------- CASTING SPELLS ---------- */
-
-
 		// Switches current spell
 		if (this.switchFire.isDown) {
 			this.player.currentSpell = 'fire';
@@ -246,9 +244,6 @@ export default class s1r1 extends Phaser.Scene {
 			this.lever.flip();
 		}
 
-
-		// Checks if player hits spikes
-		this.physics.add.overlap(this.player, this.spikes, () => {this.resetLevel = true});
 
     }	// ----- END OF UPDATE ----- //
 
