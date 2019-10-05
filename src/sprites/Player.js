@@ -57,18 +57,25 @@ export default class Player extends Phaser.GameObjects.Sprite {
 			this.body.setVelocityX(-250);
 			this.flipX = true;
 			if (this.body.blocked.down || scene.physics.add.overlap(this.body, this.platform)) {
-				this.play("run",true);
+				if (scene.easterEgg === false) {
+					this.play("run",true);
+				}
+
 			}
 		} else if (cursors.right.isDown) {
 			this.body.setVelocityX(250);
 			this.flipX = false
 			if (this.body.blocked.down || scene.physics.add.overlap(this.body, this.platform)) {
-				this.play("run",true);
+				if (scene.easterEgg === false) {
+					this.play("run",true);
+				}
 			}
 		} else {
 			this.body.setVelocityX(0);
 			if (this.body.blocked.down || scene.physics.add.overlap(this.body, this.platform)) {
-				this.play("idle",true);
+				if (scene.easterEgg === false) {
+					this.play("idle",true);
+				}
 			}
 		}
 
@@ -78,7 +85,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 			scene.jumpTimer = 0;
 			this.body.setVelocityY(-500)
 			this.body.setAccelerationY(1300);
-			this.play("jumpPlayer",true);
+			//this.play("jumpPlayer",true);
 		}
 	}
 
@@ -142,6 +149,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		}
 
 
+	}
+
+	changeTexture() {
+		this.setTexture('fire');
 	}
 
 

@@ -25,7 +25,6 @@ export default class Interactable extends Phaser.GameObjects.Sprite {
 	}
 
   flip(scene, object, index){
-	  console.log('yuhhhhhh')
 		if (scene.interact.isDown && !this.body.touching.none) {
 			this.play("flipRight",true)
 			object.action(index);

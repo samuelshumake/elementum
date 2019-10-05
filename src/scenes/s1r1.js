@@ -48,6 +48,10 @@ export default class s1r1 extends Phaser.Scene {
 			frameHeight: 32,
 			frameWidth:	 96
 		});
+		this.load.spritesheet('tank', './assets/spriteSheets/tank.png', {
+			frameHeight: 39,
+			frameWidth: 34,
+		});
 
 
 		/* ---------- LOADS SPRITES FOR SPELLS ---------- */
@@ -131,7 +135,7 @@ export default class s1r1 extends Phaser.Scene {
 		this.enemyGroup = [];
 		for (let i = 0; i < 4; i++) {
 			this.enemyGroup.push(new Enemy(this, 150 * i + 150, 300, 'slimeAni'));
-		 }
+		}
 
 
 		/* ----- CREATE PLATFORM SPRITES ------- */
@@ -143,21 +147,30 @@ export default class s1r1 extends Phaser.Scene {
 
 		// Keys for interacting
 		this.switchFire = this.input.keyboard.addKey('one');
-	  this.switchEarth = this.input.keyboard.addKey('two');
-	  this.switchWater = this.input.keyboard.addKey('three');
-	  this.switchAir = this.input.keyboard.addKey('four');
+		this.switchEarth = this.input.keyboard.addKey('two');
+		this.switchWater = this.input.keyboard.addKey('three');
+		this.switchAir = this.input.keyboard.addKey('four');
 		this.interact = this.input.keyboard.addKey('e');
 		this.castSpell = this.input.keyboard.addKey('space');
 
+		this.input.keyboard.createCombo('TOPRAC');
 
-
-	}	// ----- END OF CREATE ----- //
+		this.easterEgg = false;
+	}// ----- END OF CREATE ----- //
 
 
 	update (time, delta) {
 		if (this.resetLevel) {
 			this.scene.start('s1r1')
 		}
+
+		this.input.keyboard.on('keycombomatch', () => {
+			this.easterEgg = true;
+			this.player.setTexture('tank')
+			this.player.setScale(1.5);
+		});
+
+
 
 		// Increments the spell cooldown timer
 		this.spellTimer++;
@@ -242,7 +255,6 @@ export default class s1r1 extends Phaser.Scene {
 	 	}
 		this.lever.flip(this, this.platform1,0);
 		this.lever2.flip(this, this.platform1,1);
-		//console.log(this.lever.body.touching)
 
     }	// ----- END OF UPDATE ----- //
 
