@@ -44,8 +44,9 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 	}
 
 	raise(scene, player) {
-		this.setScale(1.5, 3)
+		this.setScale(1.5, 0.5)
 		scene.physics.add.collider(player, this);
+		scene.physics.add.collider(this, scene.layer);
 		this.body.setVelocityY(-150);
 		setTimeout(() => {this.body.setVelocityY(0)}, 750)
 	}
