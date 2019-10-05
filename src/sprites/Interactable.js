@@ -8,6 +8,7 @@ export default class Interactable extends Phaser.GameObjects.Sprite {
 		/* ------CONSTANTS AND VARIBLES------- */
 		scene.physics.world.enableBody(this, 0);
 		scene.physics.add.collider(this, scene.layer);
+		scene.physics.add.overlap(this, scene.player);
     	this.body.immovable = true
 		this.body.setGravity(0, 600);
 		this.body.setCollideWorldBounds(true);
@@ -24,7 +25,7 @@ export default class Interactable extends Phaser.GameObjects.Sprite {
 	}
 
   flip(){
-
+	  console.log('yuhhhhhh')
   }
 
   interactTile(objectToMove){

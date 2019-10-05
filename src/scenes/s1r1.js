@@ -138,7 +138,17 @@ export default class s1r1 extends Phaser.Scene {
 		this.platform1 = new Platform(this, 500, 500, 'tempPlatform');
 
 		/* ----- CREATE LEVER ------------------ */
-		this.lever = new Interactable(this, 250,500, 'lever')
+		this.lever = new Interactable(this, 250,500, 'lever');
+
+		// Keys for shooting
+		this.switchFire = this.input.keyboard.addKey('one');
+	    this.switchEarth = this.input.keyboard.addKey('two');
+	    this.switchWater = this.input.keyboard.addKey('three');
+	    this.switchAir = this.input.keyboard.addKey('four');
+		this.interact = this.input.keyboard.addKey('e');
+		this.castSpell = this.input.keyboard.addKey('space');
+
+
 
 	}	// ----- END OF CREATE ----- //
 
@@ -216,12 +226,7 @@ export default class s1r1 extends Phaser.Scene {
 		}
 
 		/* ---------- CASTING SPELLS ---------- */
-		// Keys for shooting
-		this.switchFire = this.input.keyboard.addKey('one');
-	    this.switchEarth = this.input.keyboard.addKey('two');
-	    this.switchWater = this.input.keyboard.addKey('three');
-	    this.switchAir = this.input.keyboard.addKey('four');
-		this.castSpell = this.input.keyboard.addKey('space');
+
 
 		// Switches current spell
 		if (this.switchFire.isDown) {
@@ -239,6 +244,11 @@ export default class s1r1 extends Phaser.Scene {
 			this.spellTimer = 0
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
 	 	}
+
+		if (this.interact.isDown && !this.lever.body.touching.none) {
+			this.lever.flip();
+		}
+		//console.log(this.lever.body.touching)
 
 		// Checks if player hits spikes
 		this.physics.add.overlap(this.player, this.spikes, () => {this.resetLevel = true});
