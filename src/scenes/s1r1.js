@@ -6,6 +6,7 @@ import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
 import Interactable from '../sprites/Interactable.js';
 export default class s1r1 extends Phaser.Scene {
+
 	constructor () {
 		super('s1r1');
 	}
@@ -113,8 +114,22 @@ export default class s1r1 extends Phaser.Scene {
 	  	const map = this.make.tilemap({key: "map"});
 	  	const tileset = map.addTilesetImage("tileset", "tiles");
 	  	this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
-		this.layer.setCollisionByProperty({ collides: true });
-		this.spikes = map.createStaticLayer('Spikes', tileset, 0, 630);
+			this.layer.setCollisionByProperty({ collides: true });
+			this.spikes = map.createStaticLayer('Spikes', tileset, 0, 630);
+			var door = map.createDynamicLayer('Door', tileset);
+			//console.log(door.properties);
+			door.forEachTile(function(tile){
+				console.log(tile.index);
+				tile.destroy();
+			});
+
+
+			const debugGraphics = this.add.graphics().setAlpha(0.75);
+			this.layer.renderDebug(debugGraphics, {
+  		tileColor: null, // Color of non-colliding tiles
+  		collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+  		faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+			});
 
 
 
@@ -150,6 +165,18 @@ export default class s1r1 extends Phaser.Scene {
 		this.castSpell = this.input.keyboard.addKey('space');
 
 
+		/* ----- CREATE SPIKES ----------------- */
+		this.spikes = this.add.group({
+			allowGravity: false,
+			immovable: true
+		});
+		this.spikesArray = []
+		const spikeObjects = map.getObjectLayer('Spikes')['objects'];
+		spikeObjects.forEach(spikeObject => {
+			const spike = this.spikes.create(spikeObject.x, spikeObject.y + 0 - spikeObject.height, 'Spikes').setOrigin(0,0);
+
+		});
+
 
 	}	// ----- END OF CREATE ----- //
 
@@ -157,6 +184,10 @@ export default class s1r1 extends Phaser.Scene {
 	update (time, delta) {
 		if (this.resetLevel) {
 			this.scene.start('s1r1')
+		}
+
+		if (this.nextLevel) {
+			this.scene.start('s1r2')
 		}
 
 		// Increments the spell cooldown timer
@@ -205,9 +236,9 @@ export default class s1r1 extends Phaser.Scene {
 		}
 
 		/* ----------- PLAYER KILLERS ----------- */
-		this.physics.overlap(this.player, this.spikes, () => this.resetLevel = true);
+		//this.physics.overlap(this.player, this.spikes, () => this.resetLevel = true);
 		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
-
+		this.physics.overlap(this.player, this.spike, () => this.resetLevel = true);
 
 		/*---------- PLATFORM MECHANICS ----*/
 
@@ -240,10 +271,40 @@ export default class s1r1 extends Phaser.Scene {
 			this.spellTimer = 0
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
 	 	}
+<<<<<<< HEAD
 		this.lever.flip(this, this.platform1,0);
 		this.lever2.flip(this, this.platform1,1);
 		//console.log(this.lever.body.touching)
+=======
+
+		// Checks if player hits spikes
+		this.physics.add.overlap(this.player, this.spikes, () => {console.log("reset");this.resetLevel = true});
+>>>>>>> devJessica
 
     }	// ----- END OF UPDATE ----- //
 
 }	// ----- END OF PHASER SCENE ----- //
+<<<<<<< HEAD
+=======
+
+function nextLevel() {
+	this.scene.start('s1r2');
+	return false;
+}
+
+function getClosestEnemy(spell, enemyGroup) {
+
+	let closest = 10000;
+	var closestEnemy;
+
+	for (let i = 0; i < enemyGroup.length; i++) {
+		let dx = spell.x - enemyGroup[i].x
+		if (Math.sqrt(dx * dx) < closest) {
+			closest = Math.max(spell.x, enemyGroup[i].x) - Math.min(spell.x, enemyGroup[i].x)
+			closestEnemy = i
+		}
+	}
+
+	return closestEnemy;
+}
+>>>>>>> devJessica
