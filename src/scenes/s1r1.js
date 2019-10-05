@@ -240,17 +240,9 @@ export default class s1r1 extends Phaser.Scene {
 			this.spellTimer = 0
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
 	 	}
-
-<<<<<<< HEAD
 		this.lever.flip(this, this.platform1,0);
 		this.lever2.flip(this, this.platform1,1);
 		//console.log(this.lever.body.touching)
-=======
-		if (this.interact.isDown && !this.lever.body.touching.none) {
-			this.lever.flip();
-		}
->>>>>>> d75c1b90356a3105f9a0c524a2d4987d9703bdb6
-
 
     }	// ----- END OF UPDATE ----- //
 
