@@ -215,9 +215,6 @@ export default class s1r1 extends Phaser.Scene {
 		if (this.spellActive['fire']) {
 			this.player.fireball.deactivate(this, this.enemyGroup);
 		}
-		if (this.spellActive['earth']) {
-			this.player.platform.deactivate(this, this.enemyGroup);
-		}
 		if (this.spellActive['water']) {
 			this.player.bubble.deactivate(this, this.enemyGroup);
 		}
@@ -248,7 +245,7 @@ export default class s1r1 extends Phaser.Scene {
 		if (this.interact.isDown && !this.lever.body.touching.none) {
 			this.lever.flip();
 		}
-		//console.log(this.lever.body.touching)
+
 
 		// Checks if player hits spikes
 		this.physics.add.overlap(this.player, this.spikes, () => {this.resetLevel = true});
