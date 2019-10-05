@@ -77,8 +77,8 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- GLOBAL VARIABLES --------- */
 		this.resetLevel = false
-		this.gameWidth = this.cameras.main.gameWidth;
-		this.gameHeight = this.cameras.main.gameHeight;
+		this.gameWidth = this.cameras.main.width
+		this.gameHeight = this.cameras.main.height
 
 
 		// Array that keeps track of if a spell is active
@@ -126,9 +126,6 @@ export default class s1r1 extends Phaser.Scene {
 
 		// Initializes jump cooldown timer
 		this.jumpTimer = 100;
-
-		this.enemyTimer = 0;
-
 
 		/* ---------- CREATES ENEMIES ---------- */
 		this.enemyGroup = [];
@@ -215,7 +212,7 @@ export default class s1r1 extends Phaser.Scene {
 			this.player.bubble.deactivate(this, this.enemyGroup);
 		}
 		if (this.spellActive['air']) {
-			this.player.airWave.deactivate(this, this.player, this.enemyGroup);
+			this.player.airwave.deactivate(this, this.enemyGroup);
 		}
 
 		/* ---------- CASTING SPELLS ---------- */

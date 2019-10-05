@@ -11,7 +11,6 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 	}
 
 	deactivate(scene, enemyGroup) {
-
 		if (this.x < 0 || this.x > scene.gameWidth) {
 			scene.spellActive[`${this.key}`] = false;
 			this.destroy();
@@ -60,7 +59,6 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 	}
 
 	push(scene, enemy, direction) {
-		console.log(enemy);
 		enemy.canMove = false;
 		if (direction) {
 			enemy.body.setVelocityX(-150);

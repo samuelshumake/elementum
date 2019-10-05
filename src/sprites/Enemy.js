@@ -20,19 +20,13 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 		});
 
 		this.canMove = true;
-		this.moveTimer = Math.floor(Math.random() * 10)
+		this.moveTimer = Math.floor(Math.random() * 100);
 
 	}
 
 	/* ---------- MOVEMENT FUNCTIONS ---------- */
 	move(scene, player) {
 		this.moveTimer++;
-
-		if (this.body.blocked.down === false) {
-			this.canMove = false;
-		} else {
-			this.canMove = true;
-		}
 
 
 		var dx = Math.sqrt(Math.pow(player.x - this.body.x, 2));

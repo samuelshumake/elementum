@@ -135,10 +135,17 @@ export default class Player extends Phaser.GameObjects.Sprite {
 				if (scene.spellActive['air'] === true) {
 					return;
 				}
-				this.airWave = scene.physics.add.existing(new Spell(scene, this.x + 40, this.y, 'air'));
+				this.airwave = scene.physics.add.existing(new Spell(scene, this.x + 40, this.y, 'air'));
 				scene.spellActive['air'] = true;
-				this.airWave.shoot(direction);
+				this.airwave.shoot(direction);
 				break;
+				// if (scene.spellActive['air'] === true) {
+				// 	return;
+				// }
+				// this.airWave = scene.physics.add.existing(new Spell(scene, this.x + 40, this.y, 'air'));
+				// scene.spellActive['air'] = true;
+				// this.airWave.shoot(direction);
+				// break;
 		}
 
 
