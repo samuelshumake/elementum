@@ -93,7 +93,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 				if (scene.spellActive['fire'] === true) {
 					return;
 				}
-				this.fireball = scene.physics.add.existing(new Spell(scene, this.x + 40, this.y, 'fireball'));
+				this.fireball = scene.physics.add.existing(new Spell(scene, this.x + 40, this.y, 'fire'));
 				scene.spellActive['fire'] = true;
 				this.fireball.shoot(direction);
 				break;
@@ -107,11 +107,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
 						scene.spellActive['earth'] = false;
 						setTimeout(() => {this.platform.destroy}, 700);
 						setTimeout(() => {
-							this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.y+100, 'platform'));
+							this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.y+100, 'earth'));
 							scene.spellActive['earth'] = true;
 							this.platform.raise(scene, this)}, 600);
 					} else {
-						this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.y+90, 'platform'));
+						this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.y+90, 'earth'));
 						scene.spellActive['earth'] = true;
 						this.platform.raise(scene, this);
 					}
@@ -124,7 +124,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 				if (scene.spellActive['water'] === true) {
 					return;
 				}
-				this.bubble = scene.physics.add.existing(new Spell(scene, this.x + 40, this.y, 'bubble'));
+				this.bubble = scene.physics.add.existing(new Spell(scene, this.x + 40, this.y, 'water'));
 				scene.spellActive['water'] = true;
 				this.bubble.shoot(direction);
 				break;
@@ -135,7 +135,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 				if (scene.spellActive['air'] === true) {
 					return;
 				}
-				this.airWave = scene.physics.add.existing(new Spell(scene, this.x + 40, this.y, 'airwave'));
+				this.airWave = scene.physics.add.existing(new Spell(scene, this.x + 40, this.y, 'air'));
 				scene.spellActive['air'] = true;
 				this.airWave.shoot(direction);
 				break;

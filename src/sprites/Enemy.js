@@ -18,25 +18,44 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 			frameRate: 15,
 			repeat: 0
 		});
+
 		this.canMove = true;
+		this.moveTimer = Math.floor(Math.random() * 10)
 
 	}
 
 	/* ---------- MOVEMENT FUNCTIONS ---------- */
-	move(player) {
+	move(scene, player) {
+		this.moveTimer++;
+
+		if (this.body.blocked.down === false) {
+			this.canMove = false;
+		} else {
+			this.canMove = true;
+		}
+
 
 		var dx = Math.sqrt(Math.pow(player.x - this.body.x, 2));
 		var dy = Math.sqrt(Math.pow(player.y - this.body.y, 2));
 
-		if (dx <= 200 && dy < 50 && this.canMove) {
+		if (this.canMove && dx <= 200 && dy < 50) {
 			if (this.body.x < player.x) {
 				this.body.setVelocityX(40)
 			} else {
 				this.body.setVelocityX(-40)
 			}
 		} else {
-			// move back and forth
+			if (this.canMove && this.moveTimer < 250) {
+				this.body.setVelocityX(20);
+			} else if (this.canMove && this.moveTimer < 500) {
+				this.body.setVelocityX(-20);
+			} else {
+				this.moveTimer = 0;
+			}
 		}
+
+
+
 		this.play("jump",true);
 		// if (player.x < this.body.x) {
 		// 	this.body.setVelocityX(-20);

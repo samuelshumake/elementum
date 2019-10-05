@@ -51,11 +51,11 @@ export default class s1r1 extends Phaser.Scene {
 
 
 		/* ---------- LOADS SPRITES FOR SPELLS ---------- */
-		this.load.image('fireball', './assets/sprites/fireball.png');
+		this.load.image('fire', './assets/sprites/fireball.png');
 		this.load.image('slime', './assets/sprites/slime.png');
-		this.load.image('bubble', './assets/sprites/bubble.png')
-		this.load.image('platform', './assets/sprites/ground2.png');
-		this.load.image('airwave', './assets/sprites/airwave.png');
+		this.load.image('water', './assets/sprites/bubble.png')
+		this.load.image('earth', './assets/sprites/ground2.png');
+		this.load.image('air', './assets/sprites/airwave.png');
 
 		/* ---------- LOADS SPRITES FOR SPELL FRAMES ---------- */
 		this.load.image('airFrame', './assets/sprites/airFrame.png');
@@ -127,10 +127,13 @@ export default class s1r1 extends Phaser.Scene {
 		// Initializes jump cooldown timer
 		this.jumpTimer = 100;
 
+		this.enemyTimer = 0;
+
+
 		/* ---------- CREATES ENEMIES ---------- */
 		this.enemyGroup = [];
 		for (let i = 0; i < 4; i++) {
-			this.enemyGroup.push(new Enemy(this, 150 * i + 150, 500, 'slimeAni'));
+			this.enemyGroup.push(new Enemy(this, 150 * i + 150, 300, 'slimeAni'));
 		 }
 
 
@@ -139,7 +142,6 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ----- CREATE LEVER ------------------ */
 		this.lever = new Interactable(this, 250,500, 'lever')
-
 
 	}	// ----- END OF CREATE ----- //
 
@@ -152,6 +154,7 @@ export default class s1r1 extends Phaser.Scene {
 		// Increments the spell cooldown timer
 		this.spellTimer++;
 		this.jumpTimer++;
+
 
 		/* ---------- POSITION DEBUGGER ---------- */
 		this.posDebug.setText(`Position: ${this.player.x-17}, ${-1*(this.player.y-568).toFixed(0)}`);
@@ -187,9 +190,10 @@ export default class s1r1 extends Phaser.Scene {
 		/* ---------- MOVES PLAYER ---------- */
 		this.player.move(this);
 
+
 		/*----------- Enemy AI -------------- */
 		for(var x in this.enemyGroup){
-			this.enemyGroup[x].move(this.player);
+			this.enemyGroup[x].move(this, this.player);
 		}
 
 		/* ----------- PLAYER KILLERS ----------- */
@@ -202,44 +206,16 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
 		if (this.spellActive['fire']) {
-			if (this.player.fireball.x < 0 || this.player.fireball.x > this.cameras.main.width) {
-				this.player.fireball.destroy();
-				this.spellActive['fire'] = false;
-			}
-			if (this.physics.overlap(Object.values(this.enemyGroup), this.player.fireball)) {
-				var closestInd = getClosestEnemy(this.player.fireball, this.enemyGroup);
-				this.player.fireball.destroy()
-				this.spellActive['fire'] = false;
-				this.enemyGroup[closestInd].destroy();
-				this.enemyGroup.splice(closestInd,1);
-			}
+			this.player.fireball.deactivate(this, this.enemyGroup);
 		}
-
+		if (this.spellActive['earth']) {
+			this.player.platform.deactivate(this, this.enemyGroup);
+		}
 		if (this.spellActive['water']) {
-			if (this.player.bubble.x < 0 || this.player.bubble.x > this.cameras.main.width) {
-				this.player.bubble.destroy();
-				this.spellActive['water'] = false;
-			}
-			if (this.physics.overlap(Object.values(this.enemyGroup), this.player.bubble)) {
-				var closestInd = getClosestEnemy(this.player.bubble, this.enemyGroup);
-				this.player.bubble.suspend(this, this.enemyGroup[closestInd])
-				this.player.bubble.destroy();
-				this.spellActive['water'] = false;
-			}
+			this.player.bubble.deactivate(this, this.enemyGroup);
 		}
-
 		if (this.spellActive['air']) {
-			if (this.player.airWave.x < 0 || this.player.airWave.x > this.cameras.main.width) {
-				this.player.airWave.destroy();
-				this.spellActive['air'] = false;
-			}
-			if (this.physics.overlap(Object.values(this.enemyGroup), this.player.airWave)) {
-				var closestInd = getClosestEnemy(this.player.airWave, this.enemyGroup);
-				this.player.airWave.push(this, this.enemyGroup[closestInd], this.player.direction);
-				this.player.airWave.destroy();
-				this.spellActive['air'] = false;
-
-			}
+			this.player.airWave.deactivate(this, this.player, this.enemyGroup);
 		}
 
 		/* ---------- CASTING SPELLS ---------- */
@@ -273,20 +249,3 @@ export default class s1r1 extends Phaser.Scene {
     }	// ----- END OF UPDATE ----- //
 
 }	// ----- END OF PHASER SCENE ----- //
-
-
-function getClosestEnemy(spell, enemyGroup) {
-
-	let closest = 10000;
-	var closestEnemy;
-
-	for (let i = 0; i < enemyGroup.length; i++) {
-		let dx = spell.x - enemyGroup[i].x
-		if (Math.sqrt(dx * dx) < closest) {
-			closest = Math.max(spell.x, enemyGroup[i].x) - Math.min(spell.x, enemyGroup[i].x)
-			closestEnemy = i
-		}
-	}
-
-	return closestEnemy;
-}
