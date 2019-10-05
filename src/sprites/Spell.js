@@ -5,6 +5,7 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		scene.sys.displayList.add(this);
 
 		scene.physics.world.enableBody(this, 0);
+		scene.physics.add.collider(this, scene.layer)
 		this.body.setImmovable(true);
 
 		this.key = key;
@@ -31,6 +32,9 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 					break;
 			}
 
+		} else if (this.body.position.x === this.body.prev.x) {
+			scene.spellActive[`${this.key}`] = false;
+			this.destroy();
 		}
 	}
 
@@ -44,7 +48,7 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 	}
 
 	raise(scene, player) {
-		this.setScale(1.5, 3)
+		this.setScale(1.5, 0.5)
 		scene.physics.add.collider(player, this);
 		this.body.setVelocityY(-150);
 		setTimeout(() => {this.body.setVelocityY(0)}, 750)

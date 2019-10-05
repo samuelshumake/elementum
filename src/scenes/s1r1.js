@@ -141,7 +141,7 @@ export default class s1r1 extends Phaser.Scene {
 		this.lever = new Interactable(this, 250,500, 'lever');
 		this.lever2 = new Interactable(this, 350,400, 'lever');
 
-		// Keys for shooting
+		// Keys for interacting
 		this.switchFire = this.input.keyboard.addKey('one');
 	  this.switchEarth = this.input.keyboard.addKey('two');
 	  this.switchWater = this.input.keyboard.addKey('three');
@@ -216,9 +216,6 @@ export default class s1r1 extends Phaser.Scene {
 		if (this.spellActive['fire']) {
 			this.player.fireball.deactivate(this, this.enemyGroup);
 		}
-		if (this.spellActive['earth']) {
-			this.player.platform.deactivate(this, this.enemyGroup);
-		}
 		if (this.spellActive['water']) {
 			this.player.bubble.deactivate(this, this.enemyGroup);
 		}
@@ -227,8 +224,6 @@ export default class s1r1 extends Phaser.Scene {
 		}
 
 		/* ---------- CASTING SPELLS ---------- */
-
-
 		// Switches current spell
 		if (this.switchFire.isDown) {
 			this.player.currentSpell = 'fire';
@@ -246,12 +241,16 @@ export default class s1r1 extends Phaser.Scene {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
 	 	}
 
+<<<<<<< HEAD
 		this.lever.flip(this, this.platform1,0);
 		this.lever2.flip(this, this.platform1,1);
 		//console.log(this.lever.body.touching)
+=======
+		if (this.interact.isDown && !this.lever.body.touching.none) {
+			this.lever.flip();
+		}
+>>>>>>> d75c1b90356a3105f9a0c524a2d4987d9703bdb6
 
-		// Checks if player hits spikes
-		this.physics.add.overlap(this.player, this.spikes, () => {this.resetLevel = true});
 
     }	// ----- END OF UPDATE ----- //
 
