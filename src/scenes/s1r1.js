@@ -170,8 +170,10 @@ export default class s1r1 extends Phaser.Scene {
 
 		this.input.keyboard.createCombo('TOPRAC');
 
-<<<<<<< HEAD
+		this.easterEgg = false;
+	// ----- END OF CREATE ----- //
 		/* ----- CREATE SPIKES ----------------- */
+
 		this.spikes = this.add.group({
 			allowGravity: false,
 			immovable: true
@@ -185,10 +187,6 @@ export default class s1r1 extends Phaser.Scene {
 
 
 	}	// ----- END OF CREATE ----- //
-=======
-		this.easterEgg = false;
-	}// ----- END OF CREATE ----- //
->>>>>>> 5cf03097333ab68515bbdc377aafab3bea152fc7
 
 
 	update (time, delta) {
@@ -196,11 +194,6 @@ export default class s1r1 extends Phaser.Scene {
 			this.scene.start('s1r1')
 		}
 
-<<<<<<< HEAD
-		if (this.nextLevel) {
-			this.scene.start('s1r2')
-		}
-=======
 		this.input.keyboard.on('keycombomatch', () => {
 			this.easterEgg = true;
 			this.player.setTexture('tank')
@@ -208,7 +201,9 @@ export default class s1r1 extends Phaser.Scene {
 		});
 
 
->>>>>>> 5cf03097333ab68515bbdc377aafab3bea152fc7
+		if (this.nextLevel) {
+			this.scene.start('s1r2')
+		}
 
 		// Increments the spell cooldown timer
 		this.spellTimer++;
