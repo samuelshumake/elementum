@@ -139,12 +139,13 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ----- CREATE LEVER ------------------ */
 		this.lever = new Interactable(this, 250,500, 'lever');
+		this.lever2 = new Interactable(this, 350,400, 'lever');
 
 		// Keys for shooting
 		this.switchFire = this.input.keyboard.addKey('one');
-	    this.switchEarth = this.input.keyboard.addKey('two');
-	    this.switchWater = this.input.keyboard.addKey('three');
-	    this.switchAir = this.input.keyboard.addKey('four');
+	  this.switchEarth = this.input.keyboard.addKey('two');
+	  this.switchWater = this.input.keyboard.addKey('three');
+	  this.switchAir = this.input.keyboard.addKey('four');
 		this.interact = this.input.keyboard.addKey('e');
 		this.castSpell = this.input.keyboard.addKey('space');
 
@@ -245,9 +246,8 @@ export default class s1r1 extends Phaser.Scene {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
 	 	}
 
-		if (this.interact.isDown && !this.lever.body.touching.none) {
-			this.lever.flip();
-		}
+		this.lever.flip(this, this.platform1,0);
+		this.lever2.flip(this, this.platform1,1);
 		//console.log(this.lever.body.touching)
 
 		// Checks if player hits spikes

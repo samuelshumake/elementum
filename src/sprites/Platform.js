@@ -6,7 +6,6 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
 		scene.physics.world.enableBody(this, 0);
 	    scene.physics.add.collider(this, scene.player);
-
 	    this.body.immovable = true
 		this.setScale(1);
 
@@ -36,21 +35,30 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 	    });
 
   }
+	action(index){
+		if(index == 0){
+			this.moveRight();
+		}
+		else if(index == 1){
+			this.moveLeft();
+			}
+	}
 
-  moveRight(){
+	  moveRight(){
+			this.body.x += 10;
+	  }
 
-  }
+	  moveLeft(){
+			this.body.x -= 10;
+	  }
 
-  moveLeft(){
+	  moveUp(){
 
-  }
-
-  moveUp(){
-
-  }
+	  }
 
   moveDown(){
 
   }
+
 
 }
