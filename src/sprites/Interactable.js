@@ -9,7 +9,7 @@ export default class Interactable extends Phaser.GameObjects.Sprite {
 		scene.physics.world.enableBody(this, 0);
 		scene.physics.add.collider(this, scene.layer);
 		scene.physics.add.overlap(this, scene.player);
-    this.body.immovable = true
+    	this.body.immovable = true
 		this.body.setGravity(0, 600);
 		this.body.setCollideWorldBounds(true);
 		this.setScale(2);
@@ -20,24 +20,24 @@ export default class Interactable extends Phaser.GameObjects.Sprite {
 			frames: scene.anims.generateFrameNumbers("lever", {start:0, end:3}),
 			frameRate: 15,
 			repeat: 0
-			});
+		});
 
 	}
 
-  flip(scene, object, index){
+	flip(scene, object, index) {
 		if (scene.interact.isDown && !this.body.touching.none) {
 			this.play("flipRight",true)
 			object.action(index);
 		}
 
-  }
+	}
 
-  interactTile(objectToMove){
+	interactTile(objectToMove) {
 
-  }
+	}
 
-  interactSprite(spriteToMove, action){
+	interactSprite(spriteToMove, action) {
 
-  }
+	}
 
 }

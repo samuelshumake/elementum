@@ -5,10 +5,10 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		scene.sys.displayList.add(this);
 
 		scene.physics.world.enableBody(this, 0);
-		scene.physics.add.collider(this, scene.layer)
 		this.body.setImmovable(true);
 
 		this.key = key;
+		this.setScale(0.8)
 	}
 
 	deactivate(scene, enemyGroup) {
@@ -32,7 +32,7 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 					break;
 			}
 
-		} else if (this.body.position.x === this.body.prev.x) {
+		} else if (this.body.x > scene.player.x + 400 || this.body.x < scene.player.x - 400) {
 			scene.spellActive[`${this.key}`] = false;
 			this.destroy();
 		}

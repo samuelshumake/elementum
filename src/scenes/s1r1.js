@@ -98,6 +98,7 @@ export default class s1r1 extends Phaser.Scene {
 		/* ---------- STAGE-ROOM DEBUGGER ---------- */
 		this.posDebug = this.add.text(this.cameras.main.width - 175, 0, '');
 		// var srDebug = this.add.text(0, 0, 'Stage 1, Room 1');
+		const debugGraphics = this.add.graphics().setAlpha(0.75);
 
 		/* ---------- CREATES SPELL FRAMES ---------- */
 		this.fireFrame = this.add.sprite(32, 32, 'fireFrame');
@@ -118,23 +119,32 @@ export default class s1r1 extends Phaser.Scene {
 	  	const map = this.make.tilemap({key: "map"});
 	  	const tileset = map.addTilesetImage("tileset", "tiles");
 	  	this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
-			this.layer.setCollisionByProperty({ collides: true });
-			this.spikes = map.createStaticLayer('Spikes', tileset, 0, 630);
-			var door = map.createDynamicLayer('Door', tileset);
-			//console.log(door.properties);
-			door.forEachTile(function(tile){
-				console.log(tile.index);
-				tile.destroy();
-			});
+		this.layer.setCollisionByProperty({ collides: true });
+		this.layer.renderDebug(debugGraphics, {
+	  		tileColor: null, // Color of non-colliding tiles
+	  		collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+	  		faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+		});
 
 
-			const debugGraphics = this.add.graphics().setAlpha(0.75);
-			this.layer.renderDebug(debugGraphics, {
-  		tileColor: null, // Color of non-colliding tiles
-  		collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-  		faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-			});
+		/* ---------- CREATES SPIKES ---------- */
+		this.spikes = map.createStaticLayer('Spikes', tileset, 0, 630);
+		this.spikes = this.add.group({
+			allowGravity: false,
+			immovable: true
+		});
+		this.spikesArray = []
+		const spikeObjects = map.getObjectLayer('Spikes')['objects'];
+		spikeObjects.forEach(spikeObject => {
+			const spike = this.spikes.create(spikeObject.x, spikeObject.y + 0 - spikeObject.height, 'Spikes').setOrigin(0,0);
+		});
 
+		/* ---------- CREATES DOOR ---------- */
+		var door = map.createDynamicLayer('Door', tileset);
+		door.forEachTile(function(tile){
+			console.log(tile.index);
+			tile.destroy();
+		});
 
 
 		/* ---------- CREATES PLAYER ---------- */
@@ -167,40 +177,28 @@ export default class s1r1 extends Phaser.Scene {
 		this.switchAir = this.input.keyboard.addKey('four');
 		this.interact = this.input.keyboard.addKey('e');
 		this.castSpell = this.input.keyboard.addKey('space');
-
 		this.input.keyboard.createCombo('TOPRAC');
 
 		this.easterEgg = false;
-	// ----- END OF CREATE ----- //
-		/* ----- CREATE SPIKES ----------------- */
 
-		this.spikes = this.add.group({
-			allowGravity: false,
-			immovable: true
-		});
-		this.spikesArray = []
-		const spikeObjects = map.getObjectLayer('Spikes')['objects'];
-		spikeObjects.forEach(spikeObject => {
-			const spike = this.spikes.create(spikeObject.x, spikeObject.y + 0 - spikeObject.height, 'Spikes').setOrigin(0,0);
-
-		});
-
-
-	}	// ----- END OF CREATE ----- //
+	}	// ---------- END OF CREATE ---------- //
 
 
 	update (time, delta) {
+
+		/* ---------- RESETS LEVEL ---------- */
 		if (this.resetLevel) {
 			this.scene.start('s1r1')
 		}
 
+		/* ---------- EASTER EGG ---------- */
 		this.input.keyboard.on('keycombomatch', () => {
 			this.easterEgg = true;
 			this.player.setTexture('tank')
 			this.player.setScale(1.5);
 		});
 
-
+		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {
 			this.scene.start('s1r2')
 		}
@@ -212,6 +210,7 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- POSITION DEBUGGER ---------- */
 		this.posDebug.setText(`Position: ${this.player.x-17}, ${-1*(this.player.y-568).toFixed(0)}`);
+
 
 		/* ---------- SPELL FRAME CHECKER ---------- */
 		switch (this.player.currentSpell) {
@@ -241,6 +240,7 @@ export default class s1r1 extends Phaser.Scene {
 				break;
 		}
 
+
 		/* ---------- MOVES PLAYER ---------- */
 		this.player.move(this);
 
@@ -251,11 +251,11 @@ export default class s1r1 extends Phaser.Scene {
 		}
 
 		/* ----------- PLAYER KILLERS ----------- */
-		//this.physics.overlap(this.player, this.spikes, () => this.resetLevel = true);
 		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
-		this.physics.overlap(this.player, this.spike, () => this.resetLevel = true);
 
-		/*---------- PLATFORM MECHANICS ----*/
+		// TODO: DECIDE WHICH WE'RE USING. SPIKE OR SPIKES
+		this.physics.overlap(this.player, this.spike, () => this.resetLevel = true);
+		this.physics.add.overlap(this.player, this.spikes, () => {console.log("reset");this.resetLevel = true});
 
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
@@ -268,6 +268,7 @@ export default class s1r1 extends Phaser.Scene {
 		if (this.spellActive['air']) {
 			this.player.airwave.deactivate(this, this.enemyGroup);
 		}
+
 
 		/* ---------- CASTING SPELLS ---------- */
 		// Switches current spell
@@ -282,13 +283,13 @@ export default class s1r1 extends Phaser.Scene {
 		}
 
 		// Casts spell if cooldown timer has been met
-		if (this.castSpell.isDown && this.spellTimer > 100) {
+		if (this.castSpell.isDown && this.spellTimer > 50 ) {
 			this.spellTimer = 0
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
 	 	}
 
 		// Checks if player hits spikes
-		this.physics.add.overlap(this.player, this.spikes, () => {console.log("reset");this.resetLevel = true});
+
 		this.lever.flip(this, this.platform1,0);
 		this.lever2.flip(this, this.platform1,1);
 
@@ -299,20 +300,4 @@ export default class s1r1 extends Phaser.Scene {
 function nextLevel() {
 	this.scene.start('s1r2');
 	return false;
-}
-
-function getClosestEnemy(spell, enemyGroup) {
-
-	let closest = 10000;
-	var closestEnemy;
-
-	for (let i = 0; i < enemyGroup.length; i++) {
-		let dx = spell.x - enemyGroup[i].x
-		if (Math.sqrt(dx * dx) < closest) {
-			closest = Math.max(spell.x, enemyGroup[i].x) - Math.min(spell.x, enemyGroup[i].x)
-			closestEnemy = i
-		}
-	}
-
-	return closestEnemy;
 }
