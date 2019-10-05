@@ -271,21 +271,16 @@ export default class s1r1 extends Phaser.Scene {
 			this.spellTimer = 0
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
 	 	}
-<<<<<<< HEAD
-		this.lever.flip(this, this.platform1,0);
-		this.lever2.flip(this, this.platform1,1);
-		//console.log(this.lever.body.touching)
-=======
 
 		// Checks if player hits spikes
 		this.physics.add.overlap(this.player, this.spikes, () => {console.log("reset");this.resetLevel = true});
->>>>>>> devJessica
+		this.lever.flip(this, this.platform1,0);
+		this.lever2.flip(this, this.platform1,1);
+		//console.log(this.lever.body.touching)
 
     }	// ----- END OF UPDATE ----- //
 
 }	// ----- END OF PHASER SCENE ----- //
-<<<<<<< HEAD
-=======
 
 function nextLevel() {
 	this.scene.start('s1r2');
@@ -307,4 +302,3 @@ function getClosestEnemy(spell, enemyGroup) {
 
 	return closestEnemy;
 }
->>>>>>> devJessica
