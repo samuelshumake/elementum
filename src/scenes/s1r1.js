@@ -86,7 +86,7 @@ export default class s1r1 extends Phaser.Scene {
 		this.load.image('earthFrame', './assets/sprites/earthFrame.png');
 
 		/* ---------- Load Background -----------------------*/
-		//this.load.image('background', './assets/images/background1.png');
+		this.load.image('background', './assets/images/background1.png');
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 	    this.load.image("tiles", "./assets/map/tileset.png");
