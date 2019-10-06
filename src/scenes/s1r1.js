@@ -68,6 +68,8 @@ export default class s1r1 extends Phaser.Scene {
 		this.load.image('fireFrame', './assets/sprites/fireFrame.png');
 		this.load.image('earthFrame', './assets/sprites/earthFrame.png');
 
+		/* ---------- Load Background -----------------------*/
+		this.load.image('background', './assets/images/background1.png');
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 	    this.load.image("tiles", "./assets/map/tileset.png");
@@ -114,7 +116,7 @@ export default class s1r1 extends Phaser.Scene {
 		/* ---------- CREATES MAP ---------- */
 		// Placeholder background color
 		//this.cameras.main.setBackgroundColor(0xb0d6c4);
-		this.add.image(0,0, 'backgroundimage1.png')
+		this.add.image(600,400, 'background')
 
 		// Tileset art image taken from https://opengameart.org/content/platform-tileset-nature
 	  	const map = this.make.tilemap({key: "map"});
