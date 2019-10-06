@@ -53,14 +53,27 @@ export default class s1r1 extends Phaser.Scene {
 			frameHeight: 39,
 			frameWidth: 34,
 		});
+		this.load.spritesheet('manaBar', './assets/spriteSheets/manaPotion.png', {
+			frameHeight: 64,
+			frameWidth: 64,
+		});
+		this.load.spritesheet('water', './assets/spriteSheets/bubbleAnimation.png', {
+			frameHeight: 32,
+			frameWidth: 32,
+		});
+		this.load.spritesheet('earth', './assets/spriteSheets/earthAnimation.png', {
+			frameHeight: 32,
+			frameWidth: 64,
+		});
+		this.load.spritesheet('fire', './assets/spriteSheets/fireballAnimation.png', {
+			frameHeight: 32,
+			frameWidth: 48,
+		});
+		this.load.spritesheet('air', './assets/spriteSheets/airAnimation.png', {
+			frameHeight: 32,
+			frameWidth: 48,
+		});
 
-
-		/* ---------- LOADS SPRITES FOR SPELLS ---------- */
-		this.load.image('fire', './assets/sprites/fireball.png');
-		this.load.image('slime', './assets/sprites/slime.png');
-		this.load.image('water', './assets/sprites/bubble.png')
-		this.load.image('earth', './assets/sprites/ground2.png');
-		this.load.image('air', './assets/sprites/airwave.png');
 
 		/* ---------- LOADS SPRITES FOR SPELL FRAMES ---------- */
 		this.load.image('airFrame', './assets/sprites/airFrame.png');
@@ -96,19 +109,25 @@ export default class s1r1 extends Phaser.Scene {
 
 
 		/* ---------- STAGE-ROOM DEBUGGER ---------- */
-		this.posDebug = this.add.text(this.cameras.main.width - 175, 0, '');
+		//this.posDebug = this.add.text(this.cameras.main.width - 175, 0, '');
 		// var srDebug = this.add.text(0, 0, 'Stage 1, Room 1');
-		const debugGraphics = this.add.graphics().setAlpha(0.75);
+
+		/* ---------- CREATES MANA BAR ---------- */
+		this.manaBar = this.add.sprite(this.cameras.main.width - 50, 40, 'manaBar', 27);
+
+		this.anims.create({
+			key: "regenMana",
+			frames: this.anims.generateFrameNumbers("manaBar", {start: 0, end: 27}),
+			frameRate: 24,
+		});
+
 
 		/* ---------- CREATES SPELL FRAMES ---------- */
 		this.fireFrame = this.add.sprite(32, 32, 'fireFrame');
 		this.earthFrame = this.add.sprite(95, 32, 'earthFrame');
 		this.bubbleFrame = this.add.sprite(158, 32, 'bubbleFrame');
 		this.airFrame = this.add.sprite(221, 32, 'airFrame');
-		this.fireFrame.setScale(2);
-		this.earthFrame.setScale(2);
-		this.bubbleFrame.setScale(2);
-		this.airFrame.setScale(2);
+
 
 
 		/* ---------- CREATES MAP ---------- */
@@ -120,6 +139,7 @@ export default class s1r1 extends Phaser.Scene {
 	  	const tileset = map.addTilesetImage("tileset", "tiles");
 	  	this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
+		const debugGraphics = this.add.graphics().setAlpha(0.75);
 		this.layer.renderDebug(debugGraphics, {
 	  		tileColor: null, // Color of non-colliding tiles
 	  		collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
@@ -208,10 +228,6 @@ export default class s1r1 extends Phaser.Scene {
 		this.jumpTimer++;
 
 
-		/* ---------- POSITION DEBUGGER ---------- */
-		this.posDebug.setText(`Position: ${this.player.x-17}, ${-1*(this.player.y-568).toFixed(0)}`);
-
-
 		/* ---------- SPELL FRAME CHECKER ---------- */
 		switch (this.player.currentSpell) {
 			case 'fire':
@@ -282,13 +298,14 @@ export default class s1r1 extends Phaser.Scene {
 			this.player.currentSpell = 'air';
 		}
 
+
 		// Casts spell if cooldown timer has been met
-		if (this.castSpell.isDown && this.spellTimer > 50 ) {
-			this.spellTimer = 0
+		if (this.castSpell.isDown && this.spellTimer > 70 ) {
+			this.spellTimer = 0;
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
+			this.manaBar.play('regenMana', true);
 	 	}
 
-		// Checks if player hits spikes
 
 		this.lever.flip(this, this.platform1,0);
 		this.lever2.flip(this, this.platform1,1);
