@@ -113,7 +113,8 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- CREATES MAP ---------- */
 		// Placeholder background color
-		this.cameras.main.setBackgroundColor(0xb0d6c4);
+		//this.cameras.main.setBackgroundColor(0xb0d6c4);
+		this.add.image(0,0, 'backgroundimage1.png')
 
 		// Tileset art image taken from https://opengameart.org/content/platform-tileset-nature
 	  	const map = this.make.tilemap({key: "map"});
