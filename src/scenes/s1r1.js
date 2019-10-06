@@ -33,7 +33,7 @@ export default class s1r1 extends Phaser.Scene {
 			frameHeight: 6,
 			frameWidth: 9
 	    });
-		this.load.spritesheet('run', './assets/spriteSheets/run sprite.png',{
+		this.load.spritesheet('run', './assets/spriteSheets/runPlayer.png',{
 			frameHeight: 39,
 			frameWidth: 34
 	    });
@@ -44,6 +44,10 @@ export default class s1r1 extends Phaser.Scene {
 		this.load.spritesheet('jumpPlayer', './assets/spriteSheets/jumpC.png',{
 			frameHeight: 44,
 			frameWidth:	 34
+		});
+		this.load.spritesheet('walkPlayer', './assets/spriteSheets/walkspritesheet.png',{
+			frameHeight:44,
+			frameWidth: 34
 		});
 		this.load.spritesheet('tempPlatform', './assets/spriteSheets/platformMove.png',{
 			frameHeight: 32,
@@ -82,7 +86,7 @@ export default class s1r1 extends Phaser.Scene {
 		this.load.image('earthFrame', './assets/sprites/earthFrame.png');
 
 		/* ---------- Load Background -----------------------*/
-		this.load.image('background', './assets/images/background1.png');
+		//this.load.image('background', './assets/images/background1.png');
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 	    this.load.image("tiles", "./assets/map/tileset.png");
@@ -134,20 +138,20 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- CREATES MAP ---------- */
 		// Placeholder background color
-		//this.cameras.main.setBackgroundColor(0xb0d6c4);
-		this.add.image(600,400, 'background')
+		this.cameras.main.setBackgroundColor(0xb0d6c4);
 
 		// Tileset art image taken from https://opengameart.org/content/platform-tileset-nature
 	  	const map = this.make.tilemap({key: "map"});
 	  	const tileset = map.addTilesetImage("tileset", "tiles");
 	  	this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
-		const debugGraphics = this.add.graphics().setAlpha(0.75);
+
+		/*const debugGraphics = this.add.graphics().setAlpha(0.75);
 		this.layer.renderDebug(debugGraphics, {
 	  		tileColor: null, // Color of non-colliding tiles
 	  		collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
 	  		faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-		});
+		});*/
 
 
 		/* ---------- CREATES SPIKES ---------- */
