@@ -8,7 +8,8 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		this.body.setImmovable(true);
 
 		this.key = key;
-		this.setScale(0.8);
+
+		/* ---------- SPELL ANIMATIONS ---------- */
 
 		scene.anims.create({
 			key: "bubbleAni",
@@ -16,21 +17,18 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 			frameRate: 32,
 			repeat: -1
 		});
-
 		scene.anims.create({
 			key: "earthAni",
 			frames: scene.anims.generateFrameNumbers("earth", {start:0, end:6}),
 			frameRate: 15,
 			repeat: -1
 		});
-
 		scene.anims.create({
 			key: "fireAni",
 			frames: scene.anims.generateFrameNumbers("fire", {start:0, end:7}),
 			frameRate: 10,
 			repeat: -1
 		});
-
 		scene.anims.create({
 			key: "airAni",
 			frames: scene.anims.generateFrameNumbers("air", {start:0, end:3}),
@@ -41,11 +39,11 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 
 	deactivate(scene, enemyGroup) {
 		if (this.x < 0 || this.x > scene.gameWidth) {
-			scene.spellActive[`${this.key}`] = false;
+			scene.player.spellActive[`${this.key}`] = false;
 			this.destroy();
 		} else if (scene.physics.overlap(Object.values(enemyGroup), this)) {
 			var enemy = this.getClosestEnemy(scene, this, scene.enemyGroup)
-			scene.spellActive[`${this.key}`] = false;
+			scene.player.spellActive[`${this.key}`] = false;
 			this.destroy();
 			switch (this.key) {
 				case 'fire':
@@ -61,7 +59,7 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 			}
 
 		} else if (this.body.x > scene.player.x + 400 || this.body.x < scene.player.x - 400) {
-			scene.spellActive[`${this.key}`] = false;
+			scene.player.spellActive[`${this.key}`] = false;
 			this.destroy();
 		}
 	}
@@ -105,7 +103,6 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 			enemy.body.setVelocityX(150);
 		}
 		setTimeout(() => {enemy.body.setVelocityX(0); enemy.canMove = true}, 1200);
-
 	}
 
 	getClosestEnemy(scene, spell, enemyGroup) {

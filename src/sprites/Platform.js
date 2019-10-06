@@ -10,55 +10,54 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 		this.setScale(1);
 
 	    scene.anims.create({
-	      key: "platformR",
-	      frames: scene.anims.generateFrameNumbers("tempPlatform", {start:0, end:0}),
-	      frameRate: 15,
-	      repeat: 0
+	    	key: "platformR",
+			frames: scene.anims.generateFrameNumbers("tempPlatform", {start:0, end:0}),
+			frameRate: 15,
+			repeat: 0
 	    });
 	    scene.anims.create({
-	      key: "platformL",
-	      frames: scene.anims.generateFrameNumbers("tempPlatform", {start:1, end:1}),
-	      frameRate: 15,
-	      repeat: 0
+			key: "platformL",
+			frames: scene.anims.generateFrameNumbers("tempPlatform", {start:1, end:1}),
+			frameRate: 15,
+			repeat: 0
 	    });
 	    scene.anims.create({
-	      key: "platformU",
-	      frames: scene.anims.generateFrameNumbers("tempPlatform", {start:2, end:2}),
-	      frameRate: 15,
-	      repeat: 0
+			key: "platformU",
+			frames: scene.anims.generateFrameNumbers("tempPlatform", {start:2, end:2}),
+			frameRate: 15,
+			repeat: 0
 	    });
 	    scene.anims.create({
-	      key: "platformD",
-	      frames: scene.anims.generateFrameNumbers("tempPlatform", {start:3, end:3}),
-	      frameRate: 15,
-	      repeat: 0
+			key: "platformD",
+			frames: scene.anims.generateFrameNumbers("tempPlatform", {start:3, end:3}),
+			frameRate: 15,
+			repeat: 0
 	    });
 
   }
 	action(index){
-		if(index == 0){
+		if (index == 0) {
 			this.moveRight();
-		}
-		else if(index == 1){
+		} else if (index == 1) {
 			this.moveLeft();
-			}
+		}
 	}
 
-	  moveRight(){
-			this.body.x += 10;
-	  }
+	moveRight(){
+		this.body.x += 10;
+	}
 
-	  moveLeft(){
-			this.body.x -= 10;
-	  }
+	moveLeft(){
+		this.body.x -= 10;
+	}
 
-	  moveUp(){
+	moveUp(){
 
-	  }
+	}
 
-  moveDown(){
+	moveDown(){
 
-  }
+	}
 
 
 }
