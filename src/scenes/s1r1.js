@@ -105,22 +105,8 @@ export default class s1r1 extends Phaser.Scene {
 		this.gameHeight = this.cameras.main.height
 
 
-		// Array that keeps track of if a spell is active
-		this.spellActive = {
-			fire: false,
-			earth: false,
-			water: false,
-			air: false
-		}
-
-
-		/* ---------- STAGE-ROOM DEBUGGER ---------- */
-		//this.posDebug = this.add.text(this.cameras.main.width - 175, 0, '');
-		// var srDebug = this.add.text(0, 0, 'Stage 1, Room 1');
-
 		/* ---------- CREATES MANA BAR ---------- */
 		this.manaBar = this.add.sprite(this.cameras.main.width - 50, 40, 'manaBar', 27);
-
 		this.anims.create({
 			key: "regenMana",
 			frames: this.anims.generateFrameNumbers("manaBar", {start: 0, end: 27}),
@@ -133,7 +119,6 @@ export default class s1r1 extends Phaser.Scene {
 		this.earthFrame = this.add.sprite(95, 32, 'earthFrame');
 		this.bubbleFrame = this.add.sprite(158, 32, 'bubbleFrame');
 		this.airFrame = this.add.sprite(221, 32, 'airFrame');
-
 
 
 		/* ---------- CREATES MAP ---------- */
@@ -166,6 +151,7 @@ export default class s1r1 extends Phaser.Scene {
 			const spike = this.spikes.create(spikeObject.x, spikeObject.y + 0 - spikeObject.height, 'Spikes').setOrigin(0,0);
 		});
 
+
 		/* ---------- CREATES DOOR ---------- */
 		var door = map.createDynamicLayer('Door', tileset);
 		door.forEachTile(function(tile){
@@ -177,11 +163,7 @@ export default class s1r1 extends Phaser.Scene {
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 30, 550, 'player');
 
-		// Initializes spell cooldown timer
-		this.spellTimer = 100;
 
-		// Initializes jump cooldown timer
-		this.jumpTimer = 100;
 
 		/* ---------- CREATES ENEMIES ---------- */
 		this.enemyGroup = [];
@@ -218,6 +200,7 @@ export default class s1r1 extends Phaser.Scene {
 			this.scene.start('s1r1')
 		}
 
+
 		/* ---------- EASTER EGG ---------- */
 		this.input.keyboard.on('keycombomatch', () => {
 			this.easterEgg = true;
@@ -225,14 +208,11 @@ export default class s1r1 extends Phaser.Scene {
 			this.player.setScale(1.5);
 		});
 
+
 		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {
 			this.scene.start('s1r2')
 		}
-
-		// Increments the spell cooldown timer
-		this.spellTimer++;
-		this.jumpTimer++;
 
 
 		/* ---------- SPELL FRAME CHECKER ---------- */
@@ -267,7 +247,6 @@ export default class s1r1 extends Phaser.Scene {
 		/* ---------- MOVES PLAYER ---------- */
 		this.player.move(this);
 
-
 		/*----------- Enemy AI -------------- */
 		for(var x in this.enemyGroup){
 			this.enemyGroup[x].move(this, this.player);
@@ -282,13 +261,13 @@ export default class s1r1 extends Phaser.Scene {
 
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
-		if (this.spellActive['fire']) {
+		if (this.player.spellActive['fire']) {
 			this.player.fireball.deactivate(this, this.enemyGroup);
 		}
-		if (this.spellActive['water']) {
+		if (this.player.spellActive['water']) {
 			this.player.bubble.deactivate(this, this.enemyGroup);
 		}
-		if (this.spellActive['air']) {
+		if (this.player.spellActive['air']) {
 			this.player.airwave.deactivate(this, this.enemyGroup);
 		}
 
@@ -306,13 +285,13 @@ export default class s1r1 extends Phaser.Scene {
 		}
 
 
+
+
 		// Casts spell if cooldown timer has been met
-		if (this.castSpell.isDown && this.spellTimer > 70 ) {
-			this.spellTimer = 0;
+		if (this.castSpell.isDown && this.player.spellTimer > 70 ) {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
 			this.manaBar.play('regenMana', true);
 	 	}
-
 
 		this.lever.flip(this, this.platform1,0);
 		this.lever2.flip(this, this.platform1,1);

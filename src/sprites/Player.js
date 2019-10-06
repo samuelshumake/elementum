@@ -15,6 +15,19 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		this.body.setCollideWorldBounds(true);
 		this.setScale(1);
 
+		// Initializes spell cooldown timer
+		this.spellTimer = 100;
+		// Initializes jump cooldown timer
+		this.jumpTimer = 100;
+
+		// Checks which spells are active
+		this.spellActive = {
+			fire: false,
+			earth: false,
+			water: false,
+			air: false
+		}
+
 		// Initializes player's current spell
 		this.currentSpell = 'fire';
 
@@ -52,6 +65,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
 	move(scene) {
 		var cursors = this.scene.input.keyboard.createCursorKeys();
 
+		this.spellTimer++;
+		this.jumpTimer++;
+
 		// Give the player left and right movement
 		if (cursors.left.isDown) {
 			this.body.setVelocityX(-250);
@@ -82,10 +98,16 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		// Give the player jumping movement
 		if (cursors.up.isDown && (this.body.touching.down || this.body.blocked.down)) {
 			this.body.y -= 20;
-			scene.jumpTimer = 0;
+			this.jumpTimer = 0;
 			this.body.setVelocityY(-500)
 			this.body.setAccelerationY(1300);
+<<<<<<< HEAD
 			this.play("jumpPlayer",true);
+=======
+			if (scene.easterEgg === false) {
+				this.play("jumpPlayer",true);
+			}
+>>>>>>> bfca33739dd3d85b22f6bc0198e5197980ed320e
 		}
 	}
 
@@ -93,15 +115,16 @@ export default class Player extends Phaser.GameObjects.Sprite {
 	/* ---------- SPELL-CASTING FUNCTIONS ---------- */
 	cast(scene, spell, direction = false) {
 		this.direction = direction;
+		this.spellTimer = 0;
 		switch (spell) {
 
 			/* ----- FIRE ----- */
 			case 'fire':
-				if (scene.spellActive['fire'] === true) {
+				if (this.spellActive['fire'] === true) {
 					return;
 				}
 				this.fireball = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'fire'));
-				scene.spellActive['fire'] = true;
+				this.spellActive['fire'] = true;
 				this.fireball.shoot(direction);
 				break;
 
@@ -109,17 +132,17 @@ export default class Player extends Phaser.GameObjects.Sprite {
 			/* ----- EARTH ----- */
 			case 'earth':
 				if (this.body.blocked.down) {
-					if (scene.spellActive['earth'] === true) {
+					if (this.spellActive['earth'] === true) {
 						this.platform.body.setVelocityY(250);
-						scene.spellActive['earth'] = false;
+						this.spellActive['earth'] = false;
 						setTimeout(() => {this.platform.destroy()}, 350);
 						setTimeout(() => {
 							this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom + 15, 'earth'));
-							scene.spellActive['earth'] = true;
+							this.spellActive['earth'] = true;
 							this.platform.raise(scene, this)}, 600);
 					} else {
 						this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom + 15, 'earth'));
-						scene.spellActive['earth'] = true;
+						this.spellActive['earth'] = true;
 						this.platform.raise(scene, this);
 					}
 				}
@@ -128,22 +151,22 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 			/* ----- WATER ----- */
 			case 'water':
-				if (scene.spellActive['water'] === true) {
+				if (this.spellActive['water'] === true) {
 					return;
 				}
 				this.bubble = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'water'));
-				scene.spellActive['water'] = true;
+				this.spellActive['water'] = true;
 				this.bubble.shoot(direction);
 				break;
 
 
 			/* ----- AIR ----- */
 			case 'air':
-				if (scene.spellActive['air'] === true) {
+				if (this.spellActive['air'] === true) {
 					return;
 				}
 				this.airwave = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'air'));
-				scene.spellActive['air'] = true;
+				this.spellActive['air'] = true;
 				this.airwave.shoot(direction);
 				break;
 		}
