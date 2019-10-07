@@ -86,7 +86,6 @@ export default class s1r1 extends Phaser.Scene {
 		this.load.image('earthFrame', './assets/sprites/earthFrame.png');
 
 		/* ---------- Load Background -----------------------*/
-		this.load.image('background', './assets/images/background1.png');
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 	    this.load.image("tiles", "./assets/map/tileset.png");
@@ -115,10 +114,10 @@ export default class s1r1 extends Phaser.Scene {
 
 
 		/* ---------- CREATES SPELL FRAMES ---------- */
-		this.fireFrame = this.add.sprite(32, 32, 'fireFrame');
-		this.earthFrame = this.add.sprite(95, 32, 'earthFrame');
-		this.bubbleFrame = this.add.sprite(158, 32, 'bubbleFrame');
-		this.airFrame = this.add.sprite(221, 32, 'airFrame');
+		this.fireFrame = this.add.sprite(48, 40, 'fireFrame');
+		this.earthFrame = this.add.sprite(111, 40, 'earthFrame');
+		this.bubbleFrame = this.add.sprite(174, 40, 'bubbleFrame');
+		this.airFrame = this.add.sprite(237, 40, 'airFrame');
 
 
 		/* ---------- CREATES MAP ---------- */
