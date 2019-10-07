@@ -101,13 +101,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
 			this.jumpTimer = 0;
 			this.body.setVelocityY(-500)
 			this.body.setAccelerationY(1300);
-<<<<<<< HEAD
-			this.play("jumpPlayer",true);
-=======
 			if (scene.easterEgg === false) {
 				this.play("jumpPlayer",true);
 			}
->>>>>>> bfca33739dd3d85b22f6bc0198e5197980ed320e
+
 		}
 	}
 
