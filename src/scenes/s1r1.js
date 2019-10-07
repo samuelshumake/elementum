@@ -85,11 +85,14 @@ export default class s1r1 extends Phaser.Scene {
 		this.load.image('fireFrame', './assets/sprites/fireFrame.png');
 		this.load.image('earthFrame', './assets/sprites/earthFrame.png');
 
-		/* ---------- Load Background -----------------------*/
+		/* ---------- LOADS BACKGROUND -----------------------*/
+		this.load.image('background', './assets/images/backgroundimage1.png');
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
-	    this.load.image("tiles", "./assets/map/tileset.png");
-	    this.load.tilemapTiledJSON("map", "./assets/map/level.json");
+	  this.load.image('tiles', './assets/images/newTileMap.png');
+		this.load.image('spikes', './assets/images/Spikes.png');
+		this.load.image('door', './assets/images/Door.png');
+	  this.load.tilemapTiledJSON('map', './assets/map/level.json');
 
 	}	// ----- END OF PRELOAD ----- //
 
@@ -103,6 +106,47 @@ export default class s1r1 extends Phaser.Scene {
 		this.gameWidth = this.cameras.main.width
 		this.gameHeight = this.cameras.main.height
 
+		/* --------- CREATES BACKGROUND --------- */
+		this.add.image(350, 325,'background').setScale(1.1);
+
+
+		/* ---------- CREATES MAP ---------- */
+		// Placeholder background color
+		//this.cameras.main.setBackgroundColor(0xb0d6c4);
+	  const map = this.make.tilemap({key: "map"});
+	  const tileset = map.addTilesetImage("newTileMap", "tiles");
+	  this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
+		this.layer.setCollisionByProperty({ collides: true });
+
+		/*const debugGraphics = this.add.graphics().setAlpha(0.75);
+		this.layer.renderDebug(debugGraphics, {
+	  		tileColor: null, // Color of non-colliding tiles
+	  		collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+	  		faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+		});*/
+
+
+		/* ---------- CREATES SPIKES ---------- */
+		this.spikes = this.add.group({
+			allowGravity: false,
+			immovable: true
+		});
+		var spikeObjects = map.getObjectLayer('Spikes')['objects'];
+		spikeObjects.forEach(spikeObject => {
+			var spike = this.spikes.create(spikeObject.x, spikeObject.y - spikeObject.height, 'spikes').setOrigin(0,0);
+			//spike.body.setSize(spike.width, spike.height - 50).setOffset(0, 20);
+		});
+
+
+		/* ---------- CREATES DOOR ---------- */
+		this.door = this.add.group({
+			allowGravity: false,
+			immovable: true
+		});
+		const doorObjects = map.getObjectLayer('Door')['objects'];
+		doorObjects.forEach(doorObject => {
+			const door = this.door.create(doorObject.x, doorObject.y - doorObject.height, 'door').setOrigin(0,0);
+		})
 
 		/* ---------- CREATES MANA BAR ---------- */
 		this.manaBar = this.add.sprite(this.cameras.main.width - 50, 40, 'manaBar', 27);
@@ -120,48 +164,8 @@ export default class s1r1 extends Phaser.Scene {
 		this.airFrame = this.add.sprite(237, 40, 'airFrame');
 
 
-		/* ---------- CREATES MAP ---------- */
-		// Placeholder background color
-		this.cameras.main.setBackgroundColor(0xb0d6c4);
-
-		// Tileset art image taken from https://opengameart.org/content/platform-tileset-nature
-	  	const map = this.make.tilemap({key: "map"});
-	  	const tileset = map.addTilesetImage("tileset", "tiles");
-	  	this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
-		this.layer.setCollisionByProperty({ collides: true });
-
-		/*const debugGraphics = this.add.graphics().setAlpha(0.75);
-		this.layer.renderDebug(debugGraphics, {
-	  		tileColor: null, // Color of non-colliding tiles
-	  		collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-	  		faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-		});*/
-
-
-		/* ---------- CREATES SPIKES ---------- */
-		this.spikes = map.createStaticLayer('Spikes', tileset, 0, 630);
-		this.spikes = this.add.group({
-			allowGravity: false,
-			immovable: true
-		});
-		this.spikesArray = []
-		const spikeObjects = map.getObjectLayer('Spikes')['objects'];
-		spikeObjects.forEach(spikeObject => {
-			const spike = this.spikes.create(spikeObject.x, spikeObject.y + 0 - spikeObject.height, 'Spikes').setOrigin(0,0);
-		});
-
-
-		/* ---------- CREATES DOOR ---------- */
-		var door = map.createDynamicLayer('Door', tileset);
-		door.forEachTile(function(tile){
-			console.log(tile.index);
-			tile.destroy();
-		});
-
-
 		/* ---------- CREATES PLAYER ---------- */
-		this.player = new Player(this, 30, 550, 'player');
-
+		this.player = new Player(this, 60, 550, 'player');
 
 
 		/* ---------- CREATES ENEMIES ---------- */
@@ -172,11 +176,12 @@ export default class s1r1 extends Phaser.Scene {
 
 
 		/* ----- CREATE PLATFORM SPRITES ------- */
-		this.platform1 = new Platform(this, 500, 500, 'tempPlatform');
+		this.platform1 = new Platform(this, 497, 527, 'tempPlatform');
+		this.platform2 = new Platform(this, 297, 727, 'tempPlatform');
 
 		/* ----- CREATE LEVER ------------------ */
-		this.lever = new Interactable(this, 250,500, 'lever');
-		this.lever2 = new Interactable(this, 350,400, 'lever');
+		this.lever = new Interactable(this, 65, 450, 'lever');
+		this.lever2 = new Interactable(this, 725, 600, 'lever');
 
 		// Keys for interacting
 		this.switchFire = this.input.keyboard.addKey('one');
@@ -253,9 +258,9 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ----------- PLAYER KILLERS ----------- */
 		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
+		//console.log(this.spikes);
 
 		// TODO: DECIDE WHICH WE'RE USING. SPIKE OR SPIKES
-		this.physics.overlap(this.player, this.spike, () => this.resetLevel = true);
 		this.physics.add.overlap(this.player, this.spikes, () => {console.log("reset");this.resetLevel = true});
 
 
@@ -293,13 +298,8 @@ export default class s1r1 extends Phaser.Scene {
 	 	}
 
 		this.lever.flip(this, this.platform1,0);
-		this.lever2.flip(this, this.platform1,1);
+		//this.lever2.flip(this, this.platform1,1);
 
     }	// ----- END OF UPDATE ----- //
 
 }	// ----- END OF PHASER SCENE ----- //
-
-function nextLevel() {
-	this.scene.start('s1r2');
-	return false;
-}

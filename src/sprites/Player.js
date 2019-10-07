@@ -11,6 +11,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		// Sets players physical body
 		scene.physics.world.enableBody(this, 0);
 		scene.physics.add.collider(this, scene.layer);
+		scene.physics.add.collider(this.body, scene.spikes, scene.resetLevel, null, this);
 		this.body.setGravity(0, 600);
 		this.body.setCollideWorldBounds(true);
 		this.setScale(1);

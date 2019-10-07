@@ -44,7 +44,9 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 	}
 
 	moveRight(){
-		this.body.x += 10;
+		while (this.body.x <= 545) {
+			this.body.x += 1;
+		}
 	}
 
 	moveLeft(){
