@@ -180,6 +180,7 @@ export default class s1r1 extends Phaser.Scene {
 		this.rock.setScale(0.8, 1);
 		this.physics.add.collider(this.rock, this.layer);
 		this.physics.add.collider(this.player, this.rock);
+		this.rock.body.immovable = true;
 		this.physics.add.overlap(this.rock, this.player, () => {
 			this.player.x += 10;
 		});
@@ -189,9 +190,11 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- CREATES ENEMIES ---------- */
 		this.enemyGroup = [];
-		for (let i = 0; i < 1; i++) {
-			this.enemyGroup.push(new Enemy(this, 150 * i + 150, 300, 'slimeAni'));
+		for (let i = 0; i < 4; i++) {
+			this.enemyGroup.push(new Enemy(this, 150 * i + 160, 400, 'slimeAni'));
 		}
+
+		this.physics.add.collider(this.rock, this.enemyGroup[0]);
 
 
 		/* ----- CREATE PLATFORM SPRITES ------- */
