@@ -5,7 +5,7 @@ import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
 import Interactable from '../sprites/Interactable.js';
-export default class s1r1 extends Phaser.Scene {
+export default class s1r2 extends Phaser.Scene {
 
 	constructor () {
 		super('s1r2');
@@ -95,8 +95,7 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/newTileMap.png');
-		this.load.image('spikes', './assets/images/Spikes.png');
-		this.load.image('door', './assets/images/Door.png');
+		this.load.tilemapTiledJSON('tutorial', './assets/map/tutorial_1.json')
 		this.load.tilemapTiledJSON('map', './assets/map/level.json');
 
 	}	// ----- END OF PRELOAD ----- //
@@ -118,7 +117,7 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- CREATES MAP ---------- */
 
-		const map = this.make.tilemap({key: "map"});
+		const map = this.make.tilemap({key: "tutorial"});
 		const tileset = map.addTilesetImage("newTileMap", "tiles");
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
@@ -196,7 +195,7 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- RESETS LEVEL ---------- */
 		if (this.resetLevel) {
-			this.scene.start('s1r1')
+			this.scene.start('s1r2')
 		}
 
 

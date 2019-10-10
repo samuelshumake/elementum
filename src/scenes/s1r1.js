@@ -95,8 +95,7 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/newTileMap.png');
-		this.load.image('spikes', './assets/images/Spikes.png');
-		this.load.image('door', './assets/images/Door.png');
+		this.load.tilemapTiledJSON('tutorial', './assets/map/tutorial_1.json')
 		this.load.tilemapTiledJSON('map', './assets/map/level.json');
 
 	}	// ----- END OF PRELOAD ----- //
