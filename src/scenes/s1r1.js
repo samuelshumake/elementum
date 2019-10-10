@@ -116,7 +116,6 @@ export default class s1r1 extends Phaser.Scene {
 
 
 
-
 		/* ---------- CREATES MAP ---------- */
 
 		const map = this.make.tilemap({key: "map"});
@@ -124,35 +123,8 @@ export default class s1r1 extends Phaser.Scene {
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
 
-		/*const debugGraphics = this.add.graphics().setAlpha(0.75);
-		this.layer.renderDebug(debugGraphics, {
-	  		tileColor: null, // Color of non-colliding tiles
-	  		collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-	  		faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-		});*/
 
-
-		/* ---------- CREATES SPIKES ---------- */
-		this.spikes = this.add.group({
-			allowGravity: false,
-			immovable: true
-		});
-		this.spikeObjects = map.getObjectLayer('Spikes')['objects'];
-		this.spikeObjects.forEach(spikeObject => {
-			this.spike = this.spikes.create(spikeObject.x, spikeObject.y - spikeObject.height, 'spikes').setOrigin(0,0);
-			//spike.body.setSize(spike.width, spike.height - 50).setOffset(0, 20);
-		});
-
-
-		/* ---------- CREATES DOOR ---------- */
-		// this.door = this.add.group({
-		// 	allowGravity: false,
-		// 	immovable: true
-		// });
-		// const doorObjects = map.getObjectLayer('Door')['objects'];
-		// doorObjects.forEach(doorObject => {
-		// 	const door = this.door.create(doorObject.x, doorObject.y - doorObject.height, 'door').setOrigin(0,0);
-		// })
+		/* ---------- TOP BANNER ---------- */
 		this.add.image(350, 35,'topbanner').setScale(15, 1.7);
 
 		/* ---------- CREATES MANA BAR ---------- */
@@ -162,8 +134,6 @@ export default class s1r1 extends Phaser.Scene {
 			frames: this.anims.generateFrameNumbers("manaBar", {start: 0, end: 27}),
 			frameRate: 24,
 		});
-
-
 
 
 		/* ---------- CREATES SPELL FRAMES ---------- */
@@ -176,7 +146,7 @@ export default class s1r1 extends Phaser.Scene {
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 60, 550, 'player');
 
-		this.rock = this.physics.add.sprite(130, 380, 'rock');
+		this.rock = this.physics.add.sprite(130, 385, 'rock');
 		this.rock.setScale(0.8, 1);
 		this.physics.add.collider(this.rock, this.layer);
 		this.physics.add.collider(this.player, this.rock);
@@ -185,12 +155,13 @@ export default class s1r1 extends Phaser.Scene {
 			this.player.x += 10;
 		});
 
+		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(755, 190, 'door');
 
 
 		/* ---------- CREATES ENEMIES ---------- */
 		this.enemyGroup = [];
-		for (let i = 0; i < 4; i++) {
+		for (let i = 0; i < 3; i++) {
 			this.enemyGroup.push(new Enemy(this, 150 * i + 160, 400, 'slimeAni'));
 		}
 
@@ -284,15 +255,6 @@ export default class s1r1 extends Phaser.Scene {
 		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
 
 
-		// TODO: DECIDE WHICH WE'RE USING. SPIKE OR SPIKES
-		//this.physics.add.overlap(this.player, this.spikeObjects, () => {console.log("reset");this.resetLevel = true});
-		if (this.player.x > 422 && this.player.y == 332.5 && this.player.x < 476) {
-			this.resetLevel = true;
-		}
-		if (this.player.x > 676 && this.player.y == 460.5) {
-			this.resetLevel = true;
-		}
-
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
@@ -321,9 +283,6 @@ export default class s1r1 extends Phaser.Scene {
 		} else if (this.switchAir.isDown) {
 			this.player.currentSpell = 'air';
 		}
-
-
-
 
 		// Casts spell if cooldown timer has been met
 		if (this.castSpell.isDown && this.player.spellTimer > 70 ) {
