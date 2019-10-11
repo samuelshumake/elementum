@@ -84,6 +84,7 @@ export default class s1r1 extends Phaser.Scene {
 		this.load.image('bubbleFrame', './assets/sprites/bubbleFrame.png');
 		this.load.image('fireFrame', './assets/sprites/fireFrame.png');
 		this.load.image('earthFrame', './assets/sprites/earthFrame.png');
+		this.load.image('spike', './assets/sprites/spike.png');
 
 		this.load.image('rock', './assets/sprites/rock.png');
 		this.load.image('door', './assets/sprites/door.png');
@@ -175,6 +176,9 @@ export default class s1r1 extends Phaser.Scene {
 		/* ----- CREATE LEVER ------------------ */
 		this.lever = new Interactable(this, 65, 450, 'lever');
 		this.lever2 = new Interactable(this, 725, 600, 'lever');
+
+		this.spike = this.physics.add.sprite(400, 347, 'spike');
+		this.spike.setScale(0.3);
 
 		// Keys for interacting
 		this.switchFire = this.input.keyboard.addKey('one');
