@@ -155,14 +155,14 @@ export default class s1r1 extends Phaser.Scene {
 		});
 
 		/* ---------- CREATES DOOR ---------- */
-		this.door = this.physics.add.sprite(755, 190, 'door');
+		this.door = this.physics.add.sprite(754, 192, 'door');
 
 
-		/* ---------- CREATES ENEMIES ---------- */
-		this.enemyGroup = [];
-		for (let i = 0; i < 3; i++) {
-			this.enemyGroup.push(new Enemy(this, 150 * i + 160, 400, 'slimeAni'));
-		}
+		this.enemy1 = new Enemy(this, 300, 550, 'slimeAni');
+		this.enemy2 = new Enemy(this, 200, 400, 'slimeAni');
+		this.enemy3 = new Enemy(this, 450, 350, 'slimeAni');
+		this.enemy4 = new Enemy(this, 600, 600, 'slimeAni');
+		this.enemyGroup = [this.enemy1, this.enemy2, this.enemy3, this.enemy4];
 
 		this.physics.add.collider(this.rock, this.enemyGroup[0]);
 
@@ -251,6 +251,7 @@ export default class s1r1 extends Phaser.Scene {
 		}
 
 		/* ----------- PLAYER KILLERS ----------- */
+
 		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
 
 
@@ -259,15 +260,26 @@ export default class s1r1 extends Phaser.Scene {
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
 		if (this.player.spellActive['fire']) {
 			this.player.fireball.deactivate(this, this.enemyGroup);
+			for (let x in this.enemyGroup) {
+				this.physics.overlap(this.player.fireball, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.fireball, x));
+			}
+
+
 		}
 		if (this.player.spellActive['water']) {
 			this.player.bubble.deactivate(this, this.enemyGroup);
-			this.physics.add.overlap(this.rock, this.player.bubble, () => {
+			for (let x in this.enemyGroup) {
+				this.physics.overlap(this.player.bubble, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.bubble, x));
+			}
+			this.physics.add.overlap(this.rock, this.player.bubble, () => {			// fix this
 				this.player.bubble.suspend(this, this.rock);
 			})
 		}
 		if (this.player.spellActive['air']) {
 			this.player.airwave.deactivate(this, this.enemyGroup);
+			for (let x in this.enemyGroup) {
+				this.physics.overlap(this.player.airwave, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.airwave, x));
+			}
 		}
 
 

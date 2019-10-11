@@ -51,4 +51,23 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 		this.play("jump",true);
 	}
 
+	deactivate(scene, spell, x) {
+		switch (spell.key) {
+			case 'fire':
+				this.destroy();
+				scene.enemyGroup.splice(x, 1);
+				break;
+			case 'water':
+				spell.suspend(scene, scene.enemyGroup[x])
+				break;
+			case 'air':
+				spell.push(scene, scene.enemyGroup[x], scene.player.direction);
+				break;
+		}
+		scene.player.spellActive[spell.key] = false;
+		spell.destroy();
+
+	}
+
+
 }
