@@ -5,10 +5,10 @@ import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
 import Interactable from '../sprites/Interactable.js';
-export default class s1r2 extends Phaser.Scene {
+export default class tutorial_fire extends Phaser.Scene {
 
 	constructor () {
-		super('s1r2');
+		super('tutorial_fire');
 	}
 
 
@@ -84,6 +84,7 @@ export default class s1r2 extends Phaser.Scene {
 		this.load.image('bubbleFrame', './assets/sprites/bubbleFrame.png');
 		this.load.image('fireFrame', './assets/sprites/fireFrame.png');
 		this.load.image('earthFrame', './assets/sprites/earthFrame.png');
+		this.load.image('spike', './assets/sprites/spike.png');
 
 		this.load.image('rock', './assets/sprites/rock.png');
 		this.load.image('door', './assets/sprites/door.png');
@@ -95,7 +96,7 @@ export default class s1r2 extends Phaser.Scene {
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/newTileMap.png');
-		this.load.tilemapTiledJSON('tutorial', './assets/map/tutorial_1.json')
+		this.load.tilemapTiledJSON('tutorial_fire', './assets/map/tutorial_fire.json')
 		this.load.tilemapTiledJSON('map', './assets/map/level.json');
 
 	}	// ----- END OF PRELOAD ----- //
@@ -117,9 +118,9 @@ export default class s1r2 extends Phaser.Scene {
 
 		/* ---------- CREATES MAP ---------- */
 
-		const map = this.make.tilemap({key: "tutorial"});
-		const tileset = map.addTilesetImage("newTileMap", "tiles");
-		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
+		const map = this.make.tilemap({key: 'tutorial_fire'});
+		const tileset = map.addTilesetImage('newTileMap', 'tiles');
+		this.layer = map.createStaticLayer('Tile Layer 1', tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
 
 
@@ -143,38 +144,52 @@ export default class s1r2 extends Phaser.Scene {
 
 
 		/* ---------- CREATES PLAYER ---------- */
-		this.player = new Player(this, 60, 550, 'player');
+		this.player = new Player(this, 50, 396, 'player');
 
-		this.rock = this.physics.add.sprite(130, 385, 'rock');
-		this.rock.setScale(0.8, 1);
-		this.physics.add.collider(this.rock, this.layer);
-		this.physics.add.collider(this.player, this.rock);
-		this.rock.body.immovable = true;
-		this.physics.add.overlap(this.rock, this.player, () => {
-			this.player.x += 10;
-		});
+		/* ---------- CREATE ROCK ------------- */
+		//this.rock = this.physics.add.sprite(130, 385, 'rock');
+		//this.rock.setScale(0.8, 1);
+		//this.physics.add.collider(this.rock, this.layer);
+		//this.physics.add.collider(this.player, this.rock);
+		//this.rock.body.immovable = true;
+		//this.physics.add.overlap(this.rock, this.player, () => {
+		//	this.player.x += 10;
+		//});
 
 		/* ---------- CREATES DOOR ---------- */
-		this.door = this.physics.add.sprite(755, 190, 'door');
+		this.door = this.physics.add.sprite(754, 385, 'door');
 
+		/* ---------- CREATE ENEMIES -------- */
+		this.enemy1 = new Enemy(this, 350, 405, 'slimeAni');
+		this.enemy2 = new Enemy(this, 400, 405, 'slimeAni');
+		this.enemy3 = new Enemy(this, 450, 405, 'slimeAni');
+		this.enemy4 = new Enemy(this, 600, 405, 'slimeAni');
+		this.enemyGroup = [this.enemy1, this.enemy2, this.enemy3, this.enemy4];
 
-		/* ---------- CREATES ENEMIES ---------- */
-		this.enemyGroup = [];
-		for (let i = 0; i < 3; i++) {
-			this.enemyGroup.push(new Enemy(this, 150 * i + 160, 400, 'slimeAni'));
-		}
-
-		this.physics.add.collider(this.rock, this.enemyGroup[0]);
+		//this.physics.add.collider(this.rock, this.enemyGroup[0]);
 
 
 		/* ----- CREATE PLATFORM SPRITES ------- */
-		this.platform1 = new Platform(this, 497, 527, 'tempPlatform');
-		this.platform2 = new Platform(this, 720, 300, 'tempPlatform');
-		this.platform2.flipX = true;
+		//this.platform1 = new Platform(this, 497, 527, 'tempPlatform');
+		//this.platform2 = new Platform(this, 720, 300, 'tempPlatform');
+		//this.platform2.flipX = true;
 
 		/* ----- CREATE LEVER ------------------ */
-		this.lever = new Interactable(this, 65, 450, 'lever');
-		this.lever2 = new Interactable(this, 725, 600, 'lever');
+		//this.lever = new Interactable(this, 65, 450, 'lever');
+		//this.lever2 = new Interactable(this, 725, 600, 'lever');
+
+		/* ------ CREATE SPIKES ---------------- */
+		// this.spike = this.physics.add.sprite(400, 635, 'spike');
+		// this.spike2 = this.physics.add.sprite(380, 635, 'spike');
+		// this.spike3 = this.physics.add.sprite(360, 635, 'spike');
+		// this.spike4 = this.physics.add.sprite(420, 635, 'spike');
+		// this.spike5 = this.physics.add.sprite(440, 635, 'spike');
+		// this.spikeGroup = [this.spike, this.spike2, this.spike3, this.spike4, this.spike5];
+		// this.spike.setScale(0.3);
+		// this.spike2.setScale(0.3);
+		// this.spike3.setScale(0.3);
+		// this.spike4.setScale(0.3);
+		// this.spike5.setScale(0.3);
 
 		// Keys for interacting
 		this.switchFire = this.input.keyboard.addKey('one');
@@ -195,7 +210,7 @@ export default class s1r2 extends Phaser.Scene {
 
 		/* ---------- RESETS LEVEL ---------- */
 		if (this.resetLevel) {
-			this.scene.start('s1r2')
+			this.scene.start('tutorial_fire')
 		}
 
 
@@ -209,7 +224,7 @@ export default class s1r2 extends Phaser.Scene {
 
 		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {
-			this.scene.start('s1r2')
+			this.scene.start('tutorial_air')
 		}
 
 
@@ -251,23 +266,35 @@ export default class s1r2 extends Phaser.Scene {
 		}
 
 		/* ----------- PLAYER KILLERS ----------- */
-		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
 
+		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
+		//this.physics.overlap(this.player, Object.values(this.spikeGroup), () => this.resetLevel = true);
 
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
 		if (this.player.spellActive['fire']) {
 			this.player.fireball.deactivate(this, this.enemyGroup);
+			for (let x in this.enemyGroup) {
+				this.physics.overlap(this.player.fireball, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.fireball, x));
+			}
+
+
 		}
 		if (this.player.spellActive['water']) {
 			this.player.bubble.deactivate(this, this.enemyGroup);
-			this.physics.add.overlap(this.rock, this.player.bubble, () => {
+			for (let x in this.enemyGroup) {
+				this.physics.overlap(this.player.bubble, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.bubble, x));
+			}
+			this.physics.add.overlap(this.rock, this.player.bubble, () => {			// fix this
 				this.player.bubble.suspend(this, this.rock);
 			})
 		}
 		if (this.player.spellActive['air']) {
 			this.player.airwave.deactivate(this, this.enemyGroup);
+			for (let x in this.enemyGroup) {
+				this.physics.overlap(this.player.airwave, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.airwave, x));
+			}
 		}
 
 
@@ -289,8 +316,8 @@ export default class s1r2 extends Phaser.Scene {
 			this.manaBar.play('regenMana', true);
 	 	}
 
-		this.lever.flip(this, this.platform1,0);
-		this.lever2.flip(this, this.platform2,1);
+		//this.lever.flip(this, this.platform1,0);
+		//this.lever2.flip(this, this.platform2,1);
 
     }	// ----- END OF UPDATE ----- //
 
