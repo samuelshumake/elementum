@@ -5,10 +5,10 @@ import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
 import Interactable from '../sprites/Interactable.js';
-export default class tutorial_earth extends Phaser.Scene {
+export default class s0r2 extends Phaser.Scene {
 
 	constructor () {
-		super('tutorial_earth');
+		super('s0r2');
 	}
 
 
@@ -92,6 +92,7 @@ export default class tutorial_earth extends Phaser.Scene {
 		/* ---------- LOADS BACKGROUND -----------------------*/
 		this.load.image('background', './assets/images/backgroundimage1.png');
 		this.load.image('topbanner', './assets/images/topbanner.png');
+		this.load.image('textBanner', './assets/images/textBackground.png');
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/newTileMap.png');
@@ -134,6 +135,10 @@ export default class tutorial_earth extends Phaser.Scene {
 			frameRate: 24,
 		});
 
+		this.add.image(425, 170,'textBanner').setScale(10.5, 1.9);
+		this.tutorialText = this.add.text(125, 150, 'Press 1, 2, 3, and 4 to cycle through spells and space to cast.');
+		this.tutorialText = this.add.text(175, 175, 'Try using the Earth spell to overcome tall obstacles.');
+
 
 		/* ---------- CREATES SPELL FRAMES ---------- */
 		this.fireFrame = this.add.sprite(48, 40, 'fireFrame');
@@ -145,38 +150,11 @@ export default class tutorial_earth extends Phaser.Scene {
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 50, 524, 'player');
 
-		/* ---------- CREATES ROCK ------------ */
-		// this.rock = this.physics.add.sprite(130, 385, 'rock');
-		// this.rock.setScale(0.8, 1);
-		// this.physics.add.collider(this.rock, this.layer);
-		// this.physics.add.collider(this.player, this.rock);
-		// this.rock.body.immovable = true;
-		// this.physics.add.overlap(this.rock, this.player, () => {
-		// 	this.player.x += 10;
-		// });
-
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(755, 320, 'door');
 
 
-		/* ---------- CREATES ENEMIES ---------- */
-		// this.enemyGroup = [];
-		// for (let i = 0; i < 3; i++) {
-		// 	this.enemyGroup.push(new Enemy(this, 150 * i + 160, 400, 'slimeAni'));
-		// }
-		//
-		// this.physics.add.collider(this.rock, this.enemyGroup[0]);
-
-
-		/* ----- CREATE PLATFORM SPRITES ------- */
-		// this.platform1 = new Platform(this, 497, 527, 'tempPlatform');
-		// this.platform2 = new Platform(this, 720, 300, 'tempPlatform');
-		// this.platform2.flipX = true;
-
-		/* ----- CREATE LEVER ------------------ */
-		// this.lever = new Interactable(this, 65, 450, 'lever');
-		// this.lever2 = new Interactable(this, 725, 600, 'lever');
-
+		/* ---------- CREATES KEYS FOR INTERACTING ---------- */
 		// Keys for interacting
 		this.switchFire = this.input.keyboard.addKey('one');
 		this.switchEarth = this.input.keyboard.addKey('two');
@@ -196,7 +174,7 @@ export default class tutorial_earth extends Phaser.Scene {
 
 		/* ---------- RESETS LEVEL ---------- */
 		if (this.resetLevel) {
-			this.scene.start('tutorial_earth')
+			this.scene.start('s0r2')
 		}
 
 
@@ -210,7 +188,7 @@ export default class tutorial_earth extends Phaser.Scene {
 
 		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {
-			this.scene.start('tutorial_water')
+			this.scene.start('s0r3')
 		}
 
 
@@ -251,8 +229,6 @@ export default class tutorial_earth extends Phaser.Scene {
 			this.enemyGroup[x].move(this, this.player);
 		}
 
-		/* ----------- PLAYER KILLERS ----------- */
-		//this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
 
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
 
@@ -288,9 +264,6 @@ export default class tutorial_earth extends Phaser.Scene {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
 			this.manaBar.play('regenMana', true);
 	 	}
-
-		// this.lever.flip(this, this.platform1,0);
-		// this.lever2.flip(this, this.platform2,1);
 
     }	// ----- END OF UPDATE ----- //
 

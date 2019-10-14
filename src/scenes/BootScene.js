@@ -23,10 +23,11 @@ export default class BootScene extends Phaser.Scene {
 	ChangeScene.addSceneEventListeners(this);
 
 	// Placeholder background color
-    this.cameras.main.setBackgroundColor(0x008080);
+    //this.cameras.main.setBackgroundColor(0x008080);
 
 	// Placeholder logo
 	var logo = this.add.image(this.centerX, this.centerY, 'logo');
+	logo.setScale(1.51)
 
 
   }

@@ -1,0 +1,15 @@
+// LEVEL DIRECTORY
+
+---------- STAGE 0 : TUTORIAL -----------
+s0r1 - Movement/Jump Tutorial
+s0r2 - Earth Spell Tutorial
+s0r3 - Water Spell Tutorial
+s0r4 - Fire Spell Tutorial
+s0r5 - Air Spell Tutorial
+-----------------------------------------
+
+
+
+---------- STAGE 1 : EARTH --------------
+
+-----------------------------------------
