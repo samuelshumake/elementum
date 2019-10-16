@@ -199,7 +199,7 @@ export default class s0r5 extends Phaser.Scene {
 
 		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {
-			this.scene.start('s1r1')
+			this.scene.start('s0r6')
 		}
 
 

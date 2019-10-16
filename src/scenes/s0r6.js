@@ -5,10 +5,10 @@ import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
 import Interactable from '../sprites/Interactable.js';
-export default class s1r1 extends Phaser.Scene {
+export default class s0r6 extends Phaser.Scene {
 
 	constructor () {
-		super('s1r1');
+		super('s0r6');
 	}
 
 
@@ -93,6 +93,7 @@ export default class s1r1 extends Phaser.Scene {
 		/* ---------- LOADS BACKGROUND -----------------------*/
 		this.load.image('background', './assets/images/backgroundimage1.png');
 		this.load.image('topbanner', './assets/images/topbanner.png');
+		this.load.image('textBanner', './assets/images/textBackground.png');
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/newTileMap.png');
@@ -134,6 +135,9 @@ export default class s1r1 extends Phaser.Scene {
 			frames: this.anims.generateFrameNumbers("manaBar", {start: 0, end: 27}),
 			frameRate: 24,
 		});
+
+		this.add.image(405, 125,'textBanner').setScale(7.5, 1.5);
+		this.tutorialText = this.add.text(215, 115, 'Levers can be flipped with the \'E\' key.');
 
 
 		/* ---------- CREATES SPELL FRAMES ---------- */
@@ -199,7 +203,7 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- RESETS LEVEL ---------- */
 		if (this.resetLevel) {
-			this.scene.start('s1r1')
+			this.scene.start('s0r6')
 		}
 
 
