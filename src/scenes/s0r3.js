@@ -79,17 +79,6 @@ export default class s0r3 extends Phaser.Scene {
 		});
 
 
-		/* ---------- LOADS SPRITES FOR SPELL FRAMES ---------- */
-		this.load.image('airFrame', './assets/sprites/airFrame.png');
-		this.load.image('bubbleFrame', './assets/sprites/bubbleFrame.png');
-		this.load.image('fireFrame', './assets/sprites/fireFrame.png');
-		this.load.image('earthFrame', './assets/sprites/earthFrame.png');
-		this.load.image('spike', './assets/sprites/spike.png');
-
-		this.load.image('box', './assets/sprites/box.png');
-		this.load.image('door', './assets/sprites/door.png');
-
-
 		/* ---------- LOADS BACKGROUND -----------------------*/
 		this.load.image('background', './assets/images/backgroundimage1.png');
 		this.load.image('topbanner', './assets/images/topbanner.png');
@@ -97,8 +86,19 @@ export default class s0r3 extends Phaser.Scene {
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/newTileMap.png');
-		this.load.tilemapTiledJSON('tutorial_water', './assets/map/tutorial_water.json')
+		this.load.tilemapTiledJSON('tutorial_1', './assets/map/tutorial_1.json')
 		this.load.tilemapTiledJSON('map', './assets/map/level.json');
+
+		/* ---------- LOADS SPRITES FOR SPELL FRAMES ---------- */
+		this.load.image('airFrame', './assets/sprites/airFrame.png');
+		this.load.image('bubbleFrame', './assets/sprites/bubbleFrame.png');
+		this.load.image('fireFrame', './assets/sprites/fireFrame.png');
+		this.load.image('earthFrame', './assets/sprites/earthFrame.png');
+
+		/* ---------- LOADS SPRITES FOR GAME OBJECTS ---------- */
+		this.load.image('spike', './assets/sprites/spike.png');
+		this.load.image('rock', './assets/sprites/rock.png');
+		this.load.image('door', './assets/sprites/door.png');
 
 	}	// ----- END OF PRELOAD ----- //
 
@@ -116,9 +116,7 @@ export default class s0r3 extends Phaser.Scene {
 		this.add.image(350, 325,'background').setScale(1.1);
 
 
-
 		/* ---------- CREATES MAP ---------- */
-
 		const map = this.make.tilemap({key: 'tutorial_water'});
 		const tileset = map.addTilesetImage('newTileMap', 'tiles');
 		this.layer = map.createStaticLayer('Tile Layer 1', tileset, 0, 0);
@@ -171,10 +169,6 @@ export default class s0r3 extends Phaser.Scene {
 		this.switchAir = this.input.keyboard.addKey('four');
 		this.interact = this.input.keyboard.addKey('e');
 		this.castSpell = this.input.keyboard.addKey('space');
-		this.input.keyboard.createCombo('TOPRAC');
-
-		this.easterEgg = false;
-
 
 	}	// ---------- END OF CREATE ---------- //
 
@@ -185,15 +179,6 @@ export default class s0r3 extends Phaser.Scene {
 		if (this.resetLevel) {
 			this.scene.start('s0r3')
 		}
-
-
-		/* ---------- EASTER EGG ---------- */
-		this.input.keyboard.on('keycombomatch', () => {
-			this.easterEgg = true;
-			this.player.setTexture('tank')
-			this.player.setScale(1.5);
-		});
-
 
 		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {

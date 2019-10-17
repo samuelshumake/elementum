@@ -5,16 +5,16 @@ export default class Interactable extends Phaser.GameObjects.Sprite {
 		scene.sys.updateList.add(this);
 		scene.sys.displayList.add(this);
 
-		/* ------CONSTANTS AND VARIBLES------- */
+
+		/* ------ PROPERTIES ------- */
 		scene.physics.world.enableBody(this, 0);
-		scene.physics.add.collider(this, scene.layer);
-		scene.physics.add.overlap(this, scene.player);
-    this.body.immovable = true
-		this.body.setGravity(0, 600);
-		this.body.setCollideWorldBounds(true);
-		this.setScale(2);
+    	this.body.immovable = true
+		this.setScale(3);
+		this.angle = 90;
+		this.flipX = true;
+		this.flipped = false;
 
-
+		/* ------ CREATES ANIMATION ------- */
 	    scene.anims.create({
 			key: "flipRight",
 			frames: scene.anims.generateFrameNumbers("lever", {start:0, end:3}),
@@ -24,19 +24,12 @@ export default class Interactable extends Phaser.GameObjects.Sprite {
 
 	}
 
-	flip(scene, object, index) {
-		if (scene.interact.isDown && !this.body.touching.none) {
+	flip(scene, object, direction, distance) {
+		if (scene.physics.overlap(this, scene.player) && !this.flipped) {
 			this.play("flipRight",true)
-			object.action(index);
+			object.move(scene, direction, distance);
 		}
-
-	}
-
-	interactTile(objectToMove) {
-
-	}
-
-	interactSprite(spriteToMove, action) {
+		this.flipped = true;
 
 	}
 

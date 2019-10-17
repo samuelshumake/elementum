@@ -33,33 +33,30 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 			frameRate: 15,
 			repeat: 0
 	    });
-
   }
-	action(index){
-		if (index == 0) {
-			this.moveRight();
-		} else if (index == 1) {
-			this.moveLeft();
+
+	move(scene, direction, distance) {
+		let xPos = this.body.x;
+		let yPos = this.body.y;
+
+		switch (direction) {
+			case 'up':
+				this.body.setVelocityY(-100);
+				setTimeout(() => {this.body.setVelocity(0)}, distance * 10.1);
+				break;
+			case 'right':
+				this.body.setVelocityX(100);
+				setTimeout(() => {this.body.setVelocity(0)}, distance * 10.1);
+				break;
+			case 'down':
+				this.body.setVelocityY(100);
+				setTimeout(() => {this.body.setVelocity(0)}, distance * 10.1);
+				break;
+			case 'left':
+				this.body.setVelocityX(-100);
+				setTimeout(() => {this.body.setVelocity(0)}, distance * 10.1);
+				break;
 		}
 	}
-
-	moveRight(){
-		while (this.body.x <= 545) {
-			this.body.x += 1;
-		}
-	}
-
-	moveLeft(){
-		this.body.x -= 10;
-	}
-
-	moveUp(){
-
-	}
-
-	moveDown(){
-
-	}
-
 
 }
