@@ -32,6 +32,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		// Initializes player's current spell
 		this.currentSpell = 'fire';
 
+		// Makes spell frames transparent
+		scene.earthFrame.alpha = 0.2;
+		scene.waterFrame.alpha = 0.2;
+		scene.airFrame.alpha = 0.2;
+
 
 		/* ------ ANIMATIONS ------- */
 		scene.anims.create({
@@ -161,9 +166,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 	}
 
-	changeTexture() {
-		this.setTexture('fire');
+	changeSpellFrame(scene, frame) {
+		scene.frameGroup.forEach( obj => obj.alpha = 0.2);
+		scene.frameGroup[frame].alpha = 1;
 	}
-
-
 }

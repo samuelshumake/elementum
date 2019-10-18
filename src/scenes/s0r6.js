@@ -67,8 +67,7 @@ export default class s0r6 extends Phaser.Scene {
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/newTileMap.png');
-		this.load.tilemapTiledJSON('tutorial_1', './assets/map/tutorial_1.json')
-		this.load.tilemapTiledJSON('map', './assets/map/level.json');
+		this.load.tilemapTiledJSON('s0r6', './assets/map/s0r6.json');
 
 		/* ---------- LOADS SPRITES FOR SPELL FRAMES ---------- */
 		this.load.image('airFrame', './assets/sprites/airFrame.png');
@@ -99,7 +98,7 @@ export default class s0r6 extends Phaser.Scene {
 
 
 		/* ---------- CREATES MAP ---------- */
-		const map = this.make.tilemap({key: "map"});
+		const map = this.make.tilemap({key: "s0r6"});
 		const tileset = map.addTilesetImage("newTileMap", "tiles");
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
@@ -125,8 +124,10 @@ export default class s0r6 extends Phaser.Scene {
 		/* ---------- CREATES SPELL FRAMES ---------- */
 		this.fireFrame = this.add.sprite(48, 40, 'fireFrame');
 		this.earthFrame = this.add.sprite(111, 40, 'earthFrame');
-		this.bubbleFrame = this.add.sprite(174, 40, 'bubbleFrame');
+		this.waterFrame = this.add.sprite(174, 40, 'bubbleFrame');
 		this.airFrame = this.add.sprite(237, 40, 'airFrame');
+
+		this.frameGroup = [this.fireFrame, this.earthFrame, this.waterFrame, this.airFrame];
 
 
 		/* ---------- CREATES PLAYER ---------- */
@@ -203,35 +204,6 @@ export default class s0r6 extends Phaser.Scene {
 		}
 
 
-		/* ---------- SPELL FRAME CHECKER ---------- */
-		switch (this.player.currentSpell) {
-			case 'fire':
-				this.fireFrame.alpha = 1;
-				this.earthFrame.alpha = 0.2;
-				this.bubbleFrame.alpha = 0.2;
-				this.airFrame.alpha = 0.2;
-				break;
-			case 'earth':
-				this.fireFrame.alpha = 0.2;
-				this.earthFrame.alpha = 1;
-				this.bubbleFrame.alpha = 0.2;
-				this.airFrame.alpha = 0.2;
-				break;
-			case 'water':
-				this.fireFrame.alpha = 0.2;
-				this.earthFrame.alpha = 0.2;
-				this.bubbleFrame.alpha = 1;
-				this.airFrame.alpha = 0.2;
-				break;
-			case 'air':
-				this.fireFrame.alpha = 0.2;
-				this.earthFrame.alpha = 0.2;
-				this.bubbleFrame.alpha = 0.2;
-				this.airFrame.alpha = 1;
-				break;
-		}
-
-
 		/* ---------- MOVES PLAYER ---------- */
 		this.player.move(this);
 
@@ -274,12 +246,16 @@ export default class s0r6 extends Phaser.Scene {
 		/* ---------- CASTING SPELLS ---------- */
 		if (this.switchFire.isDown) {
 			this.player.currentSpell = 'fire';
+			this.player.changeSpellFrame(this, 0);
 		} else if (this.switchEarth.isDown) {
 			this.player.currentSpell = 'earth';
+			this.player.changeSpellFrame(this, 1);
 		} else if (this.switchWater.isDown) {
 			this.player.currentSpell = 'water';
+			this.player.changeSpellFrame(this, 2);
 		} else if (this.switchAir.isDown) {
 			this.player.currentSpell = 'air';
+			this.player.changeSpellFrame(this, 3);
 		}
 
 

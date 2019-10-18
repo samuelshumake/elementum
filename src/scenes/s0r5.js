@@ -20,16 +20,10 @@ export default class s0r5 extends Phaser.Scene {
 	preload () {
 
 		/* ---------- LOADS SPRITE SHEETS ---------- */
-	    // Load sprite sheets
 		this.load.spritesheet('player', './assets/spriteSheets/idleFinal.png', {
-			frameHeight: 39,
 			frameWidth: 34,
 		});
 		this.load.spritesheet('lever', './assets/spriteSheets/lever.png',{
-			frameHeight: 6,
-			frameWidth: 9
-	    });
-		this.load.spritesheet('leverBack', './assets/spriteSheets/leverBack.png',{
 			frameHeight: 6,
 			frameWidth: 9
 	    });
@@ -41,21 +35,9 @@ export default class s0r5 extends Phaser.Scene {
 			frameHeight: 14,
 			frameWidth:	 21
 		});
-		this.load.spritesheet('jumpPlayer', './assets/spriteSheets/jumpC.png',{
-			frameHeight: 44,
-			frameWidth:	 34
-		});
-		this.load.spritesheet('walkPlayer', './assets/spriteSheets/walkspritesheet.png',{
-			frameHeight:44,
-			frameWidth: 34
-		});
 		this.load.spritesheet('tempPlatform', './assets/spriteSheets/platformMove.png',{
 			frameHeight: 32,
 			frameWidth:	 96
-		});
-		this.load.spritesheet('tank', './assets/spriteSheets/tank.png', {
-			frameHeight: 39,
-			frameWidth: 34,
 		});
 		this.load.spritesheet('manaBar', './assets/spriteSheets/manaPotion.png', {
 			frameHeight: 64,
@@ -86,8 +68,7 @@ export default class s0r5 extends Phaser.Scene {
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/newTileMap.png');
-		this.load.tilemapTiledJSON('tutorial_1', './assets/map/tutorial_1.json')
-		this.load.tilemapTiledJSON('map', './assets/map/level.json');
+		this.load.tilemapTiledJSON('s0r5', './assets/map/s0r5.json');
 
 		/* ---------- LOADS SPRITES FOR SPELL FRAMES ---------- */
 		this.load.image('airFrame', './assets/sprites/airFrame.png');
@@ -119,7 +100,7 @@ export default class s0r5 extends Phaser.Scene {
 
 		/* ---------- CREATES MAP ---------- */
 
-		const map = this.make.tilemap({key: 'tutorial_air'});
+		const map = this.make.tilemap({key: 's0r5'});
 		const tileset = map.addTilesetImage('newTileMap', 'tiles');
 		this.layer = map.createStaticLayer('Tile Layer 1', tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
@@ -144,8 +125,10 @@ export default class s0r5 extends Phaser.Scene {
 		/* ---------- CREATES SPELL FRAMES ---------- */
 		this.fireFrame = this.add.sprite(48, 40, 'fireFrame');
 		this.earthFrame = this.add.sprite(111, 40, 'earthFrame');
-		this.bubbleFrame = this.add.sprite(174, 40, 'bubbleFrame');
+		this.waterFrame = this.add.sprite(174, 40, 'bubbleFrame');
 		this.airFrame = this.add.sprite(237, 40, 'airFrame');
+
+		this.frameGroup = [this.fireFrame, this.earthFrame, this.waterFrame, this.airFrame];
 
 
 		/* ---------- CREATES PLAYER ---------- */
@@ -187,35 +170,6 @@ export default class s0r5 extends Phaser.Scene {
 		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {
 			this.scene.start('s0r6')
-		}
-
-
-		/* ---------- SPELL FRAME CHECKER ---------- */
-		switch (this.player.currentSpell) {
-			case 'fire':
-				this.fireFrame.alpha = 1;
-				this.earthFrame.alpha = 0.2;
-				this.bubbleFrame.alpha = 0.2;
-				this.airFrame.alpha = 0.2;
-				break;
-			case 'earth':
-				this.fireFrame.alpha = 0.2;
-				this.earthFrame.alpha = 1;
-				this.bubbleFrame.alpha = 0.2;
-				this.airFrame.alpha = 0.2;
-				break;
-			case 'water':
-				this.fireFrame.alpha = 0.2;
-				this.earthFrame.alpha = 0.2;
-				this.bubbleFrame.alpha = 1;
-				this.airFrame.alpha = 0.2;
-				break;
-			case 'air':
-				this.fireFrame.alpha = 0.2;
-				this.earthFrame.alpha = 0.2;
-				this.bubbleFrame.alpha = 0.2;
-				this.airFrame.alpha = 1;
-				break;
 		}
 
 
@@ -262,15 +216,18 @@ export default class s0r5 extends Phaser.Scene {
 
 
 		/* ---------- CASTING SPELLS ---------- */
-		// Switches current spell
 		if (this.switchFire.isDown) {
 			this.player.currentSpell = 'fire';
+			this.player.changeSpellFrame(this, 0);
 		} else if (this.switchEarth.isDown) {
 			this.player.currentSpell = 'earth';
+			this.player.changeSpellFrame(this, 1);
 		} else if (this.switchWater.isDown) {
 			this.player.currentSpell = 'water';
+			this.player.changeSpellFrame(this, 2);
 		} else if (this.switchAir.isDown) {
 			this.player.currentSpell = 'air';
+			this.player.changeSpellFrame(this, 3);
 		}
 
 		// Casts spell if cooldown timer has been met
