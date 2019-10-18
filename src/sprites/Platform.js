@@ -6,6 +6,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
 		scene.physics.world.enableBody(this, 0);
 	    scene.physics.add.collider(this, scene.player);
+		scene.physics.add.collider(this, scene.layer);
 	    this.body.immovable = true
 		this.setScale(1);
 
@@ -36,9 +37,6 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
   }
 
 	move(scene, direction, distance) {
-		let xPos = this.body.x;
-		let yPos = this.body.y;
-
 		switch (direction) {
 			case 'up':
 				this.body.setVelocityY(-100);

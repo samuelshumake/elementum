@@ -159,14 +159,17 @@ export default class s0r6 extends Phaser.Scene {
 
 
 		/* ---------- CREATES PLATFORMS ---------- */
-		this.platform1 = new Platform(this, 400, 300, 'tempPlatform');
+		this.platform1 = new Platform(this, 496, 528, 'tempPlatform');
 		this.platform2 = new Platform(this, 720, 300, 'tempPlatform');
 		this.platform2.flipX = true;
 
 
 		/* ---------- CREATES LEVERS ---------- */
 		this.lever = new Interactable(this, 40, 450, 'lever');
-		this.lever2 = new Interactable(this, 725, 600, 'lever');
+		this.lever.angle = 90;
+		this.lever2 = new Interactable(this, 760, 580, 'lever');
+		this.lever2.angle = 90;
+		this.lever2.flipY = true;
 
 
 		//* ---------- CREATES INTERACTING KEYS ---------- */
@@ -271,7 +274,7 @@ export default class s0r6 extends Phaser.Scene {
 		} else if (this.switchAir.isDown) {
 			this.player.currentSpell = 'air';
 		}
-	
+
 
 		if (this.castSpell.isDown && this.player.spellTimer > 70 ) {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
@@ -279,9 +282,10 @@ export default class s0r6 extends Phaser.Scene {
 	 	}
 
 		if (this.interact.isDown) {
-			this.lever.flip(this, this.platform1, 'right', 100);
+			this.lever.flip(this, this.platform1, 'right', 200);
+			this.lever2.flip(this, this.platform2, 'left', 98);
 		}
-		//this.lever2.flip(this, this.platform2, 1);
+
 
     }	// ----- END OF UPDATE ----- //
 

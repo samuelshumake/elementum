@@ -10,7 +10,6 @@ export default class Interactable extends Phaser.GameObjects.Sprite {
 		scene.physics.world.enableBody(this, 0);
     	this.body.immovable = true
 		this.setScale(3);
-		this.angle = 90;
 		this.flipX = true;
 		this.flipped = false;
 
@@ -28,8 +27,9 @@ export default class Interactable extends Phaser.GameObjects.Sprite {
 		if (scene.physics.overlap(this, scene.player) && !this.flipped) {
 			this.play("flipRight",true)
 			object.move(scene, direction, distance);
+			this.flipped = true;
 		}
-		this.flipped = true;
+
 
 	}
 
