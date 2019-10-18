@@ -139,18 +139,10 @@ export default class s0r1 extends Phaser.Scene {
 
 
 		/* ------ CREATE SPIKES ---------------- */
-		this.spike = this.physics.add.sprite(400, 635, 'spike');
-		this.spike2 = this.physics.add.sprite(380, 635, 'spike');
-		this.spike3 = this.physics.add.sprite(360, 635, 'spike');
-		this.spike4 = this.physics.add.sprite(420, 635, 'spike');
-		this.spike5 = this.physics.add.sprite(440, 635, 'spike');
-		this.spikeGroup = [this.spike, this.spike2, this.spike3, this.spike4, this.spike5];
-		this.spike.setScale(0.3);
-		this.spike2.setScale(0.3);
-		this.spike3.setScale(0.3);
-		this.spike4.setScale(0.3);
-		this.spike5.setScale(0.3);
-
+		this.spikeGroup = [];
+		for (let i = 0; i <= 5; i++) {
+			this.spikeGroup.push(this.physics.add.sprite(16*i + 360, 635, 'spike').setScale(0.3))
+		}
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
 		this.switchFire = this.input.keyboard.addKey('one');

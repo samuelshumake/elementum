@@ -136,6 +136,12 @@ export default class s0r6 extends Phaser.Scene {
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(754, 192, 'door');
 
+		/* ------ CREATE SPIKES ---------------- */
+		this.spikeGroup = [];
+		for (let i = 0; i <= 3; i++) {
+			this.spikeGroup.push(this.physics.add.sprite(16*i + 430, 347, 'spike').setScale(0.3))
+		}
+
 
 		/* ---------- CREATES BOX ---------- */
 		this.box = this.physics.add.sprite(130, 385, 'box');
@@ -237,6 +243,7 @@ export default class s0r6 extends Phaser.Scene {
 
 		/* ----------- PLAYER KILLERS ----------- */
 		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
+		this.physics.overlap(this.player, Object.values(this.spikeGroup), () => this.resetLevel = true);
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
 
 
