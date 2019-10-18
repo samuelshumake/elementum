@@ -4,7 +4,9 @@ import Player from '../sprites/Player.js';
 import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
-import Interactable from '../sprites/Interactable.js';
+import Lever from '../sprites/Lever.js';
+import Box from '../sprites/Box.js';
+import Rock from '../sprites/Rock.js';
 export default class s0r5 extends Phaser.Scene {
 
 	constructor () {
@@ -135,16 +137,8 @@ export default class s0r5 extends Phaser.Scene {
 		this.player = new Player(this, 50, 364, 'player');
 
 		/* ---------- CREATE ROCK ------------- */
-		this.rock = this.physics.add.sprite(300, 355, 'rock');
-		this.rock.setScale(0.8, 1);
-		this.physics.add.collider(this.rock, this.layer);
-		this.physics.add.collider(this.player, this.rock);
-		this.rock.body.immovable = true;
-		this.physics.add.overlap(this.rock, this.player, () => {
-			this.player.x += 10;
-		});
-		this.rock.setCollideWorldBounds = true;
-		this.rock.setGravity(0, 600);
+		this.rock = new Rock(this, 300, 345, 'rock');
+
 
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(754, 352, 'door');
@@ -195,13 +189,16 @@ export default class s0r5 extends Phaser.Scene {
 			for (let x in this.enemyGroup) {
 				this.physics.overlap(this.player.fireball, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.fireball, x));
 			}
-
-
 		}
 		if (this.player.spellActive['water']) {
 			this.player.bubble.deactivate(this, this.enemyGroup);
 			for (let x in this.enemyGroup) {
 				this.physics.overlap(this.player.bubble, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.bubble, x));
+			}
+			if (this.box) {
+				this.physics.add.overlap(this.box, this.player.bubble, () => {
+					this.player.bubble.suspend(this, this.box);
+				});
 			}
 		}
 		if (this.player.spellActive['air']) {
@@ -209,9 +206,11 @@ export default class s0r5 extends Phaser.Scene {
 			for (let x in this.enemyGroup) {
 				this.physics.overlap(this.player.airwave, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.airwave, x));
 			}
-			this.physics.add.overlap(this.rock, this.player.airwave, () => {			// fix this
-				this.player.airwave.push(this, this.rock);
-			})
+			if (this.rock) {
+				this.physics.add.overlap(this.rock, this.player.airwave, () => {
+					this.player.airwave.push(this, this.rock);
+				});
+			}
 		}
 
 

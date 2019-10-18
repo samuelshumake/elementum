@@ -4,7 +4,9 @@ import Player from '../sprites/Player.js';
 import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
-import Interactable from '../sprites/Interactable.js';
+import Lever from '../sprites/Lever.js';
+import Box from '../sprites/Box.js';
+import Rock from '../sprites/Rock.js';
 export default class s0r2 extends Phaser.Scene {
 
 	constructor () {
@@ -77,7 +79,6 @@ export default class s0r2 extends Phaser.Scene {
 
 		/* ---------- LOADS SPRITES FOR GAME OBJECTS ---------- */
 		this.load.image('spike', './assets/sprites/spike.png');
-		this.load.image('rock', './assets/sprites/rock.png');
 		this.load.image('door', './assets/sprites/door.png');
 
 	}	// ----- END OF PRELOAD ----- //
@@ -173,15 +174,31 @@ export default class s0r2 extends Phaser.Scene {
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
 		if (this.player.spellActive['fire']) {
 			this.player.fireball.deactivate(this, this.enemyGroup);
+			for (let x in this.enemyGroup) {
+				this.physics.overlap(this.player.fireball, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.fireball, x));
+			}
 		}
 		if (this.player.spellActive['water']) {
 			this.player.bubble.deactivate(this, this.enemyGroup);
-			this.physics.add.overlap(this.rock, this.player.bubble, () => {
-				this.player.bubble.suspend(this, this.rock);
-			})
+			for (let x in this.enemyGroup) {
+				this.physics.overlap(this.player.bubble, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.bubble, x));
+			}
+			if (this.box) {
+				this.physics.add.overlap(this.box, this.player.bubble, () => {
+					this.player.bubble.suspend(this, this.box);
+				});
+			}
 		}
 		if (this.player.spellActive['air']) {
 			this.player.airwave.deactivate(this, this.enemyGroup);
+			for (let x in this.enemyGroup) {
+				this.physics.overlap(this.player.airwave, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.airwave, x));
+			}
+			if (this.rock) {
+				this.physics.add.overlap(this.rock, this.player.airwave, () => {
+					this.player.airwave.push(this, this.rock);
+				});
+			}
 		}
 
 

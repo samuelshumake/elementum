@@ -79,9 +79,6 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		enemy.body.setGravity(0, 0);
 		enemy.body.setVelocityX(0);
 		enemy.body.setVelocityY(-200);
-		if (enemy.texture.key != 'rock') {
-			setTimeout(() => {enemy.body.setGravity(0, 600); enemy.canMove = true}, 1200);
-		}
 	}
 
 	push(scene, enemy, direction) {

@@ -4,7 +4,9 @@ import Player from '../sprites/Player.js';
 import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
-import Interactable from '../sprites/Interactable.js';
+import Lever from '../sprites/Lever.js';
+import Box from '../sprites/Box.js';
+import Rock from '../sprites/Rock.js';
 export default class s0r6 extends Phaser.Scene {
 
 	constructor () {
@@ -144,25 +146,15 @@ export default class s0r6 extends Phaser.Scene {
 		}
 
 
-		/* ---------- CREATES BOX ---------- */
-		this.box = this.physics.add.sprite(130, 385, 'box');
-		this.box.setScale(0.8, 1);
-		this.physics.add.collider(this.box, this.layer);
-		this.physics.add.collider(this.player, this.box);
-		this.box.body.immovable = true;
-		this.physics.add.overlap(this.box, this.player, () => {
-			this.player.x += 10;
-		});
-
-
 		/* ---------- CREATES ENEMIES ---------- */
-		// this.enemy1 = new Enemy(this, 300, 550, 'slimeAni');
-		// this.enemy2 = new Enemy(this, 200, 400, 'slimeAni');
-		// this.enemy3 = new Enemy(this, 450, 350, 'slimeAni');
+		this.enemy1 = new Enemy(this, 300, 550, 'slimeAni');
+		this.enemy2 = new Enemy(this, 200, 400, 'slimeAni');
+		this.enemy3 = new Enemy(this, 450, 350, 'slimeAni');
 		this.enemy4 = new Enemy(this, 600, 600, 'slimeAni');
-		// this.enemyGroup = [this.enemy1, this.enemy2, this.enemy3, this.enemy4];
-		this.enemyGroup = [this.enemy4];
-		// this.physics.add.collider(this.box, this.enemyGroup[0]);
+		this.enemyGroup = [this.enemy1, this.enemy2, this.enemy3, this.enemy4];
+
+		/* ---------- CREATES BOX ---------- */
+		this.box = new Box(this, 130, 385, 'box');
 
 
 		/* ---------- CREATES PLATFORMS ---------- */
@@ -172,9 +164,9 @@ export default class s0r6 extends Phaser.Scene {
 
 
 		/* ---------- CREATES LEVERS ---------- */
-		this.lever = new Interactable(this, 40, 450, 'lever');
+		this.lever = new Lever(this, 40, 450, 'lever');
 		this.lever.angle = 90;
-		this.lever2 = new Interactable(this, 760, 580, 'lever');
+		this.lever2 = new Lever(this, 760, 580, 'lever');
 		this.lever2.angle = 90;
 		this.lever2.flipY = true;
 
@@ -231,14 +223,21 @@ export default class s0r6 extends Phaser.Scene {
 			for (let x in this.enemyGroup) {
 				this.physics.overlap(this.player.bubble, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.bubble, x));
 			}
-			this.physics.add.overlap(this.box, this.player.bubble, () => {			// fix this
-				this.player.bubble.suspend(this, this.box);
-			})
+			if (this.box) {
+				this.physics.add.overlap(this.box, this.player.bubble, () => {
+					this.player.bubble.suspend(this, this.box);
+				});
+			}
 		}
 		if (this.player.spellActive['air']) {
 			this.player.airwave.deactivate(this, this.enemyGroup);
 			for (let x in this.enemyGroup) {
 				this.physics.overlap(this.player.airwave, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.airwave, x));
+			}
+			if (this.rock) {
+				this.physics.add.overlap(this.rock, this.player.airwave, () => {
+					this.player.airwave.push(this, this.rock);
+				});
 			}
 		}
 

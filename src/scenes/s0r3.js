@@ -4,7 +4,9 @@ import Player from '../sprites/Player.js';
 import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
-import Interactable from '../sprites/Interactable.js';
+import Lever from '../sprites/Lever.js';
+import Box from '../sprites/Box.js';
+import Rock from '../sprites/Rock.js';
 export default class s0r3 extends Phaser.Scene {
 
 	constructor () {
@@ -78,7 +80,7 @@ export default class s0r3 extends Phaser.Scene {
 
 		/* ---------- LOADS SPRITES FOR GAME OBJECTS ---------- */
 		this.load.image('spike', './assets/sprites/spike.png');
-		this.load.image('rock', './assets/sprites/rock.png');
+		this.load.image('box', './assets/sprites/box.png');
 		this.load.image('door', './assets/sprites/door.png');
 
 	}	// ----- END OF PRELOAD ----- //
@@ -131,15 +133,8 @@ export default class s0r3 extends Phaser.Scene {
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 50, 428, 'player');
 
-		/* ---------- CREATE ROCK ------------- */
-		this.box = this.physics.add.sprite(400, 415, 'box');
-		//this.rock.setScale(1, 1);
-		this.physics.add.collider(this.box, this.layer);
-		this.physics.add.collider(this.player, this.box);
-		this.box.body.immovable = true;
-		this.physics.add.overlap(this.box, this.player, () => {
-			this.player.x += 10;
-		});
+		/* ---------- CREATES BOX ---------- */
+		this.box = new Box(this, 400, 415, 'box');
 
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(754, 418, 'door');
@@ -187,22 +182,27 @@ export default class s0r3 extends Phaser.Scene {
 			for (let x in this.enemyGroup) {
 				this.physics.overlap(this.player.fireball, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.fireball, x));
 			}
-
-
 		}
 		if (this.player.spellActive['water']) {
 			this.player.bubble.deactivate(this, this.enemyGroup);
 			for (let x in this.enemyGroup) {
 				this.physics.overlap(this.player.bubble, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.bubble, x));
 			}
-			this.physics.add.overlap(this.box, this.player.bubble, () => {			// fix this
-				this.player.bubble.suspend(this, this.box);
-			})
+			if (this.box) {
+				this.physics.add.overlap(this.box, this.player.bubble, () => {
+					this.player.bubble.suspend(this, this.box);
+				});
+			}
 		}
 		if (this.player.spellActive['air']) {
 			this.player.airwave.deactivate(this, this.enemyGroup);
 			for (let x in this.enemyGroup) {
 				this.physics.overlap(this.player.airwave, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.airwave, x));
+			}
+			if (this.rock) {
+				this.physics.add.overlap(this.rock, this.player.airwave, () => {
+					this.player.airwave.push(this, this.rock);
+				});
 			}
 		}
 

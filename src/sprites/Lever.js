@@ -1,4 +1,4 @@
-export default class Interactable extends Phaser.GameObjects.Sprite {
+export default class Lever extends Phaser.GameObjects.Sprite {
 
 	constructor(scene, x, y, key) {
 		super(scene, x, y, key);
