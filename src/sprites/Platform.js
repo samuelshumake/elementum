@@ -5,7 +5,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 		scene.sys.displayList.add(this);
 
 		scene.physics.world.enableBody(this, 0);
-	    scene.physics.add.collider(this, scene.player);
+		scene.physics.add.collider(this, scene.player);
 		scene.physics.add.collider(this, scene.layer);
 	    this.body.immovable = true
 
