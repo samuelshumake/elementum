@@ -79,6 +79,7 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		enemy.body.setGravity(0, 0);
 		enemy.body.setVelocityX(0);
 		enemy.body.setVelocityY(-200);
+		setTimeout(() => enemy.body.setGravity(0, 600), 1000);
 	}
 
 	push(scene, enemy, direction) {

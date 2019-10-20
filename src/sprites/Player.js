@@ -18,8 +18,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 		// Initializes spell cooldown timer
 		this.spellTimer = 100;
-		// Initializes jump cooldown timer
-		this.jumpTimer = 100;
+
+		this.jumpHeld = false;
 
 		// Checks which spells are active
 		this.spellActive = {
@@ -72,7 +72,12 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		var cursors = this.scene.input.keyboard.createCursorKeys();
 
 		this.spellTimer++;
-		this.jumpTimer++;
+
+		if (this.jumpHeld) {
+			this.jumpHeld = !cursors.up._justUp;
+		}
+
+		this.canJump = (!this.jumpHeld && (this.body.touching.down || this.body.blocked.down));
 
 		// Give the player left and right movement
 		if (cursors.left.isDown) {
@@ -95,9 +100,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		}
 
 		// Give the player jumping movement
-		if (cursors.up.isDown && (this.body.touching.down || this.body.blocked.down)) {
-			this.body.y -= 20;
+		if (cursors.up.isDown && this.canJump) {
 			this.jumpTimer = 0;
+			this.jumpHeld = true;
+			this.body.y -= 20;
 			this.body.setVelocityY(-500)
 			this.body.setAccelerationY(1300);
 		}

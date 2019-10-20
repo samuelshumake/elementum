@@ -138,6 +138,7 @@ export default class s0r5 extends Phaser.Scene {
 
 		/* ---------- CREATE ROCK ------------- */
 		this.rock = new Rock(this, 300, 345, 'rock');
+		this.rockGroup = [this.rock];
 
 
 		/* ---------- CREATES DOOR ---------- */
@@ -195,10 +196,12 @@ export default class s0r5 extends Phaser.Scene {
 			for (let x in this.enemyGroup) {
 				this.physics.overlap(this.player.bubble, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.bubble, x));
 			}
-			if (this.box) {
-				this.physics.add.overlap(this.box, this.player.bubble, () => {
-					this.player.bubble.suspend(this, this.box);
-				});
+			if (this.boxGroup) {
+				for (let x in this.boxGroup) {
+					this.physics.add.overlap(this.boxGroup[x], this.player.bubble, () => {
+						this.player.bubble.suspend(this, this.boxGroup[x]);
+					});
+				}
 			}
 		}
 		if (this.player.spellActive['air']) {
@@ -206,10 +209,12 @@ export default class s0r5 extends Phaser.Scene {
 			for (let x in this.enemyGroup) {
 				this.physics.overlap(this.player.airwave, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.airwave, x));
 			}
-			if (this.rock) {
-				this.physics.add.overlap(this.rock, this.player.airwave, () => {
-					this.player.airwave.push(this, this.rock);
-				});
+			if (this.rockGroup) {
+				for (let x in this.rockGroup) {
+					this.physics.add.overlap(this.rockGroup[x], this.player.airwave, () => {
+						this.player.airwave.push(this, this.rockGroup[x]);
+					});
+				}
 			}
 		}
 
