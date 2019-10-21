@@ -4,7 +4,9 @@ import Player from '../sprites/Player.js';
 import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
-import Interactable from '../sprites/Interactable.js';
+import Lever from '../sprites/Lever.js';
+import Box from '../sprites/Box.js';
+import Rock from '../sprites/Rock.js';
 export default class s0r1 extends Phaser.Scene {
 
 	constructor () {
@@ -20,16 +22,11 @@ export default class s0r1 extends Phaser.Scene {
 	preload () {
 
 		/* ---------- LOADS SPRITE SHEETS ---------- */
-	    // Load sprite sheets
-		this.load.spritesheet('player', './assets/spriteSheets/idleFinal.png', {
+		this.load.spritesheet('player', './assets/spriteSheets/idleFinal.png', {	// Combine all player spritesheets into one soon
 			frameHeight: 39,
 			frameWidth: 34,
 		});
 		this.load.spritesheet('lever', './assets/spriteSheets/lever.png',{
-			frameHeight: 6,
-			frameWidth: 9
-	    });
-		this.load.spritesheet('leverBack', './assets/spriteSheets/leverBack.png',{
 			frameHeight: 6,
 			frameWidth: 9
 	    });
@@ -41,21 +38,9 @@ export default class s0r1 extends Phaser.Scene {
 			frameHeight: 14,
 			frameWidth:	 21
 		});
-		this.load.spritesheet('jumpPlayer', './assets/spriteSheets/jumpC.png',{
-			frameHeight: 44,
-			frameWidth:	 34
-		});
-		this.load.spritesheet('walkPlayer', './assets/spriteSheets/walkspritesheet.png',{
-			frameHeight:44,
-			frameWidth: 34
-		});
 		this.load.spritesheet('tempPlatform', './assets/spriteSheets/platformMove.png',{
 			frameHeight: 32,
 			frameWidth:	 96
-		});
-		this.load.spritesheet('tank', './assets/spriteSheets/tank.png', {
-			frameHeight: 39,
-			frameWidth: 34,
 		});
 		this.load.spritesheet('manaBar', './assets/spriteSheets/manaPotion.png', {
 			frameHeight: 64,
@@ -78,18 +63,6 @@ export default class s0r1 extends Phaser.Scene {
 			frameWidth: 48,
 		});
 
-
-		/* ---------- LOADS SPRITES FOR SPELL FRAMES ---------- */
-		this.load.image('airFrame', './assets/sprites/airFrame.png');
-		this.load.image('bubbleFrame', './assets/sprites/bubbleFrame.png');
-		this.load.image('fireFrame', './assets/sprites/fireFrame.png');
-		this.load.image('earthFrame', './assets/sprites/earthFrame.png');
-		this.load.image('spike', './assets/sprites/spike.png');
-
-		this.load.image('rock', './assets/sprites/rock.png');
-		this.load.image('door', './assets/sprites/door.png');
-
-
 		/* ---------- LOADS BACKGROUND -----------------------*/
 		this.load.image('background', './assets/images/backgroundimage1.png');
 		this.load.image('topbanner', './assets/images/topbanner.png');
@@ -97,8 +70,18 @@ export default class s0r1 extends Phaser.Scene {
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/newTileMap.png');
-		this.load.tilemapTiledJSON('tutorial_1', './assets/map/tutorial_1.json')
-		this.load.tilemapTiledJSON('map', './assets/map/level.json');
+		this.load.tilemapTiledJSON('s0r1', './assets/map/s0r1.json');
+
+		/* ---------- LOADS SPRITES FOR SPELL FRAMES ---------- */
+		this.load.image('airFrame', './assets/sprites/airFrame.png');
+		this.load.image('bubbleFrame', './assets/sprites/bubbleFrame.png');
+		this.load.image('fireFrame', './assets/sprites/fireFrame.png');
+		this.load.image('earthFrame', './assets/sprites/earthFrame.png');
+
+		/* ---------- LOADS SPRITES FOR GAME OBJECTS ---------- */
+		this.load.image('spike', './assets/sprites/spike.png');
+		this.load.image('door', './assets/sprites/door.png');
+
 
 	}	// ----- END OF PRELOAD ----- //
 
@@ -106,19 +89,18 @@ export default class s0r1 extends Phaser.Scene {
 	create (data) {
 	    ChangeScene.addSceneEventListeners(this);
 
-
 		/* ---------- GLOBAL VARIABLES --------- */
 		this.resetLevel = false
 		this.gameWidth = this.cameras.main.width
 		this.gameHeight = this.cameras.main.height
+
 
 		/* --------- CREATES BACKGROUND --------- */
 		this.add.image(350, 325,'background').setScale(1.1);
 
 
 		/* ---------- CREATES MAP ---------- */
-
-		const map = this.make.tilemap({key: 'tutorial_1'});
+		const map = this.make.tilemap({key: 's0r1'});
 		const tileset = map.addTilesetImage('newTileMap', 'tiles');
 		this.layer = map.createStaticLayer('Tile Layer 1', tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
@@ -126,6 +108,7 @@ export default class s0r1 extends Phaser.Scene {
 
 		/* ---------- TOP BANNER ---------- */
 		this.add.image(350, 35,'topbanner').setScale(15, 1.7);
+
 
 		/* ---------- CREATES MANA BAR ---------- */
 		this.manaBar = this.add.sprite(this.cameras.main.width - 50, 40, 'manaBar', 27);
@@ -135,6 +118,7 @@ export default class s0r1 extends Phaser.Scene {
 			frameRate: 24,
 		});
 
+		/* ---------- TUTORIAL TEXT ---------- */
 		this.add.image(410, 210,'textBanner').setScale(8.5, 1.7);
 		this.tutorialText = this.add.text(175, 200, 'Use the arrow keys to move left, right, and jump');
 
@@ -142,41 +126,33 @@ export default class s0r1 extends Phaser.Scene {
 		/* ---------- CREATES SPELL FRAMES ---------- */
 		this.fireFrame = this.add.sprite(48, 40, 'fireFrame');
 		this.earthFrame = this.add.sprite(111, 40, 'earthFrame');
-		this.bubbleFrame = this.add.sprite(174, 40, 'bubbleFrame');
+		this.waterFrame = this.add.sprite(174, 40, 'bubbleFrame');
 		this.airFrame = this.add.sprite(237, 40, 'airFrame');
+
+		this.frameGroup = [this.fireFrame, this.earthFrame, this.waterFrame, this.airFrame];
 
 
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 50, 460, 'player');
+
 
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(754, 448, 'door');
 
 
 		/* ------ CREATE SPIKES ---------------- */
-		this.spike = this.physics.add.sprite(400, 635, 'spike');
-		this.spike2 = this.physics.add.sprite(380, 635, 'spike');
-		this.spike3 = this.physics.add.sprite(360, 635, 'spike');
-		this.spike4 = this.physics.add.sprite(420, 635, 'spike');
-		this.spike5 = this.physics.add.sprite(440, 635, 'spike');
-		this.spikeGroup = [this.spike, this.spike2, this.spike3, this.spike4, this.spike5];
-		this.spike.setScale(0.3);
-		this.spike2.setScale(0.3);
-		this.spike3.setScale(0.3);
-		this.spike4.setScale(0.3);
-		this.spike5.setScale(0.3);
+		this.spikeGroup = [];
+		for (let i = 0; i <= 5; i++) {
+			this.spikeGroup.push(this.physics.add.sprite(16*i + 360, 635, 'spike').setScale(0.3))
+		}
 
-		// Keys for interacting
+		/* ---------- KEYS FOR INTERACTING ---------- */
 		this.switchFire = this.input.keyboard.addKey('one');
 		this.switchEarth = this.input.keyboard.addKey('two');
 		this.switchWater = this.input.keyboard.addKey('three');
 		this.switchAir = this.input.keyboard.addKey('four');
 		this.interact = this.input.keyboard.addKey('e');
 		this.castSpell = this.input.keyboard.addKey('space');
-		this.input.keyboard.createCombo('TOPRAC');
-
-		this.easterEgg = false;
-
 
 	}	// ---------- END OF CREATE ---------- //
 
@@ -189,62 +165,19 @@ export default class s0r1 extends Phaser.Scene {
 		}
 
 
-		/* ---------- EASTER EGG ---------- */
-		this.input.keyboard.on('keycombomatch', () => {
-			this.easterEgg = true;
-			this.player.setTexture('tank')
-			this.player.setScale(1.5);
-		});
-
-
 		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {
 			this.scene.start('s0r2')
 		}
 
 
-		/* ---------- SPELL FRAME CHECKER ---------- */
-		switch (this.player.currentSpell) {
-			case 'fire':
-				this.fireFrame.alpha = 1;
-				this.earthFrame.alpha = 0.2;
-				this.bubbleFrame.alpha = 0.2;
-				this.airFrame.alpha = 0.2;
-				break;
-			case 'earth':
-				this.fireFrame.alpha = 0.2;
-				this.earthFrame.alpha = 1;
-				this.bubbleFrame.alpha = 0.2;
-				this.airFrame.alpha = 0.2;
-				break;
-			case 'water':
-				this.fireFrame.alpha = 0.2;
-				this.earthFrame.alpha = 0.2;
-				this.bubbleFrame.alpha = 1;
-				this.airFrame.alpha = 0.2;
-				break;
-			case 'air':
-				this.fireFrame.alpha = 0.2;
-				this.earthFrame.alpha = 0.2;
-				this.bubbleFrame.alpha = 0.2;
-				this.airFrame.alpha = 1;
-				break;
-		}
-
-
 		/* ---------- MOVES PLAYER ---------- */
 		this.player.move(this);
 
-		/*----------- Enemy AI -------------- */
-		for(var x in this.enemyGroup){
-			this.enemyGroup[x].move(this, this.player);
-		}
-
 		/* ----------- PLAYER KILLERS ----------- */
-
 		this.physics.overlap(this.player, Object.values(this.spikeGroup), () => this.resetLevel = true);
-
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
+
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
 		if (this.player.spellActive['fire']) {
@@ -258,28 +191,42 @@ export default class s0r1 extends Phaser.Scene {
 			for (let x in this.enemyGroup) {
 				this.physics.overlap(this.player.bubble, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.bubble, x));
 			}
-			this.physics.add.overlap(this.rock, this.player.bubble, () => {			// fix this
-				this.player.bubble.suspend(this, this.rock);
-			})
+			if (this.boxGroup) {
+				for (let x in this.boxGroup) {
+					this.physics.add.overlap(this.boxGroup[x], this.player.bubble, () => {
+						this.player.bubble.suspend(this, this.boxGroup[x]);
+					});
+				}
+			}
 		}
 		if (this.player.spellActive['air']) {
 			this.player.airwave.deactivate(this, this.enemyGroup);
 			for (let x in this.enemyGroup) {
 				this.physics.overlap(this.player.airwave, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.airwave, x));
 			}
+			if (this.rockGroup) {
+				for (let x in this.rockGroup) {
+					this.physics.add.overlap(this.rockGroup[x], this.player.airwave, () => {
+						this.player.airwave.push(this, this.rockGroup[x]);
+					});
+				}
+			}
 		}
 
 
 		/* ---------- CASTING SPELLS ---------- */
-		// Switches current spell
 		if (this.switchFire.isDown) {
 			this.player.currentSpell = 'fire';
+			this.player.changeSpellFrame(this, 0);
 		} else if (this.switchEarth.isDown) {
 			this.player.currentSpell = 'earth';
+			this.player.changeSpellFrame(this, 1);
 		} else if (this.switchWater.isDown) {
 			this.player.currentSpell = 'water';
+			this.player.changeSpellFrame(this, 2);
 		} else if (this.switchAir.isDown) {
 			this.player.currentSpell = 'air';
+			this.player.changeSpellFrame(this, 3);
 		}
 
 		// Casts spell if cooldown timer has been met

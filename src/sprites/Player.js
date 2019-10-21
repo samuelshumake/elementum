@@ -18,8 +18,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 		// Initializes spell cooldown timer
 		this.spellTimer = 100;
-		// Initializes jump cooldown timer
-		this.jumpTimer = 100;
+
+		this.jumpHeld = false;
 
 		// Checks which spells are active
 		this.spellActive = {
@@ -31,6 +31,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 		// Initializes player's current spell
 		this.currentSpell = 'fire';
+
+		// Makes spell frames transparent
+		scene.earthFrame.alpha = 0.2;
+		scene.waterFrame.alpha = 0.2;
+		scene.airFrame.alpha = 0.2;
 
 
 		/* ------ ANIMATIONS ------- */
@@ -67,45 +72,40 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		var cursors = this.scene.input.keyboard.createCursorKeys();
 
 		this.spellTimer++;
-		this.jumpTimer++;
+
+		if (this.jumpHeld) {
+			this.jumpHeld = !cursors.up._justUp;
+		}
+
+		this.canJump = (!this.jumpHeld && (this.body.touching.down || this.body.blocked.down));
 
 		// Give the player left and right movement
 		if (cursors.left.isDown) {
 			this.body.setVelocityX(-250);
 			this.flipX = true;
 			if (this.body.blocked.down || scene.physics.add.overlap(this.body, this.platform)) {
-				if (scene.easterEgg === false) {
-					this.play("run",true);
-				}
-
+				this.play("run",true);
 			}
 		} else if (cursors.right.isDown) {
 			this.body.setVelocityX(250);
 			this.flipX = false
 			if (this.body.blocked.down || scene.physics.add.overlap(this.body, this.platform)) {
-				if (scene.easterEgg === false) {
-					this.play("run",true);
-				}
+				this.play("run",true);
 			}
 		} else {
 			this.body.setVelocityX(0);
 			if (this.body.blocked.down || scene.physics.add.overlap(this.body, this.platform)) {
-				if (scene.easterEgg === false) {
-					this.play("idle",true);
-				}
+				this.play("idle",true);
 			}
 		}
 
 		// Give the player jumping movement
-		if (cursors.up.isDown && (this.body.touching.down || this.body.blocked.down)) {
-			this.body.y -= 20;
+		if (cursors.up.isDown && this.canJump) {
 			this.jumpTimer = 0;
+			this.jumpHeld = true;
+			this.body.y -= 20;
 			this.body.setVelocityY(-500)
 			this.body.setAccelerationY(1300);
-			if (scene.easterEgg === false) {
-				this.play("jumpPlayer",true);
-			}
-
 		}
 	}
 
@@ -172,9 +172,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 	}
 
-	changeTexture() {
-		this.setTexture('fire');
+	changeSpellFrame(scene, frame) {
+		scene.frameGroup.forEach( obj => obj.alpha = 0.2);
+		scene.frameGroup[frame].alpha = 1;
 	}
-
-
 }

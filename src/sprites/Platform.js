@@ -5,9 +5,9 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 		scene.sys.displayList.add(this);
 
 		scene.physics.world.enableBody(this, 0);
-	    scene.physics.add.collider(this, scene.player);
+		scene.physics.add.collider(this, scene.player);
+		scene.physics.add.collider(this, scene.layer);
 	    this.body.immovable = true
-		this.setScale(1);
 
 	    scene.anims.create({
 	    	key: "platformR",
@@ -33,33 +33,27 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 			frameRate: 15,
 			repeat: 0
 	    });
-
   }
-	action(index){
-		if (index == 0) {
-			this.moveRight();
-		} else if (index == 1) {
-			this.moveLeft();
+
+	move(scene, direction, distance) {
+		switch (direction) {
+			case 'up':
+				this.body.setVelocityY(-100);
+				setTimeout(() => {this.body.setVelocity(0)}, distance * 10.1);
+				break;
+			case 'right':
+				this.body.setVelocityX(100);
+				setTimeout(() => {this.body.setVelocity(0)}, distance * 10.1);
+				break;
+			case 'down':
+				this.body.setVelocityY(100);
+				setTimeout(() => {this.body.setVelocity(0)}, distance * 10.1);
+				break;
+			case 'left':
+				this.body.setVelocityX(-100);
+				setTimeout(() => {this.body.setVelocity(0)}, distance * 10.1);
+				break;
 		}
 	}
-
-	moveRight(){
-		while (this.body.x <= 545) {
-			this.body.x += 1;
-		}
-	}
-
-	moveLeft(){
-		this.body.x -= 10;
-	}
-
-	moveUp(){
-
-	}
-
-	moveDown(){
-
-	}
-
 
 }
