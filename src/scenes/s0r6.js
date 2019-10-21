@@ -4,7 +4,7 @@ import Player from '../sprites/Player.js';
 import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
-import Lever from '../sprites/Interactable.js';
+import Lever from '../sprites/Lever.js';
 export default class s0r6 extends Phaser.Scene {
 
 	constructor () {
@@ -178,8 +178,8 @@ export default class s0r6 extends Phaser.Scene {
 		this.platform2.flipX = true;
 
 		/* ----- CREATE LEVER ------------------ */
-		this.lever = new Interactable(this, 65, 450, 'lever');
-		this.lever2 = new Interactable(this, 725, 600, 'lever');
+		this.lever = new Lever(this, 65, 450, 'lever');
+		this.lever2 = new Lever(this, 725, 600, 'lever');
 
 		// this.spike = this.physics.add.sprite(400, 347, 'spike');
 		// this.spike.setScale(0.3);
