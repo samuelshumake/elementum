@@ -137,11 +137,10 @@ export default class s0r4 extends Phaser.Scene {
 		this.door = this.physics.add.sprite(754, 385, 'door');
 
 		/* ---------- CREATE ENEMIES -------- */
-		this.enemy1 = new Enemy(this, 350, 405, 'slimeAni');
+		this.enemy1 = new Enemy(this, 300, 405, 'slimeAni');
 		this.enemy2 = new Enemy(this, 400, 405, 'slimeAni');
-		this.enemy3 = new Enemy(this, 450, 405, 'slimeAni');
-		this.enemy4 = new Enemy(this, 600, 405, 'slimeAni');
-		this.enemyGroup = [this.enemy1, this.enemy2, this.enemy3, this.enemy4];
+		this.enemy3 = new Enemy(this, 500, 405, 'slimeAni');
+		this.enemyGroup = [this.enemy1, this.enemy2, this.enemy3];
 
 
 		// Keys for interacting

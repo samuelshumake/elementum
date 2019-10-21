@@ -129,7 +129,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 			/* ----- EARTH ----- */
 			case 'earth':
-				if (this.body.blocked.down) {
+				if (this.body.blocked.down || scene.physics.overlap(this, scene.rock)) {
 					if (this.spellActive['earth'] === true) {
 						this.platform.body.setVelocityY(250);
 						this.spellActive['earth'] = false;
