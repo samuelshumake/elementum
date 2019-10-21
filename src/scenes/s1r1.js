@@ -4,7 +4,7 @@ import Player from '../sprites/Player.js';
 import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
-import Interactable from '../sprites/Interactable.js';
+import Lever from '../sprites/Lever.js';
 export default class s1r1 extends Phaser.Scene {
 
 	constructor () {
@@ -120,7 +120,7 @@ export default class s1r1 extends Phaser.Scene {
 		/* ---------- CREATES SPELL FRAMES ---------- */
 		this.fireFrame = this.add.sprite(48, 40, 'fireFrame');
 		this.earthFrame = this.add.sprite(111, 40, 'earthFrame');
-		this.bubbleFrame = this.add.sprite(174, 40, 'bubbleFrame');
+		this.waterFrame = this.add.sprite(174, 40, 'bubbleFrame');
 		this.airFrame = this.add.sprite(237, 40, 'airFrame');
 
 
@@ -165,8 +165,8 @@ export default class s1r1 extends Phaser.Scene {
 
 
 		/* ---------- CREATES LEVERS ---------- */
-		this.lever = new Interactable(this, 40, 450, 'lever');
-		this.lever2 = new Interactable(this, 40, 120, 'lever');
+		this.lever = new Lever(this, 40, 450, 'lever');
+		this.lever2 = new Lever(this, 40, 120, 'lever');
 
 
 		//* ---------- CREATES INTERACTING KEYS ---------- */

@@ -4,7 +4,6 @@ import Player from '../sprites/Player.js';
 import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
-import Interactable from '../sprites/Interactable.js';
 export default class SpellDisplay extends Phaser.Scene {
 	constructor () {
 		super('Spells');
