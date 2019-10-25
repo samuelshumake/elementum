@@ -29,37 +29,37 @@ export default class BootScene extends Phaser.Scene {
 	logo.setScale(6.25)
 
 	// Title text
-	var title = this.add.text(50, 100, 'Elementum').setInteractive();
-	title.setFontSize(70);
-	title.setColor('#000000');
+	//var title = this.add.text(50, 100, 'Elementum').setInteractive();
+	//title.setFontSize(70);
+	//title.setColor('#000000');
 
 	// Create play button
-	var play = this.add.text(580, 170, 'Play').setInteractive();
-	play.setFontSize(40);
-	play.setColor('#000000');
-	play.on('pointerover', function() {
-		play.setColor('#ffffff');
-	 });
-	play.on('pointerout', function() {
-		play.setColor('#000000');
-	 });
-	play.on('pointerdown', function() {
-		this.scene.start('s0r1');
-	}, this);
+	//var play = this.add.text(580, 170, 'Play').setInteractive();
+	//play.setFontSize(40);
+	//play.setColor('#000000');
+	//play.on('pointerover', function() {
+	//	play.setColor('#ffffff');
+	// });
+	//play.on('pointerout', function() {
+	//	play.setColor('#000000');
+	// });
+	//play.on('pointerdown', function() {
+	//	this.scene.start('s0r1');
+	//}, this);
 
 	// Create elements button
-	var elements = this.add.text(535, 450, 'Elements').setInteractive();
-	elements.setFontSize(40);
-	elements.setColor('#000000');
-	elements.on('pointerover', function() {
-		elements.setColor('#ffffff');
-	 });
-	elements.on('pointerout', function() {
-		elements.setColor('#000000');
-	 });
-	elements.on('pointerdown', function() {
-		this.scene.start('Spells');
-	}, this);
+	//var elements = this.add.text(535, 450, 'Elements').setInteractive();
+	//elements.setFontSize(40);
+	//elements.setColor('#000000');
+	//elements.on('pointerover', function() {
+	//	elements.setColor('#ffffff');
+	// });
+	//elements.on('pointerout', function() {
+	//	elements.setColor('#000000');
+	// });
+	//elements.on('pointerdown', function() {
+	//	this.scene.start('Spells');
+	//}, this);
 
 
   }
