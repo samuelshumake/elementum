@@ -48,6 +48,7 @@ export default class BootScene extends Phaser.Scene {
 	//}, this);
 
 	// Create elements button
+<<<<<<< HEAD
 	//var elements = this.add.text(535, 450, 'Elements').setInteractive();
 	//elements.setFontSize(40);
 	//elements.setColor('#000000');
@@ -60,6 +61,20 @@ export default class BootScene extends Phaser.Scene {
 	//elements.on('pointerdown', function() {
 	//	this.scene.start('Spells');
 	//}, this);
+=======
+	var elements = this.add.text(535, 450, 'Elements').setInteractive();
+	elements.setFontSize(40);
+	elements.setColor('#000000');
+	elements.on('pointerover', function() {
+		elements.setColor('#ffffff');
+	 });
+	elements.on('pointerout', function() {
+		elements.setColor('#000000');
+	 });
+	elements.on('pointerdown', function() {
+		this.scene.start('SpellDisplay');
+	}, this);
+>>>>>>> af67485679fa00d49bf5ca4d6fdfdf368fa654ab
 
 
   }

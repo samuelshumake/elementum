@@ -68,7 +68,7 @@ export default class s0r2 extends Phaser.Scene {
 		this.load.image('textBanner', './assets/images/textBackground.png');
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
-		this.load.image('tiles', './assets/images/newTileMap.png');
+		this.load.image('tiles', './assets/images/tilemapv2.png');
 		this.load.tilemapTiledJSON('s0r2', './assets/map/s0r2.json');
 
 		/* ---------- LOADS SPRITES FOR SPELL FRAMES ---------- */
@@ -98,7 +98,7 @@ export default class s0r2 extends Phaser.Scene {
 
 		/* ---------- CREATES MAP ---------- */
 		const map = this.make.tilemap({key: 's0r2'});
-		const tileset = map.addTilesetImage('newTileMap', 'tiles');
+		const tileset = map.addTilesetImage('tilemapv2', 'tiles');
 		this.layer = map.createStaticLayer('Tile Layer 1', tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
 
