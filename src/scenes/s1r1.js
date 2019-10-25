@@ -43,6 +43,18 @@ export default class s1r1 extends Phaser.Scene {
 			frameHeight: 32,
 			frameWidth:	 96
 		});
+		this.load.spritesheet('tempPlatform', './assets/spriteSheets/platformMove.png',{
+			frameHeight: 32,
+			frameWidth:	 96
+		});
+		this.load.spritesheet('BigPlatform3', './assets/spriteSheets/biggerPlatform3.png',{
+			frameHeight: 160,
+			frameWidth:	 96
+		});
+		this.load.spritesheet('BigPlatform5', './assets/spriteSheets/biggerPlatform5.png',{
+			frameHeight: 160,
+			frameWidth:	 96
+		});
 		this.load.spritesheet('manaBar', './assets/spriteSheets/manaPotion.png', {
 			frameHeight: 64,
 			frameWidth: 64,
@@ -64,6 +76,7 @@ export default class s1r1 extends Phaser.Scene {
 			frameWidth: 48,
 		});
 
+
 		/* ---------- LOADS BACKGROUND -----------------------*/
 		this.load.image('background', './assets/images/backgroundimage1.png');
 		this.load.image('topbanner', './assets/images/topbanner.png');
@@ -83,6 +96,7 @@ export default class s1r1 extends Phaser.Scene {
 		this.load.image('spike', './assets/sprites/spike.png');
 		this.load.image('door', './assets/sprites/door.png');
 		this.load.image('rock', './assets/sprites/rock.png');
+
 
 
 	}	// ----- END OF PRELOAD ----- //
@@ -106,6 +120,8 @@ export default class s1r1 extends Phaser.Scene {
 		const tileset = map.addTilesetImage("tilemapv2", "tiles");
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
+		this.layer2 = map.createStaticLayer("Foreground", tileset, 0,0);
+		this.layer3 = map.createStaticLayer("Vines", tileset, 0,0);
 
 		/* ---------- TOP BANNER ---------- */
 		this.add.image(350, 35,'topbanner').setScale(15, 1.7);
@@ -154,10 +170,8 @@ export default class s1r1 extends Phaser.Scene {
 		this.enemyGroup = [this.enemy1, this.enemy2, this.enemy3];
 
 		/* ---------- CREATES PLATFORMS ---------- */
-		this.platform1 = new Platform(this, 150, 176, 'tempPlatform');
-		this.platform2 = new Platform(this, 623, 560, 'tempPlatform');
-		this.platform1.setScale(1, 4.9);
-		this.platform2.setScale(1, 3);
+		this.platform1 = new Platform(this, 150, 176, 'biggerPlatform5');
+		this.platform2 = new Platform(this, 623, 560, 'biggerPlatform3');
 		this.platform2.flipX = true;
 
 		this.physics.add.collider(this.enemyGroup, this.platform1);
