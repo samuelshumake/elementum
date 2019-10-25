@@ -1,6 +1,6 @@
 /*global Phaser, window*/
 import BootScene from './scenes/BootScene.js';
-//import SpellDisplay from './scenes/SpellDisplay.js';
+import SpellDisplay from './scenes/SpellDisplay.js';
 import s0r1 from './scenes/s0r1.js';
 import s0r2 from './scenes/s0r2.js';
 import s0r3 from './scenes/s0r3.js';
@@ -14,7 +14,7 @@ class Game extends Phaser.Game {
 	constructor () {
 		super(Config);
 		this.scene.add('Boot', BootScene);
-		//this.scene.add('SpellDisplay', SpellDisplay);
+		this.scene.add('SpellDisplay', SpellDisplay);
 		this.scene.add('s0r1', s0r1);
 		this.scene.add('s0r2', s0r2);
 		this.scene.add('s0r3', s0r3);
@@ -22,7 +22,7 @@ class Game extends Phaser.Game {
 		this.scene.add('s0r5', s0r5);
 		this.scene.add('s0r6', s0r6);
 		this.scene.add('s1r1', s1r1);
-		this.scene.start('Boot');
+		this.scene.start('SpellDisplay');
   }
 }
 
