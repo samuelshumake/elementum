@@ -106,7 +106,6 @@ export default class s1r1 extends Phaser.Scene {
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
 
-
 		/* ---------- TOP BANNER ---------- */
 		this.add.image(350, 35,'topbanner').setScale(15, 1.7);
 
