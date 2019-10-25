@@ -6,6 +6,7 @@ import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
 import Lever from '../sprites/Lever.js';
 import Rock from '../sprites/Rock.js';
+import Box from '../sprites/Box.js';
 export default class s1r1 extends Phaser.Scene {
 
 

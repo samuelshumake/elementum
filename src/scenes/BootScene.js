@@ -58,7 +58,7 @@ export default class BootScene extends Phaser.Scene {
 		elements.setColor('#000000');
 	 });
 	elements.on('pointerdown', function() {
-		this.scene.start('Spells');
+		this.scene.start('SpellDisplay');
 	}, this);
 
 

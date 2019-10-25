@@ -22,7 +22,7 @@ class Game extends Phaser.Game {
 		this.scene.add('s0r5', s0r5);
 		this.scene.add('s0r6', s0r6);
 		this.scene.add('s1r1', s1r1);
-		this.scene.start('SpellDisplay');
+		this.scene.start('Boot');
   }
 }
 

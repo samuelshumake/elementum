@@ -5,8 +5,8 @@ import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
 import Lever from '../sprites/Lever.js';
-import Box from '../sprites/Box.js';
 import Rock from '../sprites/Rock.js';
+import Box from '../sprites/Box.js'
 export default class s0r6 extends Phaser.Scene {
 
 	constructor () {
@@ -68,7 +68,7 @@ export default class s0r6 extends Phaser.Scene {
 		this.load.image('textBanner', './assets/images/textBackground.png');
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
-		this.load.image('tiles', './assets/images/newTileMap.png');
+		this.load.image('tiles', './assets/images/tilemapv2.png');
 		this.load.tilemapTiledJSON('s0r6', './assets/map/s0r6.json');
 
 		/* ---------- LOADS SPRITES FOR SPELL FRAMES ---------- */
@@ -101,7 +101,7 @@ export default class s0r6 extends Phaser.Scene {
 
 		/* ---------- CREATES MAP ---------- */
 		const map = this.make.tilemap({key: "s0r6"});
-		const tileset = map.addTilesetImage("newTileMap", "tiles");
+		const tileset = map.addTilesetImage("tilemapv2", "tiles");
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
 
