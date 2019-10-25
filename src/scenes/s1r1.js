@@ -48,7 +48,7 @@ export default class s1r1 extends Phaser.Scene {
 			frameWidth:	 96
 		});
 		this.load.spritesheet('BigPlatform3', './assets/spriteSheets/biggerPlatform3.png',{
-			frameHeight: 160,
+			frameHeight: 96,
 			frameWidth:	 96
 		});
 		this.load.spritesheet('BigPlatform5', './assets/spriteSheets/biggerPlatform5.png',{
@@ -170,8 +170,8 @@ export default class s1r1 extends Phaser.Scene {
 		this.enemyGroup = [this.enemy1, this.enemy2, this.enemy3];
 
 		/* ---------- CREATES PLATFORMS ---------- */
-		this.platform1 = new Platform(this, 150, 176, 'biggerPlatform5');
-		this.platform2 = new Platform(this, 623, 560, 'biggerPlatform3');
+		this.platform1 = new Platform(this, 150, 176, 'BigPlatform5');
+		this.platform2 = new Platform(this, 623, 560, 'BigPlatform3');
 		this.platform2.flipX = true;
 
 		this.physics.add.collider(this.enemyGroup, this.platform1);
