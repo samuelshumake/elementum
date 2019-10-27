@@ -151,7 +151,7 @@ export default class s1r1 extends Phaser.Scene {
 		let camera = this.cameras.main;
 		camera.setZoom(2);
 		camera.startFollow(this.player);
-
+		camera.setBounds(0, 0, 800, 640);
 
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(754, 576, 'door');
@@ -170,7 +170,7 @@ export default class s1r1 extends Phaser.Scene {
 
 		// /* ---------- CREATES ENEMIES ---------- */
 		this.enemy1 = new Enemy(this, 600, 450, 'slimeAni');
-		this.enemy2 = new Enemy(this, 50, 250, 'slimeAni');
+		this.enemy2 = new Enemy(this, 60, 250, 'slimeAni');
 		this.enemy3 = new Enemy(this, 450, 600, 'slimeAni');
 		this.enemyGroup = [this.enemy1, this.enemy2, this.enemy3];
 
@@ -185,7 +185,7 @@ export default class s1r1 extends Phaser.Scene {
 
 
 		this.lever1 = new Lever(this, 40, 598, 'lever');
-		this.lever2 = new Lever(this, 13, 220, 'lever');
+		this.lever2 = new Lever(this, 60, 220, 'lever');
 		this.lever2.angle = 90;
 
 
