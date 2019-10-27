@@ -184,8 +184,8 @@ export default class s1r1 extends Phaser.Scene {
 		this.physics.add.collider(this.enemyGroup, this.rock);
 
 
-		this.lever1 = new Lever(this, 40, 598, 'lever');
-		this.lever2 = new Lever(this, 60, 220, 'lever');
+		this.lever1 = new Lever(this, 45, 598, 'lever');
+		this.lever2 = new Lever(this, 43, 220, 'lever');
 		this.lever2.angle = 90;
 
 
