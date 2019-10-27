@@ -68,7 +68,7 @@ export default class s0r2 extends Phaser.Scene {
 		this.load.image('textBanner', './assets/images/textBackground.png');
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
-		this.load.image('tiles', './assets/images/newTileMap.png');
+		this.load.image('tiles', './assets/images/tilemapv2.png');
 		this.load.tilemapTiledJSON('s0r2', './assets/map/s0r2.json');
 
 		/* ---------- LOADS SPRITES FOR SPELL FRAMES ---------- */
@@ -98,37 +98,42 @@ export default class s0r2 extends Phaser.Scene {
 
 		/* ---------- CREATES MAP ---------- */
 		const map = this.make.tilemap({key: 's0r2'});
-		const tileset = map.addTilesetImage('newTileMap', 'tiles');
+		const tileset = map.addTilesetImage('tilemapv2', 'tiles');
 		this.layer = map.createStaticLayer('Tile Layer 1', tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
 
 
 		/* ---------- TOP BANNER ---------- */
-		this.add.image(350, 35,'topbanner').setScale(15, 1.7);
-
-		/* ---------- CREATES MANA BAR ---------- */
-		this.manaBar = this.add.sprite(this.cameras.main.width - 50, 40, 'manaBar', 27);
-		this.anims.create({
-			key: "regenMana",
-			frames: this.anims.generateFrameNumbers("manaBar", {start: 0, end: 27}),
-			frameRate: 24,
-		});
-
-		this.add.image(425, 170,'textBanner').setScale(10.5, 1.9);
-		this.tutorialText = this.add.text(125, 150, 'Press 1, 2, 3, and 4 to cycle through spells and space to cast.');
-		this.tutorialText = this.add.text(175, 175, 'Try using the Earth spell to overcome tall obstacles.');
-
-
-		/* ---------- CREATES SPELL FRAMES ---------- */
-		this.fireFrame = this.add.sprite(48, 40, 'fireFrame');
-		this.earthFrame = this.add.sprite(111, 40, 'earthFrame');
-		this.waterFrame = this.add.sprite(174, 40, 'bubbleFrame');
-		this.airFrame = this.add.sprite(237, 40, 'airFrame');
-		this.frameGroup = [this.fireFrame, this.earthFrame, this.waterFrame, this.airFrame];
+		// this.add.image(350, 35,'topbanner').setScale(15, 1.7);
+		// /* ---------- CREATES MANA BAR ---------- */
+		// this.manaBar = this.add.sprite(this.cameras.main.width - 50, 40, 'manaBar', 27);
+		// this.anims.create({
+		// 	key: "regenMana",
+		// 	frames: this.anims.generateFrameNumbers("manaBar", {start: 0, end: 27}),
+		// 	frameRate: 24,
+		// });
+		//
+		// this.add.image(425, 170,'textBanner').setScale(10.5, 1.9);
+		// this.tutorialText = this.add.text(125, 150, 'Press 1, 2, 3, and 4 to cycle through spells and space to cast.');
+		// this.tutorialText = this.add.text(175, 175, 'Try using the Earth spell to overcome tall obstacles.');
+		//
+		//
+		// /* ---------- CREATES SPELL FRAMES ---------- */
+		// this.fireFrame = this.add.sprite(48, 40, 'fireFrame');
+		// this.earthFrame = this.add.sprite(111, 40, 'earthFrame');
+		// this.waterFrame = this.add.sprite(174, 40, 'bubbleFrame');
+		// this.airFrame = this.add.sprite(237, 40, 'airFrame');
+		// this.frameGroup = [this.fireFrame, this.earthFrame, this.waterFrame, this.airFrame];
 
 
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 50, 524, 'player');
+
+		/* ---------- ADJUSTS CAMERA ---------- */
+		let camera = this.cameras.main;
+		camera.setZoom(2);
+		camera.startFollow(this.player);
+		camera.setBounds(0, 0, 800, 640);
 
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(755, 320, 'door');
@@ -208,22 +213,22 @@ export default class s0r2 extends Phaser.Scene {
 		/* ---------- CASTING SPELLS ---------- */
 		if (this.switchFire.isDown) {
 			this.player.currentSpell = 'fire';
-			this.player.changeSpellFrame(this, 0);
+			// this.player.changeSpellFrame(this, 0);
 		} else if (this.switchEarth.isDown) {
 			this.player.currentSpell = 'earth';
-			this.player.changeSpellFrame(this, 1);
+			// this.player.changeSpellFrame(this, 1);
 		} else if (this.switchWater.isDown) {
 			this.player.currentSpell = 'water';
-			this.player.changeSpellFrame(this, 2);
+			// this.player.changeSpellFrame(this, 2);
 		} else if (this.switchAir.isDown) {
 			this.player.currentSpell = 'air';
-			this.player.changeSpellFrame(this, 3);
+			// this.player.changeSpellFrame(this, 3);
 		}
 
 		// Casts spell if cooldown timer has been met
 		if (this.castSpell.isDown && this.player.spellTimer > 70 ) {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
-			this.manaBar.play('regenMana', true);
+			// this.manaBar.play('regenMana', true);
 	 	}
 
     }	// ----- END OF UPDATE ----- //

@@ -4,6 +4,8 @@ import Player from '../sprites/Player.js';
 import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
+import Rock from '../sprites/Rock.js';
+import Box from '../sprites/Box.js';
 export default class SpellDisplay extends Phaser.Scene {
 	constructor () {
 		super('SpellDisplay');
@@ -46,6 +48,9 @@ export default class SpellDisplay extends Phaser.Scene {
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/tilemapv2.png');
 		this.load.tilemapTiledJSON('display', './assets/map/display.json');
+
+		this.load.image('box', './assets/sprites/box.png');
+		this.load.image('rock', './assets/sprites/rock.png');
 	}
 
   create (data) {
@@ -60,24 +65,15 @@ export default class SpellDisplay extends Phaser.Scene {
 	this.layer.setCollisionByProperty({ collides: true });
 
 	// Create main text
-	var spellText = this.add.text(280, 100, 'SPELLS', {fontSize: 70, color: '#fff'})
-	var fireText = this.add.text(23, 315, 'Fire', {fontSize: 45, color: '#dc143c'});
-	var earthText = this.add.text(655, 315, 'Earth', {fontSize: 45, color: '#679c4d'});
+	var spellText = this.add.text(280, 50, 'SPELLS', {fontSize: 70, color: '#fff'})
+	var fireText = this.add.text(220, 180, 'Fire', {fontSize: 45, color: '#dc143c'});
+	var earthText = this.add.text(460, 180, 'Earth', {fontSize: 45, color: '#679c4d'});
 	var waterText = this.add.text(15, 505, 'Water', {fontSize: 45, color: '#87ceeb'});
 	var airText = this.add.text(680, 505, 'Air', {fontSize: 45, color: '#ffffff'});
 
 	// Create back button
 	var backButton = this.add.text(50, 50, 'Back', {fontSize: 40, color: '#000000', backgroundColor: '#fff'}).setInteractive();
 	backButton.on('pointerdown', () => this.scene.start('Boot'));
-	// backButton.on('pointerover', function() {
-	// 	backButton.setColor('#434340');
-	//  });
-	// backButton.on('pointerout', function() {
-	// 	backButton.setColor('#000000');
-	//  });
-	// backButton.on('pointerdown', function() {
-	// 	this.scene.start('Boot');
-	// }, this);
 
 	this.player1 = this.physics.add.sprite(445, 290, 'player').setScale(1.5).setGravity(0, 800);
 	this.player2 = this.physics.add.sprite(445, 483, 'player').setScale(1.5);
@@ -87,6 +83,13 @@ export default class SpellDisplay extends Phaser.Scene {
 	this.player4.flipX = true;
 
 	this.physics.add.collider(this.layer, this.player1);
+
+	this.enemy = new Enemy(this, 200, 305, 'slimeAni');
+
+
+	this.box = new Box(this, 200, 485, 'box').setScale(0.8).body.setGravity(0, 800);
+	this.rock = new Rock(this, 600, 500, 'rock').setScale(0.8).body.setGravity(0, 800);
+
 
 	this.fireball = new Spell(this, 330, 290, 'fire');
 	this.earthSpell = new Spell(this, 445, 335, 'earth');
@@ -105,7 +108,7 @@ export default class SpellDisplay extends Phaser.Scene {
   update (time, delta) {
 	  this.spellTimer++;
 
-	  if (this.spellTimer >= 150) {
+	  if (this.spellTimer >= 200) {
 		  this.fireball = new Spell(this, 330, 290, 'fire');
 		  this.earthSpell = new Spell(this, 445, 335, 'earth');
 		  this.waterSpell = new Spell(this, 355, 483, 'water');
@@ -116,12 +119,34 @@ export default class SpellDisplay extends Phaser.Scene {
 		  setTimeout(() => this.earthSpell.destroy(), 850);
 		  this.waterSpell.shoot(true);
 		  this.airwave.shoot(false);
-		  
+
 		  this.spellTimer = 0;
+	  }
+
+	  if (this.waterSpell.active && this.waterSpell.x <= 210) {
+		this.waterSpell.destroy();
+		this.box.setGravity(0, -100);
+  		this.box.setVelocityY(-200);
+  		setTimeout(() => {
+			this.box.setVelocity(0);
+			this.box.setGravity(0, 300)}, 500)
 
 	  }
 
+	  if (this.physics.overlap(this.fireball, this.enemy)) {
+		  this.fireball.destroy();
+		  this.enemy.destroy();
+		  setTimeout(() => this.enemy = new Enemy(this, 200, 305, 'slimeAni'), 1100);
+	  }
 
+	  if (this.airwave.active && this.airwave.x >= 550) {
+		  this.airwave.destroy();
+		  this.rock.setVelocity(300, 0);
+		  setTimeout(() => {
+			  this.rock.destroy();
+			  this.rock = new Rock(this, 600, 500, 'rock').setScale(0.8).body.setGravity(0, 800)}, 1000);
+
+	  }
 
 
   }
