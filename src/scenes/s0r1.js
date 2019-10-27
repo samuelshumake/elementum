@@ -24,7 +24,7 @@ export default class s0r1 extends Phaser.Scene {
 		/* ---------- LOADS SPRITE SHEETS ---------- */
 		this.load.spritesheet('player', './assets/spriteSheets/idleFinal.png', {	// Combine all player spritesheets into one soon
 			frameHeight: 39,
-			frameWidth: 34,
+			frameWidth: 32,
 		});
 		this.load.spritesheet('lever', './assets/spriteSheets/lever.png',{
 			frameHeight: 6,
@@ -96,7 +96,7 @@ export default class s0r1 extends Phaser.Scene {
 
 
 		/* --------- CREATES BACKGROUND --------- */
-		this.add.image(350, 325,'background').setScale(1.1);
+		//this.add.image(350, 325,'background').setScale(1.1);
 
 
 		/* ---------- CREATES MAP ---------- */
@@ -135,9 +135,14 @@ export default class s0r1 extends Phaser.Scene {
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 50, 460, 'player');
 
+		/* ---------- ADJUSTS CAMERA ---------- */
+		let camera = this.cameras.main;
+		camera.setZoom(2);
+		camera.startFollow(this.player);
+
 
 		/* ---------- CREATES DOOR ---------- */
-		this.door = this.physics.add.sprite(754, 448, 'door');
+		this.door = this.physics.add.sprite(432, 130);
 
 
 		/* ------ CREATE SPIKES ---------------- */

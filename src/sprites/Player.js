@@ -33,9 +33,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		this.currentSpell = 'fire';
 
 		// Makes spell frames transparent
-		scene.earthFrame.alpha = 0.2;
-		scene.waterFrame.alpha = 0.2;
-		scene.airFrame.alpha = 0.2;
+		// scene.earthFrame.alpha = 0.2;
+		// scene.waterFrame.alpha = 0.2;
+		// scene.airFrame.alpha = 0.2;
 
 
 		/* ------ ANIMATIONS ------- */
@@ -103,9 +103,16 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		if (cursors.up.isDown && this.canJump) {
 			this.jumpTimer = 0;
 			this.jumpHeld = true;
-			this.body.y -= 20;
-			this.body.setVelocityY(-500)
+			// this.body.y -= 20;
+			this.body.setVelocityY(-600)
 			this.body.setAccelerationY(1300);
+		}
+
+		// Allows the player to crouch
+		if (cursors.down.isDown) {
+			this.body.setSize(this.width, 32);
+		} else {
+			this.body.setSize(this.width, this.height);
 		}
 	}
 
@@ -172,8 +179,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 	}
 
-	changeSpellFrame(scene, frame) {
-		scene.frameGroup.forEach( obj => obj.alpha = 0.2);
-		scene.frameGroup[frame].alpha = 1;
-	}
+	// changeSpellFrame(scene, frame) {
+	// 	scene.frameGroup.forEach( obj => obj.alpha = 0.2);
+	// 	scene.frameGroup[frame].alpha = 1;
+	// }
 }
