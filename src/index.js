@@ -8,6 +8,7 @@ import s0r4 from './scenes/s0r4.js';
 import s0r5 from './scenes/s0r5.js';
 import s0r6 from './scenes/s0r6.js';
 import s1r1 from './scenes/s1r1.js';
+import s1r2 from './scenes/s1r2.js';
 import Config from './config/config.js';
 
 class Game extends Phaser.Game {
@@ -22,7 +23,8 @@ class Game extends Phaser.Game {
 		this.scene.add('s0r5', s0r5);
 		this.scene.add('s0r6', s0r6);
 		this.scene.add('s1r1', s1r1);
-		this.scene.start('s1r1');
+		this.scene.add('s1r2', s1r2);
+		this.scene.start('s0r1');
   }
 }
 
