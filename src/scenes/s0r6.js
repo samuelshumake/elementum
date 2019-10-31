@@ -245,7 +245,14 @@ export default class s0r6 extends Phaser.Scene {
 			if (this.rockGroup) {
 				for (let x in this.rockGroup) {
 					this.physics.add.overlap(this.rockGroup[x], this.player.airwave, () => {
-						this.player.airwave.push(this, this.rockGroup[x]);
+						this.player.airwave.push(this, this.rockGroup[x], this.player.flipX);
+					});
+				}
+			}
+			if (this.boxGroup) {
+				for (let x in this.boxGroup) {
+					this.physics.add.overlap(this.boxGroup[x], this.player.airwave, () => {
+						this.player.airwave.push(this, this.boxGroup[x], this.player.flipX);
 					});
 				}
 			}

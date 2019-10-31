@@ -77,11 +77,6 @@ export default class s1r1 extends Phaser.Scene {
 		});
 
 
-		/* ---------- LOADS BACKGROUND -----------------------*/
-		this.load.image('background', './assets/images/backgroundimage1.png');
-		this.load.image('topbanner', './assets/images/topbanner.png');
-		this.load.image('textBanner', './assets/images/textBackground.png');
-
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/tilemapv2.png');
 		this.load.tilemapTiledJSON('s1r1', './assets/map/s1r1.json')
@@ -109,11 +104,6 @@ export default class s1r1 extends Phaser.Scene {
 		this.resetLevel = false
 		this.gameWidth = this.cameras.main.width
 		this.gameHeight = this.cameras.main.height
-
-
-		/* --------- CREATES BACKGROUND --------- */
-		//this.add.image(350, 325,'background').setScale(1.1);
-
 
 		/* ---------- CREATES MAP ---------- */
 		const map = this.make.tilemap({key: "s1r1"});
@@ -150,7 +140,7 @@ export default class s1r1 extends Phaser.Scene {
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
 		camera.setZoom(2);
-		camera.startFollow(this.player);
+		camera.startFollow(this.player, true, 0.1);
 		camera.setBounds(0, 0, 800, 640);
 
 		/* ---------- CREATES DOOR ---------- */
@@ -258,7 +248,14 @@ export default class s1r1 extends Phaser.Scene {
 			if (this.rockGroup) {
 				for (let x in this.rockGroup) {
 					this.physics.add.overlap(this.rockGroup[x], this.player.airwave, () => {
-						this.player.airwave.push(this, this.rockGroup[x]);
+						this.player.airwave.push(this, this.rockGroup[x], this.player.flipX);
+					});
+				}
+			}
+			if (this.boxGroup) {
+				for (let x in this.boxGroup) {
+					this.physics.add.overlap(this.boxGroup[x], this.player.airwave, () => {
+						this.player.airwave.push(this, this.boxGroup[x], this.player.flipX);
 					});
 				}
 			}
