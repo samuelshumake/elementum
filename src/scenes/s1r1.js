@@ -92,6 +92,8 @@ export default class s1r1 extends Phaser.Scene {
 		this.load.image('door', './assets/sprites/door.png');
 		this.load.image('rock', './assets/sprites/rock.png');
 
+		this.load.image('cameraFrame', './assets/sprites/cameraFrame.png');
+
 
 
 	}	// ----- END OF PRELOAD ----- //
@@ -101,9 +103,9 @@ export default class s1r1 extends Phaser.Scene {
 	    ChangeScene.addSceneEventListeners(this);
 
 		/* ---------- GLOBAL VARIABLES --------- */
-		this.resetLevel = false
-		this.gameWidth = this.cameras.main.width
-		this.gameHeight = this.cameras.main.height
+		this.resetLevel = false;
+		this.gameWidth = this.cameras.main.width;
+		this.gameHeight = this.cameras.main.height;
 
 		/* ---------- CREATES MAP ---------- */
 		const map = this.make.tilemap({key: "s1r1"});
@@ -112,6 +114,8 @@ export default class s1r1 extends Phaser.Scene {
 		this.layer.setCollisionByProperty({ collides: true });
 		this.layer2 = map.createStaticLayer("Foreground", tileset, 0,0);
 		this.layer3 = map.createStaticLayer("Vines", tileset, 0,0);
+
+		this.lever1Options = [50, 75, 0.8, 3700];
 
 		/* ---------- TOP BANNER ---------- */
 		//this.add.image(350, 35,'topbanner').setScale(15, 1.7);
@@ -153,6 +157,7 @@ export default class s1r1 extends Phaser.Scene {
 			this.spikeGroup.push(this.physics.add.sprite(16*i + 185, 603, 'spike').setScale(0.3))
 		}
 
+
 		/* ---------- CREATES BOX ---------- */
 		this.rock = new Rock(this, 130, 600, 'rock');
 		this.rock.setScale(2, 0.5);
@@ -186,6 +191,7 @@ export default class s1r1 extends Phaser.Scene {
 		this.switchAir = this.input.keyboard.addKey('four');
 		this.interact = this.input.keyboard.addKey('e');
 		this.castSpell = this.input.keyboard.addKey('space');
+
 
 	}	// ---------- END OF CREATE ---------- //
 
@@ -284,9 +290,10 @@ export default class s1r1 extends Phaser.Scene {
 	 	}
 
 		if (this.interact.isDown) {
-			this.lever1.flip(this, this.platform1, 'right', 500);
+			this.lever1.flip(this, this.platform1, 'right', 500, this.lever1Options);
 			this.lever2.flip(this, this.platform2, 'left', 200);
 		}
+
 
     }	// ----- END OF UPDATE ----- //
 
