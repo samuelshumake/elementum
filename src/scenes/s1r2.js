@@ -161,7 +161,7 @@ export default class s1r2 extends Phaser.Scene {
 		/* ---------- CREATES PLATFORMS ---------- */
 		//this.platform1 = new Platform(this, 590, 128, 'tempPlatform');
 		this.platform2 = new Platform(this, 640, 528, 'tempPlatform');
-		this.platform3 = new Platform(this, 576, 273, 'tempPlatform');
+		this.platform3 = new Platform(this, 576, 271, 'tempPlatform');
 		//this.platform1.setScale(0.66, 1);
 		this.platform2.setScale(0.66, 1);
 		this.platform3.setScale(0.66, 1);
