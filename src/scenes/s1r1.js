@@ -115,7 +115,7 @@ export default class s1r1 extends Phaser.Scene {
 		this.layer2 = map.createStaticLayer("Foreground", tileset, 0,0);
 		this.layer3 = map.createStaticLayer("Vines", tileset, 0,0);
 
-		this.lever1Options = [50, 75, 0.8, 3700];
+
 
 		/* ---------- TOP BANNER ---------- */
 		//this.add.image(350, 35,'topbanner').setScale(15, 1.7);
@@ -139,13 +139,16 @@ export default class s1r1 extends Phaser.Scene {
 
 
 		/* ---------- CREATES PLAYER ---------- */
-		this.player = new Player(this, 750, 210, 'player');
+		//this.player = new Player(this, 750, 210, 'player');
+		this.player = new Player(this, 48, 500, 'player');
+
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
 		camera.setZoom(2);
 		camera.startFollow(this.player, true, 0.1);
 		camera.setBounds(0, 0, 800, 640);
+
 
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(754, 576, 'door');
@@ -165,9 +168,9 @@ export default class s1r1 extends Phaser.Scene {
 
 		// /* ---------- CREATES ENEMIES ---------- */
 		this.enemy1 = new Enemy(this, 600, 450, 'slimeAni');
-		this.enemy2 = new Enemy(this, 60, 250, 'slimeAni');
+		// this.enemy2 = new Enemy(this, 60, 250, 'slimeAni');
 		this.enemy3 = new Enemy(this, 450, 600, 'slimeAni');
-		this.enemyGroup = [this.enemy1, this.enemy2, this.enemy3];
+		this.enemyGroup = [this.enemy1,this.enemy3];
 
 		/* ---------- CREATES PLATFORMS ---------- */
 		this.platform1 = new Platform(this, 150, 176, 'BigPlatform5');
@@ -179,9 +182,11 @@ export default class s1r1 extends Phaser.Scene {
 		this.physics.add.collider(this.enemyGroup, this.rock);
 
 
-		this.lever1 = new Lever(this, 45, 598, 'lever');
-		this.lever2 = new Lever(this, 43, 220, 'lever');
+		this.lever1 = new Lever(this, 48, 598, 'lever');
+		this.lever2 = new Lever(this, 42, 220, 'lever');
 		this.lever2.angle = 90;
+		this.lever1Options = [50, 75, 0.8, 3700];
+		this.lever2Options = [380, 450, 1, 2500];
 
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
@@ -190,6 +195,7 @@ export default class s1r1 extends Phaser.Scene {
 		this.switchWater = this.input.keyboard.addKey('three');
 		this.switchAir = this.input.keyboard.addKey('four');
 		this.interact = this.input.keyboard.addKey('e');
+		this.reset = this.input.keyboard.addKey('r');
 		this.castSpell = this.input.keyboard.addKey('space');
 
 
@@ -203,12 +209,10 @@ export default class s1r1 extends Phaser.Scene {
 			this.scene.start('s1r1')
 		}
 
-
 		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {
 			this.scene.start('Boot')
 		}
-
 
 		/* ---------- MOVES PLAYER ---------- */
 		this.player.move(this);
@@ -283,6 +287,10 @@ export default class s1r1 extends Phaser.Scene {
 			// this.player.changeSpellFrame(this, 3);
 		}
 
+		if (this.reset.isDown) {
+			this.resetLevel = true;
+		}
+
 		// Casts spell if cooldown timer has been met
 		if (this.castSpell.isDown && this.player.spellTimer > 70 ) {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
@@ -291,7 +299,7 @@ export default class s1r1 extends Phaser.Scene {
 
 		if (this.interact.isDown) {
 			this.lever1.flip(this, this.platform1, 'right', 500, this.lever1Options);
-			this.lever2.flip(this, this.platform2, 'left', 200);
+			this.lever2.flip(this, this.platform2, 'left', 200, this.lever2Options);
 		}
 
 

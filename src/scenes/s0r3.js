@@ -152,6 +152,7 @@ export default class s0r3 extends Phaser.Scene {
 		this.switchWater = this.input.keyboard.addKey('three');
 		this.switchAir = this.input.keyboard.addKey('four');
 		this.interact = this.input.keyboard.addKey('e');
+		this.reset = this.input.keyboard.addKey('r');
 		this.castSpell = this.input.keyboard.addKey('space');
 
 	}	// ---------- END OF CREATE ---------- //
@@ -237,6 +238,10 @@ export default class s0r3 extends Phaser.Scene {
 		} else if (this.switchAir.isDown) {
 			this.player.currentSpell = 'air';
 			// this.player.changeSpellFrame(this, 3);
+		}
+
+		if (this.reset.isDown) {
+			this.resetLevel = true;
 		}
 
 		// Casts spell if cooldown timer has been met
