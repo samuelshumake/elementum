@@ -161,7 +161,7 @@ export default class s1r2 extends Phaser.Scene {
 		/* ---------- CREATES PLATFORMS ---------- */
 		//this.platform1 = new Platform(this, 590, 128, 'tempPlatform');
 		this.platform2 = new Platform(this, 640, 528, 'tempPlatform');
-		this.platform3 = new Platform(this, 576, 273, 'tempPlatform');
+		this.platform3 = new Platform(this, 576, 271, 'tempPlatform');
 		//this.platform1.setScale(0.66, 1);
 		this.platform2.setScale(0.66, 1);
 		this.platform3.setScale(0.66, 1);
@@ -185,6 +185,7 @@ export default class s1r2 extends Phaser.Scene {
 		this.switchWater = this.input.keyboard.addKey('three');
 		this.switchAir = this.input.keyboard.addKey('four');
 		this.interact = this.input.keyboard.addKey('e');
+		this.reset = this.input.keyboard.addKey('r');
 		this.castSpell = this.input.keyboard.addKey('space');
 
 	}	// ---------- END OF CREATE ---------- //
@@ -248,7 +249,14 @@ export default class s1r2 extends Phaser.Scene {
 			if (this.rockGroup) {
 				for (let x in this.rockGroup) {
 					this.physics.add.overlap(this.rockGroup[x], this.player.airwave, () => {
-						this.player.airwave.push(this, this.rockGroup[x]);
+						this.player.airwave.push(this, this.rockGroup[x], this.player.flipX);
+					});
+				}
+			}
+			if (this.boxGroup) {
+				for (let x in this.boxGroup) {
+					this.physics.add.overlap(this.boxGroup[x], this.player.airwave, () => {
+						this.player.airwave.push(this, this.boxGroup[x], this.player.flipX);
 					});
 				}
 			}
@@ -268,6 +276,10 @@ export default class s1r2 extends Phaser.Scene {
 		} else if (this.switchAir.isDown) {
 			this.player.currentSpell = 'air';
 			// this.player.changeSpellFrame(this, 3);
+		}
+
+		if (this.reset.isDown) {
+			this.resetLevel = true;
 		}
 
 		// Casts spell if cooldown timer has been met

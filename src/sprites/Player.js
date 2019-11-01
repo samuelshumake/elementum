@@ -128,7 +128,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 				}
 				this.fireball = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'fire'));
 				this.spellActive['fire'] = true;
-				this.fireball.shoot(direction);
+				this.fireball.shoot(scene, direction);
 				break;
 
 
@@ -159,7 +159,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 				}
 				this.bubble = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'water'));
 				this.spellActive['water'] = true;
-				this.bubble.shoot(direction);
+				this.bubble.shoot(scene, direction);
 				break;
 
 
@@ -170,10 +170,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
 				}
 				this.airwave = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'air'));
 				this.spellActive['air'] = true;
-				this.airwave.shoot(direction);
+				this.airwave.shoot(scene, direction);
 				break;
 		}
-
 
 	}
 
