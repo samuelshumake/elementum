@@ -5,6 +5,7 @@ import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
 import Lever from '../sprites/Lever.js';
+import PressurePlate from '../sprites/PressurePlate.js';
 import Rock from '../sprites/Rock.js';
 export default class s1r2 extends Phaser.Scene {
 
@@ -61,6 +62,10 @@ export default class s1r2 extends Phaser.Scene {
 		this.load.spritesheet('air', './assets/spriteSheets/airAnimation.png', {
 			frameHeight: 32,
 			frameWidth: 48,
+		});
+		this.load.spritesheet('plate', './assets/spriteSheets/pressureplate.png', {
+			frameHeight: 6,
+			frameWidth: 32,
 		});
 
 		/* ---------- LOADS BACKGROUND -----------------------*/
@@ -132,9 +137,9 @@ export default class s1r2 extends Phaser.Scene {
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
-		camera.setZoom(2);
-		camera.startFollow(this.player);
-		camera.setBounds(0, 0, 800, 640);
+		camera.setZoom(.5);
+		//camera.startFollow(this.player);
+		//camera.setBounds(0, 0, 800, 640);
 
 
 		/* ---------- CREATES DOOR ---------- */
@@ -172,11 +177,15 @@ export default class s1r2 extends Phaser.Scene {
 		this.physics.add.collider(this.enemyGroup, this.platform2);
 		this.physics.add.collider(this.enemyGroup, this.rockGroup);
 
-
+		/* ----------- CREATES LEVER ------------ */
 		this.lever1 = new Lever(this, 40, 150, 'lever');
 		this.lever2 = new Lever(this, 788, 560, 'lever');
 		this.lever2.flipY = true;
 		this.lever2.angle = 90;
+
+		/* ----------- CREATES PRESSURE PLATE -------- */
+		this.plate = new PressurePlate(this, 200, 507, 'plate');
+
 
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
@@ -280,6 +289,9 @@ export default class s1r2 extends Phaser.Scene {
 			this.lever1.flip(this, this.platform3, 'right', 500);
 			this.lever2.flip(this, this.platform2, 'left', 200);
 		}
+
+		this.plate.trip(this,this.platform2,'left',200)
+
 
     }	// ----- END OF UPDATE ----- //
 
