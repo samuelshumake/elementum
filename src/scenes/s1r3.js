@@ -86,7 +86,7 @@ export default class s1r3 extends Phaser.Scene {
 		/* ---------- LOADS SPRITES FOR GAME OBJECTS ---------- */
 		this.load.image('spike', './assets/sprites/spike.png');
 		this.load.image('door', './assets/sprites/door.png');
-		this.load.image('rock', './assets/sprites/rock.png');
+		this.load.image('box', './assets/sprites/box.png');
 
 		this.load.image('cameraFrame', './assets/sprites/cameraFrame.png');
 
@@ -102,6 +102,7 @@ export default class s1r3 extends Phaser.Scene {
 		this.resetLevel = false;
 		this.gameWidth = this.cameras.main.width;
 		this.gameHeight = this.cameras.main.height;
+
 
 		/* ---------- CREATES MAP ---------- */
 		const map = this.make.tilemap({key: "s1r3"});
@@ -120,44 +121,43 @@ export default class s1r3 extends Phaser.Scene {
 		camera.startFollow(this.player, true, 0.1);
 		camera.setBounds(0, 0, 800, 640);
 
+		this.spikeGroup = [];
+		for (let i = 0; i <= 5; i++) {
+			var spike = this.physics.add.sprite(16*i + 585, 635, 'spike').setScale(0.3);
+			spike.body.immovable = true;
+			this.spikeGroup.push(spike);
+		}
 
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(754, 352);
 
-
-		/* ------ CREATE SPIKES ---------------- */
-		this.spikeGroup = [];
-		for (let i = 0; i <= 5; i++) {
-			this.spikeGroup.push(this.physics.add.sprite(16*i + 585, 660, 'spike').setScale(0.3))
-		}
-
-
 		/* ---------- CREATES BOX ---------- */
-		this.rock = new Rock(this, 200, 500, 'rock').setScale(1.5, 1);
-		this.rockGroup = [this.rock];
+		this.box = new Box(this, 80, 450, 'box');
+		this.physics.add.collider(this.box, this.spikeGroup);
+		this.boxGroup = [this.box];
+
 
 		// /* ---------- CREATES ENEMIES ---------- */
-		// this.enemy1 = new Enemy(this, 600, 450, 'slimeAni');
-		// this.enemyGroup = [this.enemy1];
+		this.enemy1 = new Enemy(this, 500, 400, 'slimeAni');
+		this.enemy2 = new Enemy(this, 200, 400, 'slimeAni');
+		this.enemyGroup = [this.enemy1, this.enemy2];
 
 		/* ---------- CREATES PLATFORMS ---------- */
 		this.platform1 = new Platform(this, 80, 560, 'tempPlatform');
-		this.physics.add.collider(this.platform1, this.rock);
+		this.platform1.options = ['up', 383, this.box, 1, 4500];
+		this.physics.add.collider(this.platform1, this.box);
 
+		this.platform2 = new Platform(this, 15, 112, 'tempPlatform').setScale(0.34, 2.9);
+		this.platform2.options = ['right', 540, this.box, 1, 5700];
+		this.physics.add.collider(this.platform2, this.box);
 
-
-		// this.physics.add.collider(this.enemyGroup, this.platform1);
-		// this.physics.add.collider(this.enemyGroup, this.platform2);
-		// this.physics.add.collider(this.enemyGroup, this.rock);
-
+		this.platform3 = new Platform(this, 400, 497, 'tempPlatform').setScale(0.29, 2.9);
+		this.platform3.options = ['down', 95, this.box, 1, 0];
+;
 
 		this.lever1 = new Lever(this, 350, 535, 'lever');
-		this.lever1.options = [300, 300, 1, 3000];
+		this.lever2 = new Lever(this, 353, 279, 'lever');
 
-		// this.lever2 = new Lever(this, 42, 220, 'lever');
-		// this.lever2.angle = 90;
-		// this.lever1Options = [50, 75, 0.8, 3700];
-		// this.lever2Options = [380, 450, 1, 2500];
 
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
@@ -175,6 +175,11 @@ export default class s1r3 extends Phaser.Scene {
 
 	update (time, delta) {
 
+		if (this.box.y > 630) {
+			this.box.body.setVelocity(0);
+			this.box.body.setGravity(0);
+		}
+
 		/* ---------- RESETS LEVEL ---------- */
 		if (this.resetLevel) {
 			this.scene.start('s1r3')
@@ -188,13 +193,14 @@ export default class s1r3 extends Phaser.Scene {
 		/* ---------- MOVES PLAYER ---------- */
 		this.player.move(this);
 
+
 		/*----------- ENEMY MOVEMENT -------------- */
 		for(var x in this.enemyGroup){
 			this.enemyGroup[x].move(this, this.player);
 		}
 
 		/* ----------- PLAYER KILLERS ----------- */
-		// this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
+		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
 		this.physics.overlap(this.player, Object.values(this.spikeGroup), () => this.resetLevel = true);
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
 
@@ -269,8 +275,8 @@ export default class s1r3 extends Phaser.Scene {
 	 	}
 
 		if (this.interact.isDown) {
-			this.lever1.flip(this, this.platform1, 'up', 500, this.lever1Options);
-			// this.lever2.flip(this, this.platform2, 'left', 200, this.lever2Options);
+			this.lever1.flip(this, [this.platform1]);
+			this.lever2.flip(this, [this.platform2, this.platform3]);
 		}
 
 

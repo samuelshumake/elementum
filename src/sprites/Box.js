@@ -9,7 +9,7 @@ export default class Box extends Phaser.GameObjects.Sprite {
 		scene.physics.add.collider(this, scene.layer);
 		scene.physics.add.collider(this, scene.enemyGroup);
 		this.body.setGravity(0, 600);
-	    this.body.immovable = true;
+
 		this.setScale(1.7);
   }
 
