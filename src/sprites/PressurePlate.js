@@ -11,6 +11,7 @@ export default class PressurePlate extends Phaser.GameObjects.Sprite {
     this.body.immovable = true;
 		this.tripped = false;
 		this.setScale(1.5)
+		
 		/* ------ CREATES ANIMATION ------- */
 	  scene.anims.create({
 		key: "plateDown",

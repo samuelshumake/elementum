@@ -137,7 +137,7 @@ export default class s1r2 extends Phaser.Scene {
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
-		camera.setZoom(.5);
+		//camera.setZoom(.5);
 		//camera.startFollow(this.player);
 		//camera.setBounds(0, 0, 800, 640);
 
@@ -164,14 +164,13 @@ export default class s1r2 extends Phaser.Scene {
 		this.enemyGroup = [this.enemy1];
 
 		/* ---------- CREATES PLATFORMS ---------- */
-		//this.platform1 = new Platform(this, 590, 128, 'tempPlatform');
+		this.platform1 = new Platform(this, 590, 128, 'tempPlatform');
 		this.platform2 = new Platform(this, 640, 528, 'tempPlatform');
-		this.platform3 = new Platform(this, 576, 273, 'tempPlatform');
-		//this.platform1.setScale(0.66, 1);
+		this.platform3 = new Platform(this, 576, 270, 'tempPlatform');
+		this.platform1.setScale(0.66, 1);
 		this.platform2.setScale(0.66, 1);
 		this.platform3.setScale(0.66, 1);
-		//this.platform2.flipX = true;
-		//this.platform1.angle = 90;
+		this.platform1.angle = 90;
 
 		//this.physics.add.collider(this.enemyGroup, this.platform1);
 		this.physics.add.collider(this.enemyGroup, this.platform2);
@@ -184,7 +183,7 @@ export default class s1r2 extends Phaser.Scene {
 		this.lever2.angle = 90;
 
 		/* ----------- CREATES PRESSURE PLATE -------- */
-		this.plate = new PressurePlate(this, 200, 507, 'plate');
+		this.plate = new PressurePlate(this, 258, 507, 'plate');
 
 
 
@@ -286,11 +285,11 @@ export default class s1r2 extends Phaser.Scene {
 	 	}
 
 		if (this.interact.isDown) {
-			this.lever1.flip(this, this.platform3, 'right', 500);
-			this.lever2.flip(this, this.platform2, 'left', 200);
+			this.lever1.flip(this, this.platform3, 'right', 64);
+			this.lever2.flip(this, this.platform2, 'left', 64);
 		}
 
-		this.plate.trip(this,this.platform2,'left',200)
+		this.plate.trip(this, this.platform1, 'down', 64)
 
 
     }	// ----- END OF UPDATE ----- //
