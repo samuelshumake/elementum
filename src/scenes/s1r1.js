@@ -115,33 +115,8 @@ export default class s1r1 extends Phaser.Scene {
 		this.layer2 = map.createStaticLayer("Foreground", tileset, 0,0);
 		this.layer3 = map.createStaticLayer("Vines", tileset, 0,0);
 
-
-
-		/* ---------- TOP BANNER ---------- */
-		//this.add.image(350, 35,'topbanner').setScale(15, 1.7);
-
-
-		// /* ---------- CREATES MANA BAR ---------- */
-		// this.manaBar = this.add.sprite(this.cameras.main.width - 50, 40, 'manaBar', 27);
-		// this.anims.create({
-		// 	key: "regenMana",
-		// 	frames: this.anims.generateFrameNumbers("manaBar", {start: 0, end: 27}),
-		// 	frameRate: 24,
-		// });
-
-		// /* ---------- CREATES SPELL FRAMES ---------- */
-		// this.fireFrame = this.add.sprite(48, 40, 'fireFrame');
-		// this.earthFrame = this.add.sprite(111, 40, 'earthFrame');
-		// this.waterFrame = this.add.sprite(174, 40, 'bubbleFrame');
-		// this.airFrame = this.add.sprite(237, 40, 'airFrame');
-		//
-		// this.frameGroup = [this.fireFrame, this.earthFrame, this.waterFrame, this.airFrame];
-
-
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 750, 210, 'player');
-		// this.player = new Player(this, 48, 500, 'player');
-
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
@@ -149,10 +124,8 @@ export default class s1r1 extends Phaser.Scene {
 		camera.startFollow(this.player, true, 0.1);
 		camera.setBounds(0, 0, 800, 640);
 
-
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(754, 576, 'door');
-
 
 		/* ------ CREATE SPIKES ---------------- */
 		this.spikeGroup = [];
@@ -160,21 +133,21 @@ export default class s1r1 extends Phaser.Scene {
 			this.spikeGroup.push(this.physics.add.sprite(16*i + 185, 603, 'spike').setScale(0.3))
 		}
 
-
 		/* ---------- CREATES BOX ---------- */
 		this.rock = new Rock(this, 130, 600, 'rock');
 		this.rock.setScale(2, 0.5);
 		this.rockGroup = [this.rock];
 
 		// /* ---------- CREATES ENEMIES ---------- */
-		this.enemy1 = new Enemy(this, 600, 450, 'slimeAni');
-		// this.enemy2 = new Enemy(this, 60, 250, 'slimeAni');
-		this.enemy3 = new Enemy(this, 450, 600, 'slimeAni');
-		this.enemyGroup = [this.enemy1,this.enemy3];
+		this.enemy1 = new Enemy(this, 600, 455, 'slimeAni');
+		this.enemy2 = new Enemy(this, 60, 250, 'slimeAni');
+		this.enemyGroup = [this.enemy1,this.enemy2];
 
 		/* ---------- CREATES PLATFORMS ---------- */
 		this.platform1 = new Platform(this, 150, 176, 'BigPlatform5');
+		this.platform1.options = ['right', 500, this.platform1, 1, 3000];
 		this.platform2 = new Platform(this, 623, 560, 'BigPlatform3');
+		this.platform2.options = ['left', 200, this.platform2, 1, 2000];
 		this.platform2.flipX = true;
 
 		this.physics.add.collider(this.enemyGroup, this.platform1);
@@ -211,7 +184,7 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {
-			this.scene.start('s1r2');
+			this.scene.start('s1r3');
 		}
 
 		/* ---------- MOVES PLAYER ---------- */
@@ -275,16 +248,12 @@ export default class s1r1 extends Phaser.Scene {
 		/* ---------- CASTING SPELLS ---------- */
 		if (this.switchFire.isDown) {
 			this.player.currentSpell = 'fire';
-			// this.player.changeSpellFrame(this, 0);
 		} else if (this.switchEarth.isDown) {
 			this.player.currentSpell = 'earth';
-			// this.player.changeSpellFrame(this, 1);
 		} else if (this.switchWater.isDown) {
 			this.player.currentSpell = 'water';
-			// this.player.changeSpellFrame(this, 2);
 		} else if (this.switchAir.isDown) {
 			this.player.currentSpell = 'air';
-			// this.player.changeSpellFrame(this, 3);
 		}
 
 		if (this.reset.isDown) {
@@ -294,12 +263,11 @@ export default class s1r1 extends Phaser.Scene {
 		// Casts spell if cooldown timer has been met
 		if (this.castSpell.isDown && this.player.spellTimer > 70 ) {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
-			// this.manaBar.play('regenMana', true);
 	 	}
 
 		if (this.interact.isDown) {
-			this.lever1.flip(this, this.platform1, 'right', 500, this.lever1Options);
-			this.lever2.flip(this, this.platform2, 'left', 200, this.lever2Options);
+			this.lever1.flip(this, [this.platform1]);
+			this.lever2.flip(this, [this.platform2]);
 		}
 
 

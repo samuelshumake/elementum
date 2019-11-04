@@ -132,7 +132,7 @@ export default class s1r3 extends Phaser.Scene {
 		this.door = this.physics.add.sprite(754, 352);
 
 		/* ---------- CREATES BOX ---------- */
-		this.box = new Box(this, 80, 450, 'box');
+		this.box = new Box(this, 80, 515, 'box');
 		this.physics.add.collider(this.box, this.spikeGroup);
 		this.boxGroup = [this.box];
 

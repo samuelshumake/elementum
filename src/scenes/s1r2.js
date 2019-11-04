@@ -5,6 +5,7 @@ import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
 import Lever from '../sprites/Lever.js';
+import PressurePlate from '../sprites/PressurePlate.js';
 import Rock from '../sprites/Rock.js';
 export default class s1r2 extends Phaser.Scene {
 
@@ -62,6 +63,10 @@ export default class s1r2 extends Phaser.Scene {
 			frameHeight: 32,
 			frameWidth: 48,
 		});
+		this.load.spritesheet('pressurePlate', './assets/spriteSheets/pressureplate.png', {
+			frameHeight: 32,
+			frameWidth: 32
+		});
 
 		/* ---------- LOADS BACKGROUND -----------------------*/
 		this.load.image('background', './assets/images/backgroundimage1.png');
@@ -106,33 +111,13 @@ export default class s1r2 extends Phaser.Scene {
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
 
-		/* ---------- TOP BANNER ---------- */
-		// this.add.image(350, 35,'topbanner').setScale(15, 1.7);
-		//
-		//
-		// /* ---------- CREATES MANA BAR ---------- */
-		// this.manaBar = this.add.sprite(this.cameras.main.width - 50, 40, 'manaBar', 27);
-		// this.anims.create({
-		// 	key: "regenMana",
-		// 	frames: this.anims.generateFrameNumbers("manaBar", {start: 0, end: 27}),
-		// 	frameRate: 24,
-		// });
-		//
-		// /* ---------- CREATES SPELL FRAMES ---------- */
-		// this.fireFrame = this.add.sprite(48, 40, 'fireFrame');
-		// this.earthFrame = this.add.sprite(111, 40, 'earthFrame');
-		// this.waterFrame = this.add.sprite(174, 40, 'bubbleFrame');
-		// this.airFrame = this.add.sprite(237, 40, 'airFrame');
-		//
-		// this.frameGroup = [this.fireFrame, this.earthFrame, this.waterFrame, this.airFrame];
-
 
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 50, 492, 'player');
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
-		camera.setZoom(2);
+		// camera.setZoom(2);
 		camera.startFollow(this.player);
 		camera.setBounds(0, 0, 800, 640);
 
@@ -143,7 +128,7 @@ export default class s1r2 extends Phaser.Scene {
 
 		/* ------ CREATE SPIKES ---------------- */
 		this.spikeGroup = [];
-		for (let i = 0; i <= 8; i++) {
+		for (let i = 0; i <= 5; i++) {
 			this.spikeGroup.push(this.physics.add.sprite(16*i + 680, 603, 'spike').setScale(0.3))
 		}
 
@@ -159,24 +144,24 @@ export default class s1r2 extends Phaser.Scene {
 		this.enemyGroup = [this.enemy1];
 
 		/* ---------- CREATES PLATFORMS ---------- */
-		//this.platform1 = new Platform(this, 590, 128, 'tempPlatform');
-		this.platform2 = new Platform(this, 640, 528, 'tempPlatform');
-		this.platform3 = new Platform(this, 576, 271, 'tempPlatform');
-		//this.platform1.setScale(0.66, 1);
-		this.platform2.setScale(0.66, 1);
-		this.platform3.setScale(0.66, 1);
-		//this.platform2.flipX = true;
-		//this.platform1.angle = 90;
+		this.platform1 = new Platform(this, 576, 271, 'tempPlatform').setScale(0.66, 1);
+		this.platform1.options = ['up', 95, this.platform1, 1, 0];
+		this.platform2 = new Platform(this, 640, 528, 'tempPlatform').setScale(0.66, 1);
+		this.platform2.options = ['up', 95, this.platform2, 1, 0];
+		this.platform3 = new Platform(this, 594, 144, 'tempPlatform').setScale(0.3, 3);
+		this.platform3.options = ['up', 95, this.platform3, 1, 0];
 
 		//this.physics.add.collider(this.enemyGroup, this.platform1);
 		this.physics.add.collider(this.enemyGroup, this.platform2);
 		this.physics.add.collider(this.enemyGroup, this.rockGroup);
 
 
-		this.lever1 = new Lever(this, 40, 150, 'lever');
+		this.lever1 = new Lever(this, 50, 150, 'lever');
 		this.lever2 = new Lever(this, 788, 560, 'lever');
 		this.lever2.flipY = true;
 		this.lever2.angle = 90;
+
+		this.plate = new PressurePlate(this, 100, 400, 'pressurePlate');
 
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
@@ -283,8 +268,8 @@ export default class s1r2 extends Phaser.Scene {
 	 	}
 
 		if (this.interact.isDown) {
-			this.lever1.flip(this, this.platform3, 'right', 500);
-			this.lever2.flip(this, this.platform2, 'left', 200);
+			this.lever1.flip(this, [this.platform1]);
+			this.lever2.flip(this, [this.platform2]);
 		}
 
     }	// ----- END OF UPDATE ----- //
