@@ -201,9 +201,8 @@ export default class s1r2 extends Phaser.Scene {
 
 		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {
-			this.scene.start('Boot')
+			this.scene.start('s1r3');
 		}
-
 
 		/* ---------- MOVES PLAYER ---------- */
 		this.player.move(this);
@@ -266,16 +265,12 @@ export default class s1r2 extends Phaser.Scene {
 		/* ---------- CASTING SPELLS ---------- */
 		if (this.switchFire.isDown) {
 			this.player.currentSpell = 'fire';
-			// this.player.changeSpellFrame(this, 0);
 		} else if (this.switchEarth.isDown) {
 			this.player.currentSpell = 'earth';
-			// this.player.changeSpellFrame(this, 1);
 		} else if (this.switchWater.isDown) {
 			this.player.currentSpell = 'water';
-			// this.player.changeSpellFrame(this, 2);
 		} else if (this.switchAir.isDown) {
 			this.player.currentSpell = 'air';
-			// this.player.changeSpellFrame(this, 3);
 		}
 
 		if (this.reset.isDown) {
@@ -285,7 +280,6 @@ export default class s1r2 extends Phaser.Scene {
 		// Casts spell if cooldown timer has been met
 		if (this.castSpell.isDown && this.player.spellTimer > 70 ) {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
-			// this.manaBar.play('regenMana', true);
 	 	}
 
 		if (this.interact.isDown) {
