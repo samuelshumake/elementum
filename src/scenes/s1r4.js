@@ -6,6 +6,7 @@ import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
 import Lever from '../sprites/Lever.js';
 import Rock from '../sprites/Rock.js';
+import PressurePlate from '../sprites/PressurePlate.js';
 export default class s1r4 extends Phaser.Scene {
 
 
@@ -61,6 +62,10 @@ export default class s1r4 extends Phaser.Scene {
 		this.load.spritesheet('air', './assets/spriteSheets/airAnimation.png', {
 			frameHeight: 32,
 			frameWidth: 48,
+		});
+		this.load.spritesheet('pressurePlate', './assets/spriteSheets/pressureplate.png', {
+			frameHeight: 6,
+			frameWidth: 32
 		});
 
 		/* ---------- LOADS BACKGROUND -----------------------*/
@@ -138,19 +143,19 @@ export default class s1r4 extends Phaser.Scene {
 
 
 		/* ---------- CREATES DOOR ---------- */
-		this.door = this.physics.add.sprite(754, 128, 'door');
+		this.door = this.physics.add.sprite(700, 416, 'door');
 
 
 		/* ------ CREATE SPIKES ---------------- */
-		this.spikeGroup = [];
-		for (let i = 0; i <= 8; i++) {
-			this.spikeGroup.push(this.physics.add.sprite(16*i + 680, 603, 'spike').setScale(0.3))
-		}
+		//this.spikeGroup = [];
+		//for (let i = 0; i <= 8; i++) {
+		//	this.spikeGroup.push(this.physics.add.sprite(16*i + 680, 603, 'spike').setScale(0.3))
+		//}
 
 		/* ---------- CREATES BOX ---------- */
-		this.rock = new Rock(this, 120, 485, 'rock');
+		this.rock = new Rock(this, 150, 485, 'rock');
 		this.rock.setScale(1, 1);
-		this.rock2 = new Rock(this, 640, 593, 'rock');
+		this.rock2 = new Rock(this, 6400, 593, 'rock');
 		this.rock2.setScale(1, 0.50)
 		this.rockGroup = [this.rock, this.rock2];
 
@@ -160,24 +165,27 @@ export default class s1r4 extends Phaser.Scene {
 
 		/* ---------- CREATES PLATFORMS ---------- */
 		//platform on right
-		this.platform1 = new Platform(this, 464, 560, 'tempPlatform');
+		this.platform1 = new Platform(this, 400, 464, 'tempPlatform');
 		//platform on in middle
-		this.platform2 = new Platform(this, 400, 464, 'tempPlatform');
 		//platform on left
 		this.platform3 = new Platform(this, 304, 560, 'tempPlatform');
+		this.platform3.options = ['up', 100, this.platform3, 1, 0]
+		this.platform1.options = ['down', 100, this.platform1, 1, 0]
+		// [direction, distance moved, object camera follows, camera zoom, time camera stays]
 		//this.platform2.flipX = true;
-		this.platform1.setScale(.3,1)
-		this.platform2.setScale(.3,1)
-		this.platform3.setScale(.3,1)
+		this.platform1.setScale(.3,3)
+		this.platform3.setScale(.3,3)
 		//this.physics.add.collider(this.enemyGroup, this.platform1);
 		this.physics.add.collider(this.enemyGroup, this.platform2);
 		this.physics.add.collider(this.enemyGroup, this.rockGroup);
 
 
-		this.lever1 = new Lever(this, 40, 150, 'lever');
+		this.lever1 = new Lever(this, 2500, 599, 'lever');
 		this.lever2 = new Lever(this, 788, 560, 'lever');
 		this.lever2.flipY = true;
 		this.lever2.angle = 90;
+
+		this.plate = new PressurePlate(this, 150, 603, 'pressurePlate');
 
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
@@ -202,7 +210,7 @@ export default class s1r4 extends Phaser.Scene {
 
 		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {
-			this.scene.start('Boot')
+			this.scene.start('s1r5')
 		}
 
 
@@ -216,7 +224,7 @@ export default class s1r4 extends Phaser.Scene {
 
 		/* ----------- PLAYER KILLERS ----------- */
 		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
-		this.physics.overlap(this.player, Object.values(this.spikeGroup), () => this.resetLevel = true);
+		//this.physics.overlap(this.player, Object.values(this.spikeGroup), () => this.resetLevel = true);
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
 
 
@@ -290,8 +298,16 @@ export default class s1r4 extends Phaser.Scene {
 	 	}
 
 		if (this.interact.isDown) {
-			this.lever1.flip(this, this.platform3, 'up', 500);
-			this.lever2.flip(this, this.platform2, 'up', 200);
+			this.lever1.flip(this, [this.platform3, this.platform1]);
+		}
+
+		if (this.physics.overlap(this.rock, this.plate)) {
+			this.plate.trip(this, [this.platform3, this.platform1]);
+		}
+		else if(this.plate.tripped == true){
+			this.platform1.options[0] = "up"
+			this.platform3.options[0] = "down"
+			this.plate.untrip(this, [this.platform3, this.platform1]);
 		}
 
     }	// ----- END OF UPDATE ----- //
