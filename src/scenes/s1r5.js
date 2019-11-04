@@ -47,6 +47,10 @@ export default class s1r5 extends Phaser.Scene {
 			frameHeight: 64,
 			frameWidth: 64,
 		});
+		this.load.spritesheet('gui', './assets/spriteSheets/gui.png', {
+			frameHeight: 65,
+			frameWidth: 32,
+		});
 		this.load.spritesheet('water', './assets/spriteSheets/bubbleAnimation.png', {
 			frameHeight: 32,
 			frameWidth: 32,
@@ -115,13 +119,7 @@ export default class s1r5 extends Phaser.Scene {
 		// this.add.image(350, 35,'topbanner').setScale(15, 1.7);
 		//
 		//
-		// /* ---------- CREATES MANA BAR ---------- */
-		// this.manaBar = this.add.sprite(this.cameras.main.width - 50, 40, 'manaBar', 27);
-		// this.anims.create({
-		// 	key: "regenMana",
-		// 	frames: this.anims.generateFrameNumbers("manaBar", {start: 0, end: 27}),
-		// 	frameRate: 24,
-		// });
+
 		//
 		// /* ---------- CREATES SPELL FRAMES ---------- */
 		// this.fireFrame = this.add.sprite(48, 40, 'fireFrame');
@@ -141,7 +139,13 @@ export default class s1r5 extends Phaser.Scene {
 		camera.startFollow(this.player);
 		camera.setBounds(0, 0, 800, 640);
 
-
+		// /* ---------- CREATES MANA BAR ---------- */
+		this.manaBar = this.add.sprite(this.player.x - 50, this.player.y40, 'gui', 27);
+		this.anims.create({
+			key: "regenMana",
+		 	frames: this.anims.generateFrameNumbers("gui", {start: 0, end: 21}),
+		 	frameRate: 24,
+	 	});
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(70, 575, 'door');
 
@@ -297,7 +301,7 @@ export default class s1r5 extends Phaser.Scene {
 		// Casts spell if cooldown timer has been met
 		if (this.castSpell.isDown && this.player.spellTimer > 70 ) {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
-			// this.manaBar.play('regenMana', true);
+			this.manaBar.play('regenMana', true);
 	 	}
 
 		if (this.interact.isDown) {
