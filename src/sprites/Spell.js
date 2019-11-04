@@ -72,7 +72,7 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		this.play('earthAni', true);
 		scene.physics.add.collider(player, this);
 		this.body.setVelocityY(-150);
-		setTimeout(() => {this.body.setVelocityY(0)}, 750)
+		setTimeout(() => {this.body.setVelocityY(0)}, 850)
 	}
 
 	suspend(scene, enemy) {

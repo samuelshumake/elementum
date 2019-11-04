@@ -1,4 +1,4 @@
-export default class Lever extends Phaser.GameObjects.Sprite {
+export default class PressurePlate extends Phaser.GameObjects.Sprite {
 
 	constructor(scene, x, y, key) {
 		super(scene, x, y, key);
@@ -8,25 +8,30 @@ export default class Lever extends Phaser.GameObjects.Sprite {
 
 		/* ------ PROPERTIES ------- */
 		scene.physics.world.enableBody(this, 0);
-    	this.body.immovable = true;
-		this.setScale(3);
-		this.flipX = true;
-		this.flipped = false;
+		this.body.immovable = true;
+		this.tripped = false;
+		this.setScale(1.5)
 
 		/* ------ CREATES ANIMATION ------- */
-	    scene.anims.create({
-			key: "flipRight",
-			frames: scene.anims.generateFrameNumbers("lever", {start:0, end:3}),
+		scene.anims.create({
+			key: "plateDown",
+			frames: scene.anims.generateFrameNumbers("pressurePlate", {start:0, end:3}),
+			frameRate: 15,
+			repeat: 0
+		});
+		scene.anims.create({
+			key: "plateUp",
+			frames: scene.anims.generateFrameNumbers("pressurePlate", {start:3, end:0}),
 			frameRate: 15,
 			repeat: 0
 		});
 
 	}
 
-	flip(scene, object) {
-		if (scene.physics.overlap(this, scene.player) && !this.flipped) {
-			this.flipped = true;
-			this.play("flipRight",true);
+	trip(scene, object) {
+		if (!this.tripped) {
+			this.play("plateDown", true);
+			this.tripped = true;
 			object.forEach(function(i) {
 				i.move(scene, i.options[0], i.options[1]);
 				let newCamera = scene.cameras.add(858, 384, 400, 200).startFollow(i.options[2]).setZoom(i.options[3]).fadeIn(700);
@@ -35,10 +40,7 @@ export default class Lever extends Phaser.GameObjects.Sprite {
 				setTimeout(() => {scene.cameras.remove(newCamera); cameraFrame.destroy()}, i.options[4]);
 			});
 		}
-
-
-
+		
 	}
-
 
 }

@@ -101,17 +101,16 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		if (cursors.up.isDown && this.canJump) {
 			this.jumpTimer = 0;
 			this.jumpHeld = true;
-			// this.body.y -= 20;
 			this.body.setVelocityY(-600)
 			this.body.setAccelerationY(1300);
 		}
 
 		// Allows the player to crouch
-		if (cursors.down.isDown) {
-			this.body.setSize(this.width, 32);
-		} else {
-			this.body.setSize(this.width, this.height);
-		}
+		// if (cursors.down.isDown) {
+		// 	this.body.setSize(this.width, 32);
+		// } else {
+		// 	this.body.setSize(this.width, this.height);
+		// }
 	}
 
 
@@ -134,7 +133,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 			/* ----- EARTH ----- */
 			case 'earth':
-				if (this.body.blocked.down || scene.physics.overlap(this, scene.rock)) {
+				if (this.body.blocked.down || scene.physics.overlap(this, scene.rock) || scene.physics.overlap(this, scene.box)) {
 					if (this.spellActive['earth'] === true) {
 						this.platform.body.setVelocityY(250);
 						this.spellActive['earth'] = false;
