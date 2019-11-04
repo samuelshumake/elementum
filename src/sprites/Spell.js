@@ -5,7 +5,7 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		scene.sys.displayList.add(this);
 
 		scene.physics.world.enableBody(this, 0);
-		scene.physics.add.collider(this, scene.layer);
+		// scene.physics.add.collider(this, scene.layer);
 		this.body.setImmovable(true);
 
 		this.key = key;
@@ -51,7 +51,8 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		}
 	}
 
-	shoot(direction) {
+	shoot(scene, direction) {
+		scene.physics.add.collider(this, scene.layer);
 		if (this.key === 'water') {
 			this.play('bubbleAni', true);
 		} else if (this.key === 'fire') {

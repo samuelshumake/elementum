@@ -166,6 +166,7 @@ export default class s1r2 extends Phaser.Scene {
 		/* ---------- CREATES PLATFORMS ---------- */
 		this.platform1 = new Platform(this, 590, 128, 'tempPlatform');
 		this.platform2 = new Platform(this, 640, 528, 'tempPlatform');
+
 		this.platform3 = new Platform(this, 576, 270, 'tempPlatform');
 		this.platform1.setScale(0.66, 1);
 		this.platform2.setScale(0.66, 1);
@@ -193,6 +194,7 @@ export default class s1r2 extends Phaser.Scene {
 		this.switchWater = this.input.keyboard.addKey('three');
 		this.switchAir = this.input.keyboard.addKey('four');
 		this.interact = this.input.keyboard.addKey('e');
+		this.reset = this.input.keyboard.addKey('r');
 		this.castSpell = this.input.keyboard.addKey('space');
 
 	}	// ---------- END OF CREATE ---------- //
@@ -208,9 +210,8 @@ export default class s1r2 extends Phaser.Scene {
 
 		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {
-			this.scene.start('Boot')
+			this.scene.start('s1r3');
 		}
-
 
 		/* ---------- MOVES PLAYER ---------- */
 		this.player.move(this);
@@ -256,7 +257,14 @@ export default class s1r2 extends Phaser.Scene {
 			if (this.rockGroup) {
 				for (let x in this.rockGroup) {
 					this.physics.add.overlap(this.rockGroup[x], this.player.airwave, () => {
-						this.player.airwave.push(this, this.rockGroup[x]);
+						this.player.airwave.push(this, this.rockGroup[x], this.player.flipX);
+					});
+				}
+			}
+			if (this.boxGroup) {
+				for (let x in this.boxGroup) {
+					this.physics.add.overlap(this.boxGroup[x], this.player.airwave, () => {
+						this.player.airwave.push(this, this.boxGroup[x], this.player.flipX);
 					});
 				}
 			}
@@ -266,22 +274,21 @@ export default class s1r2 extends Phaser.Scene {
 		/* ---------- CASTING SPELLS ---------- */
 		if (this.switchFire.isDown) {
 			this.player.currentSpell = 'fire';
-			// this.player.changeSpellFrame(this, 0);
 		} else if (this.switchEarth.isDown) {
 			this.player.currentSpell = 'earth';
-			// this.player.changeSpellFrame(this, 1);
 		} else if (this.switchWater.isDown) {
 			this.player.currentSpell = 'water';
-			// this.player.changeSpellFrame(this, 2);
 		} else if (this.switchAir.isDown) {
 			this.player.currentSpell = 'air';
-			// this.player.changeSpellFrame(this, 3);
+		}
+
+		if (this.reset.isDown) {
+			this.resetLevel = true;
 		}
 
 		// Casts spell if cooldown timer has been met
 		if (this.castSpell.isDown && this.player.spellTimer > 70 ) {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
-			// this.manaBar.play('regenMana', true);
 	 	}
 
 		if (this.interact.isDown) {
