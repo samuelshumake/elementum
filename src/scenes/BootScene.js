@@ -25,8 +25,9 @@ export default class BootScene extends Phaser.Scene {
 	ChangeScene.addSceneEventListeners(this);
 
 	// Main Menu background loading
+	// this.cameras.main.setBackgroundColor(0x95e7c1);
 	var logo = this.add.image(this.centerX, this.centerY, 'mainmenu');
-	logo.setScale(6.25)
+	logo.setScale(9, 6)
 
 	// Title text
 	var title = this.add.text(400, 100, 'Elementum').setInteractive();

@@ -64,7 +64,7 @@ export default class s1r2 extends Phaser.Scene {
 			frameWidth: 48,
 		});
 		this.load.spritesheet('pressurePlate', './assets/spriteSheets/pressureplate.png', {
-			frameHeight: 32,
+			frameHeight: 6,
 			frameWidth: 32
 		});
 
@@ -148,8 +148,8 @@ export default class s1r2 extends Phaser.Scene {
 		this.platform1.options = ['up', 95, this.platform1, 1, 0];
 		this.platform2 = new Platform(this, 640, 528, 'tempPlatform').setScale(0.66, 1);
 		this.platform2.options = ['up', 95, this.platform2, 1, 0];
-		this.platform3 = new Platform(this, 594, 144, 'tempPlatform').setScale(0.3, 3);
-		this.platform3.options = ['up', 95, this.platform3, 1, 0];
+		this.platform3 = new Platform(this, 500, 144, 'tempPlatform').setScale(0.3, 3);
+		this.platform3.options = ['right', 95, this.platform3, 1, 1300];
 
 		//this.physics.add.collider(this.enemyGroup, this.platform1);
 		this.physics.add.collider(this.enemyGroup, this.platform2);
@@ -161,7 +161,7 @@ export default class s1r2 extends Phaser.Scene {
 		this.lever2.flipY = true;
 		this.lever2.angle = 90;
 
-		this.plate = new PressurePlate(this, 100, 400, 'pressurePlate');
+		this.plate = new PressurePlate(this, 255, 507, 'pressurePlate');
 
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
@@ -270,6 +270,10 @@ export default class s1r2 extends Phaser.Scene {
 		if (this.interact.isDown) {
 			this.lever1.flip(this, [this.platform1]);
 			this.lever2.flip(this, [this.platform2]);
+		}
+
+		if (this.physics.overlap(this.rock, this.plate)) {
+			this.plate.trip(this, [this.platform3]);
 		}
 
     }	// ----- END OF UPDATE ----- //

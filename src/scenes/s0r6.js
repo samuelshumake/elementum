@@ -109,31 +109,8 @@ export default class s0r6 extends Phaser.Scene {
 		/* ---------- TOP BANNER ---------- */
 		this.add.image(350, 35,'topbanner').setScale(15, 1.7);
 
-
-		/* ---------- CREATES MANA BAR ---------- */
-		// this.manaBar = this.add.sprite(this.cameras.main.width - 50, 40, 'manaBar', 27);
-		// this.anims.create({
-		// 	key: "regenMana",
-		// 	frames: this.anims.generateFrameNumbers("manaBar", {start: 0, end: 27}),
-		// 	frameRate: 24,
-		// });
-		//
-		// /* ---------- TUTORIAL TEXT ---------- */
-		// this.add.image(405, 125,'textBanner').setScale(7.5, 1.5);
-		// this.tutorialText = this.add.text(215, 115, 'Levers can be flipped with the \'E\' key.');
-		//
-		//
-		// /* ---------- CREATES SPELL FRAMES ---------- */
-		// this.fireFrame = this.add.sprite(48, 40, 'fireFrame');
-		// this.earthFrame = this.add.sprite(111, 40, 'earthFrame');
-		// this.waterFrame = this.add.sprite(174, 40, 'bubbleFrame');
-		// this.airFrame = this.add.sprite(237, 40, 'airFrame');
-		//
-		// this.frameGroup = [this.fireFrame, this.earthFrame, this.waterFrame, this.airFrame];
-
-
 		/* ---------- CREATES PLAYER ---------- */
-		this.player = new Player(this, 60, 550, 'player');
+		this.player = new Player(this, 60, 530, 'player');
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
@@ -143,7 +120,7 @@ export default class s0r6 extends Phaser.Scene {
 
 
 		/* ---------- CREATES DOOR ---------- */
-		this.door = this.physics.add.sprite(754, 192, 'door');
+		this.door = this.physics.add.sprite(754, 192);
 
 		/* ------ CREATE SPIKES ---------------- */
 		this.spikeGroup = [];
@@ -154,24 +131,27 @@ export default class s0r6 extends Phaser.Scene {
 
 		/* ---------- CREATES ENEMIES ---------- */
 		this.enemy1 = new Enemy(this, 200, 400, 'slimeAni');
-		this.enemy2 = new Enemy(this, 450, 350, 'slimeAni');
-		this.enemy3 = new Enemy(this, 600, 600, 'slimeAni');
-		this.enemyGroup = [this.enemy1, this.enemy2, this.enemy3];
+		this.enemy2 = new Enemy(this, 600, 470, 'slimeAni');
+		// this.enemy3 = new Enemy(this, 600, 600, 'slimeAni');
+		this.enemyGroup = [this.enemy1, this.enemy2];
 
 		/* ---------- CREATES BOX ---------- */
 		this.box = new Box(this, 130, 385, 'box');
+		this.box.body.immovable = true;
 		this.boxGroup = [this.box];
 
 
 		/* ---------- CREATES PLATFORMS ---------- */
 		this.platform1 = new Platform(this, 496, 528, 'tempPlatform');
+		this.platform1.options = ['left', 98, this.platform1, 1, 2000];
 		this.platform2 = new Platform(this, 720, 300, 'tempPlatform');
+		this.platform2.options = ['right', 200, this.platform2, 1, 2000];
 		this.platform2.flipX = true;
 
 
 		/* ---------- CREATES LEVERS ---------- */
-		this.lever = new Lever(this, 40, 450, 'lever');
-		this.lever.angle = 90;
+		this.lever1 = new Lever(this, 40, 450, 'lever');
+		this.lever1.angle = 90;
 		this.lever2 = new Lever(this, 760, 580, 'lever');
 		this.lever2.angle = 90;
 		this.lever2.flipY = true;
@@ -286,8 +266,8 @@ export default class s0r6 extends Phaser.Scene {
 	 	}
 
 		if (this.interact.isDown) {
-			this.lever.flip(this, this.platform1, 'right', 200);
-			this.lever2.flip(this, this.platform2, 'left', 98);
+			this.lever1.flip(this, [this.platform1]);
+			this.lever2.flip(this, [this.platform2]);
 		}
 
 

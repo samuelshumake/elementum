@@ -103,7 +103,6 @@ export default class s1r3 extends Phaser.Scene {
 		this.gameWidth = this.cameras.main.width;
 		this.gameHeight = this.cameras.main.height;
 
-
 		/* ---------- CREATES MAP ---------- */
 		const map = this.make.tilemap({key: "s1r3"});
 		const tileset = map.addTilesetImage("tilemapv2", "tiles");
@@ -119,7 +118,8 @@ export default class s1r3 extends Phaser.Scene {
 		let camera = this.cameras.main;
 		camera.setZoom(2);
 		camera.startFollow(this.player, true, 0.1);
-		camera.setBounds(0, 0, 800, 640);
+		camera.setFollowOffset(0, 50);
+		camera.setBounds(0, 0, 800, 690);
 
 		this.spikeGroup = [];
 		for (let i = 0; i <= 5; i++) {
@@ -153,7 +153,7 @@ export default class s1r3 extends Phaser.Scene {
 
 		this.platform3 = new Platform(this, 400, 497, 'tempPlatform').setScale(0.29, 2.9);
 		this.platform3.options = ['down', 95, this.box, 1, 0];
-;
+
 
 		this.lever1 = new Lever(this, 350, 535, 'lever');
 		this.lever2 = new Lever(this, 353, 279, 'lever');
