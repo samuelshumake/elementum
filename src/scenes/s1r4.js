@@ -6,11 +6,11 @@ import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
 import Lever from '../sprites/Lever.js';
 import Rock from '../sprites/Rock.js';
-export default class s1r2 extends Phaser.Scene {
+export default class s1r4 extends Phaser.Scene {
 
 
 	constructor () {
-		super('s1r2');
+		super('s1r4');
 	}
 
 
@@ -70,7 +70,7 @@ export default class s1r2 extends Phaser.Scene {
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/tilemapv2.png');
-		this.load.tilemapTiledJSON('s1r2', './assets/map/s1r2.json')
+		this.load.tilemapTiledJSON('s1r4', './assets/map/s1r4.json')
 
 		/* ---------- LOADS SPRITES FOR SPELL FRAMES ---------- */
 		this.load.image('airFrame', './assets/sprites/airFrame.png');
@@ -101,7 +101,7 @@ export default class s1r2 extends Phaser.Scene {
 
 
 		/* ---------- CREATES MAP ---------- */
-		const map = this.make.tilemap({key: "s1r2"});
+		const map = this.make.tilemap({key: "s1r4"});
 		const tileset = map.addTilesetImage("tilemapv2", "tiles");
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
@@ -159,15 +159,16 @@ export default class s1r2 extends Phaser.Scene {
 		this.enemyGroup = [this.enemy1];
 
 		/* ---------- CREATES PLATFORMS ---------- */
-		//this.platform1 = new Platform(this, 590, 128, 'tempPlatform');
-		this.platform2 = new Platform(this, 640, 528, 'tempPlatform');
-		this.platform3 = new Platform(this, 576, 271, 'tempPlatform');
-		//this.platform1.setScale(0.66, 1);
-		this.platform2.setScale(0, 1);
-		this.platform3.setScale(0.66, 1);
+		//platform on right
+		this.platform1 = new Platform(this, 464, 560, 'tempPlatform');
+		//platform on in middle
+		this.platform2 = new Platform(this, 400, 464, 'tempPlatform');
+		//platform on left
+		this.platform3 = new Platform(this, 304, 560, 'tempPlatform');
 		//this.platform2.flipX = true;
-		//this.platform1.angle = 90;
-
+		this.platform1.setScale(.3,1)
+		this.platform2.setScale(.3,1)
+		this.platform3.setScale(.3,1)
 		//this.physics.add.collider(this.enemyGroup, this.platform1);
 		this.physics.add.collider(this.enemyGroup, this.platform2);
 		this.physics.add.collider(this.enemyGroup, this.rockGroup);
@@ -195,7 +196,7 @@ export default class s1r2 extends Phaser.Scene {
 
 		/* ---------- RESETS LEVEL ---------- */
 		if (this.resetLevel) {
-			this.scene.start('s1r2')
+			this.scene.start('s1r4')
 		}
 
 
@@ -289,8 +290,8 @@ export default class s1r2 extends Phaser.Scene {
 	 	}
 
 		if (this.interact.isDown) {
-			this.lever1.flip(this, this.platform3, 'right', 500);
-			this.lever2.flip(this, this.platform2, 'left', 200);
+			this.lever1.flip(this, this.platform3, 'up', 500);
+			this.lever2.flip(this, this.platform2, 'up', 200);
 		}
 
     }	// ----- END OF UPDATE ----- //
