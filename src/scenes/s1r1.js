@@ -145,7 +145,7 @@ export default class s1r1 extends Phaser.Scene {
 
 		/* ---------- CREATES PLATFORMS ---------- */
 		this.platform1 = new Platform(this, 150, 176, 'BigPlatform5');
-		this.platform1.options = ['right', 500, this.platform1, 1, 3000];
+		this.platform1.options = ['right', 500, this.platform1, 0.8, 3000];
 		this.platform2 = new Platform(this, 623, 560, 'BigPlatform3');
 		this.platform2.options = ['left', 200, this.platform2, 1, 2000];
 		this.platform2.flipX = true;
@@ -158,8 +158,6 @@ export default class s1r1 extends Phaser.Scene {
 		this.lever1 = new Lever(this, 48, 598, 'lever');
 		this.lever2 = new Lever(this, 42, 220, 'lever');
 		this.lever2.angle = 90;
-		this.lever1.options = [50, 75, 0.8, 3700];
-		this.lever2.options = [380, 450, 1, 2500];
 
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
@@ -199,9 +197,6 @@ export default class s1r1 extends Phaser.Scene {
 		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
 		this.physics.overlap(this.player, Object.values(this.spikeGroup), () => this.resetLevel = true);
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
-
-
-
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
 		if (this.player.spellActive['fire']) {
