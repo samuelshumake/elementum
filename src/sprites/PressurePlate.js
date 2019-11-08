@@ -32,15 +32,50 @@ export default class PressurePlate extends Phaser.GameObjects.Sprite {
 		if (!this.tripped) {
 			this.play("plateDown", true);
 			this.tripped = true;
-			object.forEach(function(i) {
+			let screenX = scene.cameras.main.width;
+			let screenY = scene.cameras.main.height;
+			let direction;
+			object.forEach(i => {
 				i.move(scene, i.options[0], i.options[1]);
-				let newCamera = scene.cameras.add(858, 384, 400, 200).startFollow(i.options[2]).setZoom(i.options[3]).fadeIn(700);
-				newCamera.setBounds(0, 0, 800, 640);
-				let cameraFrame = scene.add.sprite(849, 398, 'cameraFrame').setScale(3.5, 3).setScrollFactor(0, 0);
-				setTimeout(() => {scene.cameras.remove(newCamera); cameraFrame.destroy()}, i.options[4]);
+				let newCamera = scene.cameras.add(screenX - 275, screenY - 575, 250, 150).startFollow(object[0].options[2]).setZoom(object[0].options[3]).fadeIn(700);
+				setTimeout(() => {scene.cameras.remove(newCamera)}, object[0].options[4]);
 			});
 		}
-		
+	}
+
+	deactivate(scene, object) {
+		if (this.tripped) {
+			this.play("plateUp", true);
+			this.tripped = false;
+			let screenX = scene.cameras.main.width;
+			let screenY = scene.cameras.main.height;
+			let direction;
+			object.forEach(i => {
+				direction = this.reverse(i);
+				i.move(scene, direction, i.options[1]);
+				let newCamera = scene.cameras.add(screenX - 275, screenY - 575, 250, 150).startFollow(object[0].options[2]).setZoom(object[0].options[3]).fadeIn(700);
+				setTimeout(() => {scene.cameras.remove(newCamera)}, object[0].options[4]);
+			})
+		}
+	}
+
+	reverse(object) {
+		let reverseMovement;
+		switch(object.options[0]) {
+			case 'left':
+				reverseMovement = 'right';
+				break;
+			case 'up':
+				reverseMovement = 'down';
+				break;
+			case 'right':
+				reverseMovement = 'left';
+				break;
+			case 'down':
+				reverseMovement = 'up';
+				break;
+		}
+		return reverseMovement;
 	}
 
 }

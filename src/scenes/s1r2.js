@@ -117,7 +117,7 @@ export default class s1r2 extends Phaser.Scene {
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
-		// camera.setZoom(2);
+		camera.setZoom(2);
 		camera.startFollow(this.player);
 		camera.setBounds(0, 0, 800, 640);
 
@@ -274,6 +274,8 @@ export default class s1r2 extends Phaser.Scene {
 
 		if (this.physics.overlap(this.rock, this.plate)) {
 			this.plate.trip(this, [this.platform3]);
+		} else if (this.plate.tripped) {
+			this.plate.deactivate(this, [this.platform3]);
 		}
 
     }	// ----- END OF UPDATE ----- //
