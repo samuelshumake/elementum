@@ -26,15 +26,14 @@ export default class Lever extends Phaser.GameObjects.Sprite {
 	flip(scene, object) {
 		if (scene.physics.overlap(this, scene.player) && !this.flipped) {
 			this.flipped = true;
+			let screenX = scene.cameras.main.width;
+			let screenY = scene.cameras.main.height;
 			this.play("flipRight",true);
-			object.forEach(function(i) {
-				console.log(i)
-			i.move(scene, i.options[0], i.options[1]);
-			let newCamera = scene.cameras.add(858, 384, 400, 200).startFollow(i.options[2]).setZoom(i.options[3]).fadeIn(700);
-			newCamera.setBounds(0, 0, 800, 640);
-			let cameraFrame = scene.add.sprite(849, 398, 'cameraFrame').setScale(3.5, 3).setScrollFactor(0, 0);
-			setTimeout(() => {scene.cameras.remove(newCamera); cameraFrame.destroy()}, i.options[4]);
-		})
+			object.forEach(i => {
+				i.move(scene, i.options[0], i.options[1]);
+				let newCamera = scene.cameras.add(screenX - 275, screenY - 575, 250, 150).startFollow(object[0].options[2]).setZoom(object[0].options[3]).fadeIn(700);
+				setTimeout(() => {scene.cameras.remove(newCamera)}, object[0].options[4]);
+			});
 		}
 
 
