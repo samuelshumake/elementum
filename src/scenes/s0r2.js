@@ -93,9 +93,6 @@ export default class s0r2 extends Phaser.Scene {
 		this.gameWidth = this.cameras.main.width
 		this.gameHeight = this.cameras.main.height
 
-		/* --------- CREATES BACKGROUND --------- */
-		this.add.image(350, 325,'background').setScale(1.1);
-
 		/* ---------- CREATES MAP ---------- */
 		const map = this.make.tilemap({key: 's0r2'});
 		const tileset = map.addTilesetImage('tilemapv2', 'tiles');
@@ -103,7 +100,7 @@ export default class s0r2 extends Phaser.Scene {
 		this.layer.setCollisionByProperty({ collides: true });
 
 		/* ---------- CREATES PLAYER ---------- */
-		this.player = new Player(this, 50, 524, 'player');
+		this.player = new Player(this, 50, 520, 'player');
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
@@ -112,7 +109,7 @@ export default class s0r2 extends Phaser.Scene {
 		camera.setBounds(0, 0, 800, 640);
 
 		/* ---------- CREATES DOOR ---------- */
-		this.door = this.physics.add.sprite(755, 320, 'door');
+		this.door = this.physics.add.sprite(755, 350);
 
 
 		/* ---------- CREATES KEYS FOR INTERACTING ---------- */

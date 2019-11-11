@@ -95,10 +95,6 @@ export default class s0r3 extends Phaser.Scene {
 		this.gameWidth = this.cameras.main.width
 		this.gameHeight = this.cameras.main.height
 
-		/* --------- CREATES BACKGROUND --------- */
-		this.add.image(350, 325,'background').setScale(1.1);
-
-
 		/* ---------- CREATES MAP ---------- */
 		const map = this.make.tilemap({key: 's0r3'});
 		const tileset = map.addTilesetImage('tilemapv2', 'tiles');
@@ -115,11 +111,12 @@ export default class s0r3 extends Phaser.Scene {
 		camera.setBounds(0, 0, 800, 640);
 
 		/* ---------- CREATES BOX ---------- */
-		this.box = new Box(this, 400, 415, 'box');
+		this.box = new Box(this, 400, 415, 'box').setScale(3);
+		this.box.body.setImmovable(true);
 		this.boxGroup = [this.box];
 
 		/* ---------- CREATES DOOR ---------- */
-		this.door = this.physics.add.sprite(754, 418, 'door');
+		this.door = this.physics.add.sprite(754, 418);
 
 
 		// Keys for interacting

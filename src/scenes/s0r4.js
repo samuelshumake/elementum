@@ -94,13 +94,7 @@ export default class s0r4 extends Phaser.Scene {
 		this.gameWidth = this.cameras.main.width
 		this.gameHeight = this.cameras.main.height
 
-		/* --------- CREATES BACKGROUND --------- */
-		this.add.image(350, 325,'background').setScale(1.1);
-
-
-
 		/* ---------- CREATES MAP ---------- */
-
 		const map = this.make.tilemap({key: 's0r4'});
 		const tileset = map.addTilesetImage('tilemapv2', 'tiles');
 		this.layer = map.createStaticLayer('Tile Layer 1', tileset, 0, 0);
@@ -116,7 +110,7 @@ export default class s0r4 extends Phaser.Scene {
 		camera.setBounds(0, 0, 800, 640);
 
 		/* ---------- CREATES DOOR ---------- */
-		this.door = this.physics.add.sprite(754, 385, 'door');
+		this.door = this.physics.add.sprite(754, 385);
 
 		/* ---------- CREATE ENEMIES -------- */
 		this.enemy1 = new Enemy(this, 300, 405, 'slimeAni');

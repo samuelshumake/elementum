@@ -95,9 +95,6 @@ export default class s0r5 extends Phaser.Scene {
 		this.gameWidth = this.cameras.main.width
 		this.gameHeight = this.cameras.main.height
 
-		/* --------- CREATES BACKGROUND --------- */
-		this.add.image(350, 325,'background').setScale(1.1);
-
 		/* ---------- CREATES MAP ---------- */
 		const map = this.make.tilemap({key: 's0r5'});
 		const tileset = map.addTilesetImage('tilemapv2', 'tiles');
