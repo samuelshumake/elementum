@@ -43,7 +43,7 @@ export default class PressurePlate extends Phaser.GameObjects.Sprite {
 		}
 	}
 
-	deactivate(scene, object) {
+	untrip(scene, object) {
 		if (this.tripped) {
 			this.play("plateUp", true);
 			this.tripped = false;
@@ -77,18 +77,5 @@ export default class PressurePlate extends Phaser.GameObjects.Sprite {
 		}
 		return reverseMovement;
 	}
-	untrip(scene, object){
-		if (this.tripped) {
-			this.play("plateUp", true);
-			this.tripped = false;
-			object.forEach(function(i) {
-				i.move(scene, i.options[0], i.options[1]);
-				let newCamera = scene.cameras.add(858, 384, 400, 200).startFollow(i.options[2]).setZoom(i.options[3]).fadeIn(700);
-				newCamera.setBounds(0, 0, 800, 640);
-				let cameraFrame = scene.add.sprite(849, 398, 'cameraFrame').setScale(3.5, 3).setScrollFactor(0, 0);
-				setTimeout(() => {scene.cameras.remove(newCamera); cameraFrame.destroy()}, i.options[4]);
-			});
-		}
 
-	}
 }

@@ -312,8 +312,6 @@ export default class s1r5 extends Phaser.Scene {
 			this.plate.trip(this, [this.platform3, this.platform1]);
 		}
 		else if(this.plate.tripped == true){
-			this.platform1.options[0] = "up"
-			this.platform3.options[0] = "down"
 			this.plate.untrip(this, [this.platform3, this.platform1]);
 		}
 
