@@ -115,21 +115,6 @@ export default class s1r5 extends Phaser.Scene {
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
 
-		/* ---------- TOP BANNER ---------- */
-		// this.add.image(350, 35,'topbanner').setScale(15, 1.7);
-		//
-		//
-
-		//
-		// /* ---------- CREATES SPELL FRAMES ---------- */
-		// this.fireFrame = this.add.sprite(48, 40, 'fireFrame');
-		// this.earthFrame = this.add.sprite(111, 40, 'earthFrame');
-		// this.waterFrame = this.add.sprite(174, 40, 'bubbleFrame');
-		// this.airFrame = this.add.sprite(237, 40, 'airFrame');
-		//
-		// this.frameGroup = [this.fireFrame, this.earthFrame, this.waterFrame, this.airFrame];
-
-
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 150, 492, 'player');
 
@@ -148,13 +133,6 @@ export default class s1r5 extends Phaser.Scene {
 	 	});
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(70, 575, 'door');
-
-
-		/* ------ CREATE SPIKES ---------------- */
-		//this.spikeGroup = [];
-		//for (let i = 0; i <= 8; i++) {
-		//	this.spikeGroup.push(this.physics.add.sprite(16*i + 680, 603, 'spike').setScale(0.3))
-		//}
 
 		/* ---------- CREATES BOX ---------- */
 		this.rock = new Rock(this, 4150, 485, 'rock');
@@ -265,14 +243,14 @@ export default class s1r5 extends Phaser.Scene {
 			if (this.rockGroup) {
 				for (let x in this.rockGroup) {
 					this.physics.add.overlap(this.rockGroup[x], this.player.airwave, () => {
-						this.player.airwave.push(this, this.rockGroup[x], this.player.flipX);
+						this.player.airwave.push(this, this.rockGroup[x], this.player.direction);
 					});
 				}
 			}
 			if (this.boxGroup) {
 				for (let x in this.boxGroup) {
 					this.physics.add.overlap(this.boxGroup[x], this.player.airwave, () => {
-						this.player.airwave.push(this, this.boxGroup[x], this.player.flipX);
+						this.player.airwave.push(this, this.boxGroup[x], this.player.direction);
 					});
 				}
 			}

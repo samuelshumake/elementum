@@ -111,27 +111,6 @@ export default class s1r4 extends Phaser.Scene {
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
 
-		/* ---------- TOP BANNER ---------- */
-		// this.add.image(350, 35,'topbanner').setScale(15, 1.7);
-		//
-		//
-		// /* ---------- CREATES MANA BAR ---------- */
-		// this.manaBar = this.add.sprite(this.cameras.main.width - 50, 40, 'manaBar', 27);
-		// this.anims.create({
-		// 	key: "regenMana",
-		// 	frames: this.anims.generateFrameNumbers("manaBar", {start: 0, end: 27}),
-		// 	frameRate: 24,
-		// });
-		//
-		// /* ---------- CREATES SPELL FRAMES ---------- */
-		// this.fireFrame = this.add.sprite(48, 40, 'fireFrame');
-		// this.earthFrame = this.add.sprite(111, 40, 'earthFrame');
-		// this.waterFrame = this.add.sprite(174, 40, 'bubbleFrame');
-		// this.airFrame = this.add.sprite(237, 40, 'airFrame');
-		//
-		// this.frameGroup = [this.fireFrame, this.earthFrame, this.waterFrame, this.airFrame];
-
-
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 50, 492, 'player');
 
@@ -171,11 +150,9 @@ export default class s1r4 extends Phaser.Scene {
 		this.platform3 = new Platform(this, 304, 560, 'tempPlatform');
 		this.platform3.options = ['up', 100, this.platform3, 1, 0]
 		this.platform1.options = ['down', 100, this.platform1, 1, 0]
-		// [direction, distance moved, object camera follows, camera zoom, time camera stays]
-		//this.platform2.flipX = true;
+		// [direction, distance moved, object camera follows, camera zoom, time camera stays
 		this.platform1.setScale(.3,3)
 		this.platform3.setScale(.3,3)
-		//this.physics.add.collider(this.enemyGroup, this.platform1);
 		this.physics.add.collider(this.enemyGroup, this.platform2);
 		this.physics.add.collider(this.enemyGroup, this.rockGroup);
 
@@ -258,14 +235,14 @@ export default class s1r4 extends Phaser.Scene {
 			if (this.rockGroup) {
 				for (let x in this.rockGroup) {
 					this.physics.add.overlap(this.rockGroup[x], this.player.airwave, () => {
-						this.player.airwave.push(this, this.rockGroup[x], this.player.flipX);
+						this.player.airwave.push(this, this.rockGroup[x], this.player.direction);
 					});
 				}
 			}
 			if (this.boxGroup) {
 				for (let x in this.boxGroup) {
 					this.physics.add.overlap(this.boxGroup[x], this.player.airwave, () => {
-						this.player.airwave.push(this, this.boxGroup[x], this.player.flipX);
+						this.player.airwave.push(this, this.boxGroup[x], this.player.direction);
 					});
 				}
 			}
@@ -275,16 +252,12 @@ export default class s1r4 extends Phaser.Scene {
 		/* ---------- CASTING SPELLS ---------- */
 		if (this.switchFire.isDown) {
 			this.player.currentSpell = 'fire';
-			// this.player.changeSpellFrame(this, 0);
 		} else if (this.switchEarth.isDown) {
 			this.player.currentSpell = 'earth';
-			// this.player.changeSpellFrame(this, 1);
 		} else if (this.switchWater.isDown) {
 			this.player.currentSpell = 'water';
-			// this.player.changeSpellFrame(this, 2);
 		} else if (this.switchAir.isDown) {
 			this.player.currentSpell = 'air';
-			// this.player.changeSpellFrame(this, 3);
 		}
 
 		if (this.reset.isDown) {
@@ -294,7 +267,6 @@ export default class s1r4 extends Phaser.Scene {
 		// Casts spell if cooldown timer has been met
 		if (this.castSpell.isDown && this.player.spellTimer > 70 ) {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
-			// this.manaBar.play('regenMana', true);
 	 	}
 
 		if (this.interact.isDown) {

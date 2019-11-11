@@ -100,33 +100,6 @@ export default class s0r1 extends Phaser.Scene {
 		this.layer = map.createStaticLayer('Tile Layer 1', tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
 
-
-		/* ---------- TOP BANNER ---------- */
-		//this.add.image(350, 35,'topbanner').setScale(15, 1.7);
-
-
-		// /* ---------- CREATES MANA BAR ---------- */
-		// this.manaBar = this.add.sprite(this.cameras.main.width - 50, 40, 'manaBar', 27);
-		// this.anims.create({
-		// 	key: "regenMana",
-		// 	frames: this.anims.generateFrameNumbers("manaBar", {start: 0, end: 27}),
-		// 	frameRate: 24,
-		// });
-		//
-		// /* ---------- TUTORIAL TEXT ---------- */
-		// this.add.image(410, 210,'textBanner').setScale(8.5, 1.7);
-		// this.tutorialText = this.add.text(175, 200, 'Use the arrow keys to move left, right, and jump');
-		//
-		//
-		// /* ---------- CREATES SPELL FRAMES ---------- */
-		// this.fireFrame = this.add.sprite(48, 40, 'fireFrame');
-		// this.earthFrame = this.add.sprite(111, 40, 'earthFrame');
-		// this.waterFrame = this.add.sprite(174, 40, 'bubbleFrame');
-		// this.airFrame = this.add.sprite(237, 40, 'airFrame');
-		//
-		// this.frameGroup = [this.fireFrame, this.earthFrame, this.waterFrame, this.airFrame];
-
-
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 50, 460, 'player');
 
@@ -225,16 +198,12 @@ export default class s0r1 extends Phaser.Scene {
 		/* ---------- CASTING SPELLS ---------- */
 		if (this.switchFire.isDown) {
 			this.player.currentSpell = 'fire';
-			// this.player.changeSpellFrame(this, 0);
 		} else if (this.switchEarth.isDown) {
 			this.player.currentSpell = 'earth';
-			// this.player.changeSpellFrame(this, 1);
 		} else if (this.switchWater.isDown) {
 			this.player.currentSpell = 'water';
-			// this.player.changeSpellFrame(this, 2);
 		} else if (this.switchAir.isDown) {
 			this.player.currentSpell = 'air';
-			// this.player.changeSpellFrame(this, 3);
 		}
 
 		if (this.reset.isDown) {
@@ -244,7 +213,6 @@ export default class s0r1 extends Phaser.Scene {
 		// Casts spell if cooldown timer has been met
 		if (this.castSpell.isDown && this.player.spellTimer > 70 ) {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
-			// this.manaBar.play('regenMana', true);
 	 	}
 
     }	// ----- END OF UPDATE ----- //
