@@ -48,8 +48,8 @@ export default class s1r5 extends Phaser.Scene {
 			frameWidth: 64,
 		});
 		this.load.spritesheet('gui', './assets/spriteSheets/gui.png', {
-			frameHeight: 65,
-			frameWidth: 32,
+			frameHeight: 32,
+			frameWidth: 65,
 		});
 		this.load.spritesheet('water', './assets/spriteSheets/bubbleAnimation.png', {
 			frameHeight: 32,
@@ -59,13 +59,22 @@ export default class s1r5 extends Phaser.Scene {
 			frameHeight: 32,
 			frameWidth: 64,
 		});
+
 		this.load.spritesheet('fire', './assets/spriteSheets/fireballAnimation.png', {
 			frameHeight: 32,
 			frameWidth: 48,
 		});
+
 		this.load.spritesheet('air', './assets/spriteSheets/airAnimation.png', {
 			frameHeight: 32,
 			frameWidth: 48,
+		});
+
+
+		//-------------*NEW ANIMATIONS*--------------------//
+		this.load.spritesheet('earth2', './assets/spriteSheets/newEarth.png', {
+			frameHeight: 96,
+			frameWidth: 32,
 		});
 		this.load.spritesheet('pressurePlate', './assets/spriteSheets/pressureplate.png', {
 			frameHeight: 6,
