@@ -26,7 +26,13 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		});
 		scene.anims.create({
 			key: "earthAni2",
-				frames: scene.anims.generateFrameNumbers("earth2", {start:0, end:11}),
+				frames: scene.anims.generateFrameNumbers("earth2", {start:0, end:12}),
+			frameRate: 15,
+			repeat: 0
+		});
+		scene.anims.create({
+			key: "earthAnireverse",
+				frames: scene.anims.generateFrameNumbers("earth2", {start:11, end:0}),
 			frameRate: 15,
 			repeat: 0
 		});
@@ -76,10 +82,9 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 
 	raise(scene, player) {
 		this.play('earthAni2',true);
-		this.play('earthAni', true);
-
+		//this.play('earthAni', true);
 		scene.physics.add.collider(player, this);
-		this.body.setVelocityY(-150);
+		this.body.setVelocityY(0);
 		setTimeout(() => {this.body.setVelocityY(0)}, 850)
 	}
 

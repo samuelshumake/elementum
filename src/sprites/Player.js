@@ -135,15 +135,15 @@ export default class Player extends Phaser.GameObjects.Sprite {
 			case 'earth':
 				if (this.body.blocked.down || scene.physics.overlap(this, scene.rock) || scene.physics.overlap(this, scene.box)) {
 					if (this.spellActive['earth'] === true) {
-						this.platform.body.setVelocityY(250);
+						this.platform.body.setVelocityY(0);
 						this.spellActive['earth'] = false;
 						setTimeout(() => {this.platform.destroy()}, 350);
 						setTimeout(() => {
-							this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom + 15, 'earth'));
+							this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom-48, 'earth'));
 							this.spellActive['earth'] = true;
 							this.platform.raise(scene, this)}, 600);
 					} else {
-						this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom + 15, 'earth'));
+						this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom-48, 'earth'));
 						this.spellActive['earth'] = true;
 						this.platform.raise(scene, this);
 					}
