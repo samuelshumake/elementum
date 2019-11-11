@@ -63,6 +63,10 @@ export default class s1r2 extends Phaser.Scene {
 			frameHeight: 32,
 			frameWidth: 48,
 		});
+		this.load.spritesheet('pressurePlate', './assets/spriteSheets/pressureplate.png', {
+			frameHeight: 6,
+			frameWidth: 32
+		});
 
 
 
