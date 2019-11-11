@@ -94,11 +94,6 @@ export default class s0r6 extends Phaser.Scene {
 		this.gameWidth = this.cameras.main.width
 		this.gameHeight = this.cameras.main.height
 
-
-		/* --------- CREATES BACKGROUND --------- */
-		this.add.image(350, 325,'background').setScale(1.1);
-
-
 		/* ---------- CREATES MAP ---------- */
 		const map = this.make.tilemap({key: "s0r6"});
 		const tileset = map.addTilesetImage("tilemapv2", "tiles");
@@ -110,7 +105,7 @@ export default class s0r6 extends Phaser.Scene {
 		this.add.image(350, 35,'topbanner').setScale(15, 1.7);
 
 		/* ---------- CREATES PLAYER ---------- */
-		this.player = new Player(this, 60, 530, 'player');
+		this.player = new Player(this, 60, 550, 'player');
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
@@ -132,7 +127,6 @@ export default class s0r6 extends Phaser.Scene {
 		/* ---------- CREATES ENEMIES ---------- */
 		this.enemy1 = new Enemy(this, 200, 400, 'slimeAni');
 		this.enemy2 = new Enemy(this, 600, 470, 'slimeAni');
-		// this.enemy3 = new Enemy(this, 600, 600, 'slimeAni');
 		this.enemyGroup = [this.enemy1, this.enemy2];
 
 		/* ---------- CREATES BOX ---------- */
@@ -143,9 +137,9 @@ export default class s0r6 extends Phaser.Scene {
 
 		/* ---------- CREATES PLATFORMS ---------- */
 		this.platform1 = new Platform(this, 496, 528, 'tempPlatform');
-		this.platform1.options = ['left', 98, this.platform1, 1, 2000];
-		this.platform2 = new Platform(this, 720, 300, 'tempPlatform');
-		this.platform2.options = ['right', 200, this.platform2, 1, 2000];
+		this.platform1.options = ['right', 98, this.platform1, 1, 1500];
+		this.platform2 = new Platform(this, 707, 304, 'tempPlatform').setScale(0.7, 1);
+		this.platform2.options = ['left', 68, this.platform2, 1, 1500];
 		this.platform2.flipX = true;
 
 

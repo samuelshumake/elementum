@@ -141,7 +141,7 @@ export default class s1r1 extends Phaser.Scene {
 		// /* ---------- CREATES ENEMIES ---------- */
 		this.enemy1 = new Enemy(this, 600, 455, 'slimeAni');
 		this.enemy2 = new Enemy(this, 60, 250, 'slimeAni');
-		this.enemyGroup = [this.enemy1,this.enemy2];
+		this.enemyGroup = [this.enemy1, this.enemy2];
 
 		/* ---------- CREATES PLATFORMS ---------- */
 		this.platform1 = new Platform(this, 150, 176, 'BigPlatform5');
