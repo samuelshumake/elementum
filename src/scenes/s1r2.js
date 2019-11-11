@@ -63,10 +63,8 @@ export default class s1r2 extends Phaser.Scene {
 			frameHeight: 32,
 			frameWidth: 48,
 		});
-		this.load.spritesheet('pressurePlate', './assets/spriteSheets/pressureplate.png', {
-			frameHeight: 6,
-			frameWidth: 32
-		});
+
+
 
 		/* ---------- LOADS BACKGROUND -----------------------*/
 		this.load.image('background', './assets/images/backgroundimage1.png');
@@ -135,9 +133,7 @@ export default class s1r2 extends Phaser.Scene {
 		/* ---------- CREATES BOX ---------- */
 		this.rock = new Rock(this, 120, 485, 'rock');
 		this.rock.setScale(1, 1);
-		this.rock2 = new Rock(this, 640, 593, 'rock');
-		this.rock2.setScale(1, 0.50)
-		this.rockGroup = [this.rock, this.rock2];
+		this.rockGroup = [this.rock];
 
 		// /* ---------- CREATES ENEMIES ---------- */
 		this.enemy1 = new Enemy(this, 150, 100, 'slimeAni');
@@ -153,7 +149,7 @@ export default class s1r2 extends Phaser.Scene {
 
 		//this.physics.add.collider(this.enemyGroup, this.platform1);
 		this.physics.add.collider(this.enemyGroup, this.platform2);
-		this.physics.add.collider(this.enemyGroup, this.rockGroup);
+		this.physics.add.collider(this.enemyGroup, this.rock);
 
 
 		this.lever1 = new Lever(this, 50, 150, 'lever');
