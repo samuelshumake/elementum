@@ -138,7 +138,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 						this.spellActive['earth'] = false;
 						this.platform.destroy();
 					} else {
-						this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom + 15, 'earth'));
+						this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom-48, 'earth'));
 						this.spellActive['earth'] = true;
 						this.platform.raise(scene, this);
 					}
