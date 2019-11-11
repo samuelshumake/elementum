@@ -49,9 +49,9 @@ export default class s0r6 extends Phaser.Scene {
 			frameHeight: 32,
 			frameWidth: 32,
 		});
-		this.load.spritesheet('earth', './assets/spriteSheets/earthAnimation.png', {
-			frameHeight: 32,
-			frameWidth: 64,
+		this.load.spritesheet('earth2', './assets/spriteSheets/newEarth.png', {
+			frameHeight: 96,
+			frameWidth: 32,
 		});
 		this.load.spritesheet('fire', './assets/spriteSheets/fireballAnimation.png', {
 			frameHeight: 32,

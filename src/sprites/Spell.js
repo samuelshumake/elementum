@@ -86,8 +86,9 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		if (scene.enemyGroup) {
 			scene.physics.add.collider(scene.enemyGroup, this);
 		}
-		this.body.setVelocityY(-150);
-		setTimeout(() => {this.body.setVelocityY(0)}, 850)
+		this.body.setSize(32, 76)
+		this.body.setVelocityY(-140);
+		setTimeout(() => {this.body.setVelocityY(0)}, 665)
 	}
 
 	suspend(scene, enemy) {
