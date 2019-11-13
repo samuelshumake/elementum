@@ -6,11 +6,12 @@ import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
 import Lever from '../sprites/Lever.js';
 import Rock from '../sprites/Rock.js';
-import Box from '../sprites/Box.js'
-export default class s0r6 extends Phaser.Scene {
+import PressurePlate from '../sprites/PressurePlate.js';
+export default class s1r5 extends Phaser.Scene {
+
 
 	constructor () {
-		super('s0r6');
+		super('s1r5');
 	}
 
 
@@ -22,7 +23,8 @@ export default class s0r6 extends Phaser.Scene {
 	preload () {
 
 		/* ---------- LOADS SPRITE SHEETS ---------- */
-		this.load.spritesheet('player', './assets/spriteSheets/idleFinal.png', {
+		this.load.spritesheet('player', './assets/spriteSheets/idleFinal.png', {	// Combine all player spritesheets into one soon
+			frameHeight: 39,
 			frameWidth: 34,
 		});
 		this.load.spritesheet('lever', './assets/spriteSheets/lever.png',{
@@ -45,21 +47,38 @@ export default class s0r6 extends Phaser.Scene {
 			frameHeight: 64,
 			frameWidth: 64,
 		});
+		this.load.spritesheet('gui', './assets/spriteSheets/gui.png', {
+			frameHeight: 32,
+			frameWidth: 65,
+		});
 		this.load.spritesheet('water', './assets/spriteSheets/bubbleAnimation.png', {
 			frameHeight: 32,
 			frameWidth: 32,
 		});
-		this.load.spritesheet('earth2', './assets/spriteSheets/newEarth.png', {
-			frameHeight: 96,
-			frameWidth: 32,
+		this.load.spritesheet('earth', './assets/spriteSheets/earthAnimation.png', {
+			frameHeight: 32,
+			frameWidth: 64,
 		});
+
 		this.load.spritesheet('fire', './assets/spriteSheets/fireballAnimation.png', {
 			frameHeight: 32,
 			frameWidth: 48,
 		});
+
 		this.load.spritesheet('air', './assets/spriteSheets/airAnimation.png', {
 			frameHeight: 32,
 			frameWidth: 48,
+		});
+
+
+		//-------------*NEW ANIMATIONS*--------------------//
+		this.load.spritesheet('earth2', './assets/spriteSheets/newEarth.png', {
+			frameHeight: 96,
+			frameWidth: 32,
+		});
+		this.load.spritesheet('pressurePlate', './assets/spriteSheets/pressureplate.png', {
+			frameHeight: 6,
+			frameWidth: 32
 		});
 
 		/* ---------- LOADS BACKGROUND -----------------------*/
@@ -69,7 +88,7 @@ export default class s0r6 extends Phaser.Scene {
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/tilemapv2.png');
-		this.load.tilemapTiledJSON('s0r6', './assets/map/s0r6.json');
+		this.load.tilemapTiledJSON('s1r5', './assets/map/s1r5.json')
 
 		/* ---------- LOADS SPRITES FOR SPELL FRAMES ---------- */
 		this.load.image('airFrame', './assets/sprites/airFrame.png');
@@ -79,8 +98,9 @@ export default class s0r6 extends Phaser.Scene {
 
 		/* ---------- LOADS SPRITES FOR GAME OBJECTS ---------- */
 		this.load.image('spike', './assets/sprites/spike.png');
-		this.load.image('box', './assets/sprites/box.png');
 		this.load.image('door', './assets/sprites/door.png');
+		this.load.image('rock', './assets/sprites/rock.png');
+
 
 	}	// ----- END OF PRELOAD ----- //
 
@@ -88,24 +108,24 @@ export default class s0r6 extends Phaser.Scene {
 	create (data) {
 	    ChangeScene.addSceneEventListeners(this);
 
-
 		/* ---------- GLOBAL VARIABLES --------- */
 		this.resetLevel = false
 		this.gameWidth = this.cameras.main.width
 		this.gameHeight = this.cameras.main.height
 
+
+		/* --------- CREATES BACKGROUND --------- */
+		this.add.image(350, 325,'background').setScale(1.1);
+
+
 		/* ---------- CREATES MAP ---------- */
-		const map = this.make.tilemap({key: "s0r6"});
+		const map = this.make.tilemap({key: "s1r5"});
 		const tileset = map.addTilesetImage("tilemapv2", "tiles");
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
 
-
-		/* ---------- TOP BANNER ---------- */
-		this.add.image(350, 35,'topbanner').setScale(15, 1.7);
-
 		/* ---------- CREATES PLAYER ---------- */
-		this.player = new Player(this, 60, 550, 'player');
+		this.player = new Player(this, 150, 492, 'player');
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
@@ -113,45 +133,56 @@ export default class s0r6 extends Phaser.Scene {
 		camera.startFollow(this.player);
 		camera.setBounds(0, 0, 800, 640);
 
-
+		// /* ---------- CREATES MANA BAR ---------- */
+		this.manaBar = this.add.sprite(this.player.x - 50, this.player.y40, 'gui', 27);
+		this.anims.create({
+			key: "regenMana",
+		 	frames: this.anims.generateFrameNumbers("gui", {start: 0, end: 21}),
+		 	frameRate: 24,
+	 	});
 		/* ---------- CREATES DOOR ---------- */
-		this.door = this.physics.add.sprite(754, 192);
-
-		/* ------ CREATE SPIKES ---------------- */
-		this.spikeGroup = [];
-		for (let i = 0; i <= 3; i++) {
-			this.spikeGroup.push(this.physics.add.sprite(16*i + 430, 347, 'spike').setScale(0.3))
-		}
-
-
-		/* ---------- CREATES ENEMIES ---------- */
-		this.enemy1 = new Enemy(this, 200, 400, 'slimeAni');
-		this.enemy2 = new Enemy(this, 600, 470, 'slimeAni');
-		this.enemyGroup = [this.enemy1, this.enemy2];
+		this.door = this.physics.add.sprite(70, 575, 'door');
 
 		/* ---------- CREATES BOX ---------- */
-		this.box = new Box(this, 130, 385, 'box');
-		this.box.body.immovable = true;
-		this.boxGroup = [this.box];
+		this.rock = new Rock(this, 4150, 485, 'rock');
+		this.rock.setScale(1, 1);
+		this.rock2 = new Rock(this, 6400, 593, 'rock');
+		this.rock2.setScale(1, 0.50)
+		this.rockGroup = [this.rock, this.rock2];
 
+		// /* ---------- CREATES ENEMIES ---------- */
+		this.enemy1 = new Enemy(this, 550, 500, 'slimeAni');
+		this.enemy2 = new Enemy(this, 475, 500, 'slimeAni');
+		this.enemy3= new Enemy(this, 300, 500, 'slimeAni');
+		this.enemyGroup = [this.enemy1, this.enemy2, this.enemy3];
 
 		/* ---------- CREATES PLATFORMS ---------- */
-		this.platform1 = new Platform(this, 496, 528, 'tempPlatform');
-		this.platform1.options = ['right', 98, this.platform1, 1, 1500];
-		this.platform2 = new Platform(this, 707, 304, 'tempPlatform').setScale(0.7, 1);
-		this.platform2.options = ['left', 68, this.platform2, 1, 1500];
-		this.platform2.flipX = true;
+		//platform on right
+		this.platform1 = new Platform(this, 4400, 464, 'tempPlatform');
+		//platform on in middle
+		//platform on left
+		this.platform3 = new Platform(this, 112, 528, 'tempPlatform');
+		this.platform3.options = ['up', 100, this.platform3, 1, 0]
+		this.platform1.options = ['down', 100, this.platform1, 1, 0]
+		// [direction, distance moved, object camera follows, camera zoom, time camera stays]
+		//this.platform2.flipX = true;
+		this.platform1.setScale(.3,3)
+		this.platform3.setScale(.3,5)
+		//this.physics.add.collider(this.enemyGroup, this.platform1);
+		this.physics.add.collider(this.enemyGroup, this.platform3);
+		this.physics.add.collider(this.enemyGroup, this.rockGroup);
 
 
-		/* ---------- CREATES LEVERS ---------- */
-		this.lever1 = new Lever(this, 40, 450, 'lever');
-		this.lever1.angle = 90;
-		this.lever2 = new Lever(this, 760, 580, 'lever');
-		this.lever2.angle = 90;
+		this.lever1 = new Lever(this, 2500, 599, 'lever');
+		this.lever2 = new Lever(this, 788, 560, 'lever');
 		this.lever2.flipY = true;
+		this.lever2.angle = 90;
+
+		this.plate = new PressurePlate(this, 350, 453, 'pressurePlate');
+		this.plate.flipY = true
 
 
-		//* ---------- CREATES INTERACTING KEYS ---------- */
+		/* ---------- KEYS FOR INTERACTING ---------- */
 		this.switchFire = this.input.keyboard.addKey('one');
 		this.switchEarth = this.input.keyboard.addKey('two');
 		this.switchWater = this.input.keyboard.addKey('three');
@@ -167,19 +198,18 @@ export default class s0r6 extends Phaser.Scene {
 
 		/* ---------- RESETS LEVEL ---------- */
 		if (this.resetLevel) {
-			this.scene.start('s0r6')
+			this.scene.start('s1r5')
 		}
 
 
 		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {
-			this.scene.start('s1r1')
+			this.scene.start('Boot')
 		}
 
 
 		/* ---------- MOVES PLAYER ---------- */
 		this.player.move(this);
-
 
 		/*----------- ENEMY MOVEMENT -------------- */
 		for(var x in this.enemyGroup){
@@ -188,8 +218,10 @@ export default class s0r6 extends Phaser.Scene {
 
 		/* ----------- PLAYER KILLERS ----------- */
 		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
-		this.physics.overlap(this.player, Object.values(this.spikeGroup), () => this.resetLevel = true);
+		//this.physics.overlap(this.player, Object.values(this.spikeGroup), () => this.resetLevel = true);
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
+
+
 
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
@@ -237,28 +269,38 @@ export default class s0r6 extends Phaser.Scene {
 		/* ---------- CASTING SPELLS ---------- */
 		if (this.switchFire.isDown) {
 			this.player.currentSpell = 'fire';
+			// this.player.changeSpellFrame(this, 0);
 		} else if (this.switchEarth.isDown) {
 			this.player.currentSpell = 'earth';
+			// this.player.changeSpellFrame(this, 1);
 		} else if (this.switchWater.isDown) {
 			this.player.currentSpell = 'water';
+			// this.player.changeSpellFrame(this, 2);
 		} else if (this.switchAir.isDown) {
 			this.player.currentSpell = 'air';
+			// this.player.changeSpellFrame(this, 3);
 		}
 
 		if (this.reset.isDown) {
 			this.resetLevel = true;
 		}
 
-
+		// Casts spell if cooldown timer has been met
 		if (this.castSpell.isDown && this.player.spellTimer > 70 ) {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
+			this.manaBar.play('regenMana', true);
 	 	}
 
 		if (this.interact.isDown) {
-			this.lever1.flip(this, [this.platform1]);
-			this.lever2.flip(this, [this.platform2]);
+			this.lever1.flip(this, [this.platform3, this.platform1]);
 		}
 
+		if (this.physics.overlap(this.enemyGroup, this.plate)) {
+			this.plate.trip(this, [this.platform3, this.platform1]);
+		}
+		else if(this.plate.tripped == true){
+			this.plate.untrip(this, [this.platform3, this.platform1]);
+		}
 
     }	// ----- END OF UPDATE ----- //
 

@@ -5,7 +5,6 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		scene.sys.displayList.add(this);
 
 		scene.physics.world.enableBody(this, 0);
-		// scene.physics.add.collider(this, scene.layer);
 		this.body.setImmovable(true);
 
 		this.key = key;
@@ -20,9 +19,21 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		});
 		scene.anims.create({
 			key: "earthAni",
-			frames: scene.anims.generateFrameNumbers("earth", {start:0, end:6}),
+				frames: scene.anims.generateFrameNumbers("earth", {start:0, end:6}),
 			frameRate: 15,
 			repeat: -1
+		});
+		scene.anims.create({
+			key: "earthAni2",
+				frames: scene.anims.generateFrameNumbers("earth2", {start:0, end:12}),
+			frameRate: 15,
+			repeat: 0
+		});
+		scene.anims.create({
+			key: "earthAnireverse",
+				frames: scene.anims.generateFrameNumbers("earth2", {start:11, end:0}),
+			frameRate: 15,
+			repeat: 0
 		});
 		scene.anims.create({
 			key: "fireAni",
@@ -69,10 +80,16 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 	}
 
 	raise(scene, player) {
-		this.play('earthAni', true);
+		this.play('earthAni2',true);
+		//this.play('earthAni', true);
 		scene.physics.add.collider(player, this);
-		this.body.setVelocityY(-150);
-		setTimeout(() => {this.body.setVelocityY(0)}, 750)
+		if (scene.enemyGroup) {
+			scene.physics.add.collider(scene.enemyGroup, this);
+		}
+		this.body.setSize(32, 80);
+		this.setScale(1, 1.3);
+		this.body.setVelocityY(-140);
+		setTimeout(() => {this.body.setVelocityY(0)}, 840)
 	}
 
 	suspend(scene, enemy) {
@@ -80,7 +97,7 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		enemy.body.setGravity(0, 0);
 		enemy.body.setVelocityX(0);
 		enemy.body.setVelocityY(-200);
-		setTimeout(() => enemy.body.setGravity(0, 600), 1000);
+		setTimeout(() => {enemy.body.setGravity(0, 600); enemy.canMove = true}, 1000);
 	}
 
 	push(scene, enemy, direction) {
