@@ -260,6 +260,21 @@ export default class s1r1 extends Phaser.Scene {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
 	 	}
 
+		if (this.player.raisingPlatform) {
+			if (this.player.platformBox.body.height >= 70) {
+				this.player.raisingPlatform = false;
+			}
+
+			this.phi = (1 + Math.sqrt(5)) / 2;
+			this.fibGrowth = (this.phi ** this.player.platformBox.n) / Math.sqrt(5);
+
+			this.player.platformBox.body.height = this.fibGrowth + this.phi - 5;
+			this.player.platformBox.n += 0.3;
+			this.player.platformBox.body.offset.set(0, -this.player.platformBox.body.height);
+
+			this.player.y -= this.fibGrowth / 9;
+		}
+
 		if (this.interact.isDown) {
 			this.lever1.flip(this, [this.platform1]);
 			this.lever2.flip(this, [this.platform2]);

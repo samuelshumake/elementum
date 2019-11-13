@@ -8,16 +8,13 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 
 		/* ------CONSTANTS AND VARIBLES------- */
-		// Sets players physical body
 		scene.physics.world.enableBody(this, 0);
 		scene.physics.add.collider(this, scene.layer);
 		scene.physics.add.collider(this.body, scene.spikes, scene.resetLevel, null, this);
 		this.body.setGravity(0, 600);
-
-		// Initializes spell cooldown timer
 		this.spellTimer = 100;
-
 		this.jumpHeld = false;
+		this.raisingPlatform = false;
 
 		// Checks which spells are active
 		this.spellActive = {
@@ -29,12 +26,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 		// Initializes player's current spell
 		this.currentSpell = 'fire';
-
-		// Makes spell frames transparent
-		// scene.earthFrame.alpha = 0.2;
-		// scene.waterFrame.alpha = 0.2;
-		// scene.airFrame.alpha = 0.2;
-
 
 		/* ------ ANIMATIONS ------- */
 		scene.anims.create({
@@ -137,10 +128,16 @@ export default class Player extends Phaser.GameObjects.Sprite {
 					if (this.spellActive['earth'] === true) {
 						this.spellActive['earth'] = false;
 						this.platform.destroy();
+						this.platformBox.destroy();
 					} else {
-						this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom + 50, 'earth'));
 						this.spellActive['earth'] = true;
-						this.platform.raise(scene, this);
+						this.platformBox = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom + 15));
+						this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom, 'earth'));
+						this.platform.setOrigin(0.5, 1);
+						this.platformBox.body.setSize(32, 1);
+
+						this.platform.play('earthAni2', true);
+						this.platformBox.raise(scene, this);
 					}
 				}
 				break;
@@ -169,8 +166,4 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 	}
 
-	// changeSpellFrame(scene, frame) {
-	// 	scene.frameGroup.forEach( obj => obj.alpha = 0.2);
-	// 	scene.frameGroup[frame].alpha = 1;
-	// }
 }

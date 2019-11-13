@@ -51,8 +51,8 @@ export default class s1r2 extends Phaser.Scene {
 			frameHeight: 32,
 			frameWidth: 32,
 		});
-		this.load.spritesheet('earth2', './assets/spriteSheets/newEarth.png', {
-			frameHeight: 96,
+		this.load.spritesheet('earth', './assets/spriteSheets/newEarth.png', {
+			frameHeight: 88,
 			frameWidth: 32,
 		});
 		this.load.spritesheet('fire', './assets/spriteSheets/fireballAnimation.png', {
@@ -151,7 +151,6 @@ export default class s1r2 extends Phaser.Scene {
 		this.platform3 = new Platform(this, 500, 144, 'tempPlatform').setScale(0.3, 3);
 		this.platform3.options = ['right', 95, this.platform3, 1, 1300];
 
-		//this.physics.add.collider(this.enemyGroup, this.platform1);
 		this.physics.add.collider(this.enemyGroup, this.platform2);
 		this.physics.add.collider(this.enemyGroup, this.rock);
 
@@ -266,6 +265,21 @@ export default class s1r2 extends Phaser.Scene {
 		if (this.castSpell.isDown && this.player.spellTimer > 70 ) {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
 	 	}
+
+		if (this.player.raisingPlatform) {
+			if (this.player.platformBox.body.height >= 70) {
+				this.player.raisingPlatform = false;
+			}
+
+			this.phi = (1 + Math.sqrt(5)) / 2;
+			this.fibGrowth = (this.phi ** this.player.platformBox.n) / Math.sqrt(5);
+
+			this.player.platformBox.body.height = this.fibGrowth + this.phi - 5;
+			this.player.platformBox.n += 0.3;
+			this.player.platformBox.body.offset.set(0, -this.player.platformBox.body.height);
+
+			this.player.y -= this.fibGrowth / 9;
+		}
 
 		if (this.interact.isDown) {
 			this.lever1.flip(this, [this.platform1]);

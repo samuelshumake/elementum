@@ -269,14 +269,28 @@ export default class s1r4 extends Phaser.Scene {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
 	 	}
 
+		if (this.player.raisingPlatform) {
+			if (this.player.platformBox.body.height >= 70) {
+				this.player.raisingPlatform = false;
+			}
+
+			this.phi = (1 + Math.sqrt(5)) / 2;
+			this.fibGrowth = (this.phi ** this.player.platformBox.n) / Math.sqrt(5);
+
+			this.player.platformBox.body.height = this.fibGrowth + this.phi - 5;
+			this.player.platformBox.n += 0.3;
+			this.player.platformBox.body.offset.set(0, -this.player.platformBox.body.height);
+
+			this.player.y -= this.fibGrowth / 9;
+		}
+
 		if (this.interact.isDown) {
 			this.lever1.flip(this, [this.platform3, this.platform1]);
 		}
 
 		if (this.physics.overlap(this.rock, this.plate)) {
 			this.plate.trip(this, [this.platform3, this.platform1]);
-		}
-		else if(this.plate.tripped == true){
+		} else if (this.plate.tripped == true) {
 			this.plate.untrip(this, [this.platform3, this.platform1]);
 		}
 

@@ -221,9 +221,6 @@ export default class s1r5 extends Phaser.Scene {
 		//this.physics.overlap(this.player, Object.values(this.spikeGroup), () => this.resetLevel = true);
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
 
-
-
-
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
 		if (this.player.spellActive['fire']) {
 			this.player.fireball.deactivate(this, this.enemyGroup);
@@ -269,16 +266,12 @@ export default class s1r5 extends Phaser.Scene {
 		/* ---------- CASTING SPELLS ---------- */
 		if (this.switchFire.isDown) {
 			this.player.currentSpell = 'fire';
-			// this.player.changeSpellFrame(this, 0);
 		} else if (this.switchEarth.isDown) {
 			this.player.currentSpell = 'earth';
-			// this.player.changeSpellFrame(this, 1);
 		} else if (this.switchWater.isDown) {
 			this.player.currentSpell = 'water';
-			// this.player.changeSpellFrame(this, 2);
 		} else if (this.switchAir.isDown) {
 			this.player.currentSpell = 'air';
-			// this.player.changeSpellFrame(this, 3);
 		}
 
 		if (this.reset.isDown) {
