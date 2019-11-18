@@ -112,7 +112,7 @@ export default class s1r5 extends Phaser.Scene {
 		this.enemyGroup = [this.enemy1, this.enemy2, this.enemy3];
 
 		/* ---------- CREATES PLATFORMS ---------- */
-		this.platform = new Platform(this, 112, 527, 'platform').setScale(0.25, 1.65);
+		this.platform = new Platform(this, 112, 527, 'platform').setScale(0.3, 1.65);
 		this.platform.options = ['up', 500];
 
 		this.physics.add.collider(this.enemyGroup, this.platform);
