@@ -12,7 +12,7 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		/* ---------- SPELL ANIMATIONS ---------- */
 
 		scene.anims.create({
-			key: "bubbleAni",
+			key: "waterAni",
 			frames: scene.anims.generateFrameNumbers("water", {start:0, end:21}),
 			frameRate: 32,
 			repeat: -1
@@ -22,18 +22,6 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 				frames: scene.anims.generateFrameNumbers("earth", {start:0, end:6}),
 			frameRate: 15,
 			repeat: -1
-		});
-		scene.anims.create({
-			key: "earthAni2",
-				frames: scene.anims.generateFrameNumbers("earth", {start:0, end:26}),
-			frameRate: 30,
-			repeat: 0
-		});
-		scene.anims.create({
-			key: "earthAnireverse",
-				frames: scene.anims.generateFrameNumbers("earth", {start:11, end:0}),
-			frameRate: 15,
-			repeat: 0
 		});
 		scene.anims.create({
 			key: "fireAni",
@@ -65,7 +53,7 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 	shoot(scene, direction) {
 		scene.physics.add.collider(this, scene.layer);
 		if (this.key === 'water') {
-			this.play('bubbleAni', true);
+			this.play('waterAni', true);
 		} else if (this.key === 'fire') {
 			this.play('fireAni', true);
 		} else if (this.key === 'air') {
@@ -85,7 +73,7 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		if (scene.enemyGroup) {
 			scene.physics.add.collider(scene.enemyGroup, this);
 		}
-		player.raisingPlatform = true;
+		player.raisingEarth = true;
 	}
 
 	suspend(scene, enemy) {

@@ -8,19 +8,18 @@ export default class Lever extends Phaser.GameObjects.Sprite {
 
 		/* ------ PROPERTIES ------- */
 		scene.physics.world.enableBody(this, 0);
-    	this.body.immovable = true;
+		this.body.immovable = true;
 		this.setScale(3);
 		this.flipX = true;
 		this.flipped = false;
 
 		/* ------ CREATES ANIMATION ------- */
-	    scene.anims.create({
+		scene.anims.create({
 			key: "flipRight",
 			frames: scene.anims.generateFrameNumbers("lever", {start:0, end:3}),
 			frameRate: 15,
 			repeat: 0
 		});
-
 	}
 
 	flip(scene, object) {
@@ -31,14 +30,11 @@ export default class Lever extends Phaser.GameObjects.Sprite {
 			this.play("flipRight",true);
 			object.forEach(i => {
 				i.move(scene, i.options[0], i.options[1]);
-				let newCamera = scene.cameras.add(screenX - 275, screenY - 575, 250, 150).startFollow(object[0].options[2]).setZoom(object[0].options[3]).fadeIn(700);
-				setTimeout(() => {scene.cameras.remove(newCamera)}, object[0].options[4]);
+				if (object[2]) {
+					let newCamera = scene.cameras.add(screenX - 275, screenY - 575, 250, 150).startFollow(object[0].options[2]).setZoom(object[0].options[3]).fadeIn(700);
+					setTimeout(() => {scene.cameras.remove(newCamera)}, object[0].options[4]);
+				}
 			});
 		}
-
-
-
 	}
-
-
 }

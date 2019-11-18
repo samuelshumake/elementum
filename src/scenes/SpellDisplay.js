@@ -25,19 +25,19 @@ export default class SpellDisplay extends Phaser.Scene {
 			frameHeight: 14,
 			frameWidth:	 21
 		});
-		this.load.spritesheet('water', './assets/spriteSheets/bubbleAnimation.png', {
+		this.load.spritesheet('water', './assets/spriteSheets/water.png', {
 			frameHeight: 32,
 			frameWidth: 32,
 		});
-		this.load.spritesheet('earth', './assets/spriteSheets/earthAnimation.png', {
+		this.load.spritesheet('earth', './assets/spriteSheets/earth.png', {
 			frameHeight: 32,
 			frameWidth: 64,
 		});
-		this.load.spritesheet('fire', './assets/spriteSheets/fireballAnimation.png', {
+		this.load.spritesheet('fire', './assets/spriteSheets/fire.png', {
 			frameHeight: 32,
 			frameWidth: 48,
 		});
-		this.load.spritesheet('air', './assets/spriteSheets/airAnimation.png', {
+		this.load.spritesheet('air', './assets/spriteSheets/air.png', {
 			frameHeight: 32,
 			frameWidth: 48,
 		});
@@ -91,16 +91,16 @@ export default class SpellDisplay extends Phaser.Scene {
 	this.rock = new Rock(this, 600, 500, 'rock').setScale(0.8).body.setGravity(0, 800);
 
 
-	this.fireball = new Spell(this, 330, 290, 'fire');
+	this.fire = new Spell(this, 330, 290, 'fire');
 	this.earthSpell = new Spell(this, 445, 335, 'earth');
 	this.waterSpell = new Spell(this, 355, 483, 'water');
-	this.airwave = new Spell(this, 445, 483, 'air');
+	this.air = new Spell(this, 445, 483, 'air');
 
-	this.fireball.shoot(true);
+	this.fire.shoot(true);
 	this.earthSpell.raise(this, this.player1);
 	setTimeout(() => this.earthSpell.destroy(), 850);
 	this.waterSpell.shoot(true);
-	this.airwave.shoot(false);
+	this.air.shoot(false);
 
 	this.spellTimer = 0;
   }
@@ -109,16 +109,16 @@ export default class SpellDisplay extends Phaser.Scene {
 	  this.spellTimer++;
 
 	  if (this.spellTimer >= 200) {
-		  this.fireball = new Spell(this, 330, 290, 'fire');
+		  this.fire = new Spell(this, 330, 290, 'fire');
 		  this.earthSpell = new Spell(this, 445, 335, 'earth');
 		  this.waterSpell = new Spell(this, 355, 483, 'water');
-		  this.airwave = new Spell(this, 445, 483, 'air');
+		  this.air = new Spell(this, 445, 483, 'air');
 
-		  this.fireball.shoot(true);
+		  this.fire.shoot(true);
 		  this.earthSpell.raise(this, this.player1);
 		  setTimeout(() => this.earthSpell.destroy(), 850);
 		  this.waterSpell.shoot(true);
-		  this.airwave.shoot(false);
+		  this.air.shoot(false);
 
 		  this.spellTimer = 0;
 	  }
@@ -133,14 +133,14 @@ export default class SpellDisplay extends Phaser.Scene {
 
 	  }
 
-	  if (this.physics.overlap(this.fireball, this.enemy)) {
-		  this.fireball.destroy();
+	  if (this.physics.overlap(this.fire, this.enemy)) {
+		  this.fire.destroy();
 		  this.enemy.destroy();
 		  setTimeout(() => this.enemy = new Enemy(this, 200, 305, 'slimeAni'), 1100);
 	  }
 
-	  if (this.airwave.active && this.airwave.x >= 550) {
-		  this.airwave.destroy();
+	  if (this.air.active && this.air.x >= 550) {
+		  this.air.destroy();
 		  this.rock.setVelocity(300, 0);
 		  setTimeout(() => {
 			  this.rock.destroy();

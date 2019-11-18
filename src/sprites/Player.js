@@ -6,7 +6,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		scene.sys.updateList.add(this);
 		scene.sys.displayList.add(this);
 
-
 		/* ------CONSTANTS AND VARIBLES------- */
 		scene.physics.world.enableBody(this, 0);
 		scene.physics.add.collider(this, scene.layer);
@@ -14,7 +13,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		this.body.setGravity(0, 600);
 		this.spellTimer = 100;
 		this.jumpHeld = false;
-		this.raisingPlatform = false;
+		this.raisingEarth = false;
 
 		// Checks which spells are active
 		this.spellActive = {
@@ -116,52 +115,47 @@ export default class Player extends Phaser.GameObjects.Sprite {
 				if (this.spellActive['fire'] === true) {
 					return;
 				}
-				this.fireball = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'fire'));
+				this.fire = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'fire'));
 				this.spellActive['fire'] = true;
-				this.fireball.shoot(scene, direction);
+				this.fire.shoot(scene, direction);
 				break;
-
-
 			/* ----- EARTH ----- */
 			case 'earth':
 				if (this.body.blocked.down || this.body.touching.down) {
 					if (this.spellActive['earth'] === true) {
 						this.spellActive['earth'] = false;
-						this.platform.destroy();
-						this.platformBox.destroy();
+						this.earth.destroy();
+						this.earthBox.destroy();
 					} else {
 						this.spellActive['earth'] = true;
-						this.platformBox = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom + 15));
-						this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom, 'earth'));
-						this.platform.setScale(1, 1.2);
-						this.platform.setOrigin(0.5, 1);
-						this.platformBox.body.setSize(32, 1);
+						this.earthBox = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom + 15));
+						this.earth = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom, 'earth'));
+						this.earth.setScale(1, 1.3);
+						this.earth.setOrigin(0.5, 1);
+						this.earthBox.body.setSize(32, 1);
 
-						this.platform.play('earthAni2', true);
-						this.platformBox.raise(scene, this);
+						this.earth.play('earthAni', true);
+						this.earthBox.raise(scene, this);
 					}
 				}
 				break;
-
 			/* ----- WATER ----- */
 			case 'water':
 				if (this.spellActive['water'] === true) {
 					return;
 				}
-				this.bubble = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'water'));
+				this.water = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'water'));
 				this.spellActive['water'] = true;
-				this.bubble.shoot(scene, direction);
+				this.water.shoot(scene, direction);
 				break;
-
-
 			/* ----- AIR ----- */
 			case 'air':
 				if (this.spellActive['air'] === true) {
 					return;
 				}
-				this.airwave = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'air'));
+				this.air = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'air'));
 				this.spellActive['air'] = true;
-				this.airwave.shoot(scene, direction);
+				this.air.shoot(scene, direction);
 				break;
 		}
 
