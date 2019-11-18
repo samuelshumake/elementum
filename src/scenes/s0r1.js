@@ -56,6 +56,10 @@ export default class s0r1 extends Phaser.Scene {
 			frameHeight: 6,
 			frameWidth: 32
 		});
+		this.load.spritesheet('gui', './assets/spriteSheets/gui.png', {
+			frameHeight: 32,
+			frameWidth: 32
+		});
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/tilemapv2.png');

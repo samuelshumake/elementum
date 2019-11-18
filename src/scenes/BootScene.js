@@ -29,12 +29,12 @@ export default class BootScene extends Phaser.Scene {
 		});
 
 		// Play button
-		let playButton = this.physics.add.sprite(830, 335).setScale(6.8, 2.2).setInteractive();
+		let playButton = this.physics.add.sprite(this.centerX + 190, this.centerY + 35).setScale(6.8, 2.2).setInteractive();
 		playButton.on('pointerdown', () => this.scene.start('s0r1'));
 
 		// Spell display button
-		let spellButton = this.physics.add.sprite(449, 335).setScale(6.8, 2.2).setInteractive();
-		spellButton.on('pointerdown', () => this.scene.start('SpellDisplay'));
+		let spellButton = this.physics.add.sprite(this.centerX - 190, this.centerY + 35).setScale(6.8, 2.2).setInteractive();
+		// spellButton.on('pointerdown', () => this.scene.start('SpellDisplay'));
 
 	}
 

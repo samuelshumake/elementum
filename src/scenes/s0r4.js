@@ -70,7 +70,7 @@ export default class s0r4 extends Phaser.Scene {
 	}	// ---------- END OF PRELOAD ---------- //
 
 	create (data) {
-	    ChangeScene.addSceneEventListeners(this);
+		ChangeScene.addSceneEventListeners(this);
 
 		/* ---------- GLOBAL VARIABLES --------- */
 		this.resetLevel = false
