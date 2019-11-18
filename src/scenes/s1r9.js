@@ -103,12 +103,12 @@ export default class s1r9 extends Phaser.Scene {
 
 		/* ------ CREATE SPIKES ---------------- */
 		this.spikeGroup = [];
-		for (let i = 0; i <= 20; i++) {
-			this.spikeGroup.push(this.physics.add.sprite(16*i + 201, 540, 'spike').setScale(0.3))
+		for (let i = 0; i <= 0; i++) {
+			this.spikeGroup.push(this.physics.add.sprite(16*i + 2010, 540, 'spike').setScale(0.3))
 		}
 
 		/* ---------- CREATES BOX ---------- */
-		this.rock = new Rock(this, 620, 195, 'rock');
+		this.rock = new Rock(this, 6200, 195, 'rock');
 		this.rockGroup = [this.rock];
 
 		// /* ---------- CREATES ENEMIES ---------- */
@@ -117,9 +117,9 @@ export default class s1r9 extends Phaser.Scene {
 		this.enemyGroup = [this.enemy1, this.enemy2];
 
 		/* ---------- CREATES PLATFORMS ---------- */
-		this.platform1 = new Platform(this, 365, 480, 'platform');
+		this.platform1 = new Platform(this, 365, 4800, 'platform');
 		this.platform1.options = ['right', 500, this.platform1, 0.8, 3000];
-		this.platform2 = new Platform(this, 120, 560, 'platform');
+		this.platform2 = new Platform(this, 120, 5600, 'platform');
 		this.platform2.options = ['left', 200, this.platform2, 1, 2000];
 		this.platform2.flipX = true;
 
@@ -128,8 +128,8 @@ export default class s1r9 extends Phaser.Scene {
 		this.physics.add.collider(this.platform1,this.rock);
 		this.physics.add.collider(this.enemyGroup, this.rock);
 
-		this.lever1 = new Lever(this, 48, 498, 'lever');
-		this.lever2 = new Lever(this, 270, 375, 'lever');
+		this.lever1 = new Lever(this, 48, 4980, 'lever');
+		this.lever2 = new Lever(this, 270, 3750, 'lever');
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
 		this.switchFire = this.input.keyboard.addKey('one');

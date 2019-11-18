@@ -14,7 +14,7 @@ import s1r4 from './scenes/s1r4.js';
 import s1r5 from './scenes/s1r5.js';
 import s1r7 from './scenes/s1r7.js';
 import s1r8 from './scenes/s1r8.js';
-import s1r8 from './scenes/s1r9.js';
+import s1r9 from './scenes/s1r9.js';
 import Config from './config/config.js';
 
 class Game extends Phaser.Game {
