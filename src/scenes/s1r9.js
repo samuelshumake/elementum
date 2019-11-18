@@ -99,7 +99,7 @@ export default class s1r9 extends Phaser.Scene {
 		camera.setBounds(0, 0, 800, 640);
 
 		/* ---------- CREATES DOOR ---------- */
-		this.door = this.physics.add.sprite(754, 576);
+		this.door = this.physics.add.sprite(32, 375);
 
 		/* ------ CREATE SPIKES ---------------- */
 		this.spikeGroup = [];
@@ -114,7 +114,10 @@ export default class s1r9 extends Phaser.Scene {
 		// /* ---------- CREATES ENEMIES ---------- */
 		this.enemy1 = new Enemy(this, 600, 455, 'slimeAni');
 		this.enemy2 = new Enemy(this, 60, 250, 'slimeAni');
-		this.enemyGroup = [this.enemy1, this.enemy2];
+		this.enemy3 = new Enemy(this, 250, 190, 'slimeAni');
+		this.enemy4 = new Enemy(this, 650, 300, 'slimeAni');
+		this.enemy5 = new Enemy(this, 550, 300, 'slimeAni');
+		this.enemyGroup = [this.enemy1, this.enemy2,this.enemy3,this.enemy4,this.enemy5];
 
 		/* ---------- CREATES PLATFORMS ---------- */
 		this.platform1 = new Platform(this, 365, 4800, 'platform');
@@ -130,6 +133,8 @@ export default class s1r9 extends Phaser.Scene {
 
 		this.lever1 = new Lever(this, 48, 4980, 'lever');
 		this.lever2 = new Lever(this, 270, 3750, 'lever');
+
+
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
 		this.switchFire = this.input.keyboard.addKey('one');
@@ -150,7 +155,7 @@ export default class s1r9 extends Phaser.Scene {
 
 		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {
-			this.scene.start('s1r10');
+			this.scene.start('Boot');
 		}
 
 		/* ---------- MOVES PLAYER ---------- */

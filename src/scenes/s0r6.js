@@ -58,7 +58,7 @@ export default class s0r6 extends Phaser.Scene {
 		});
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
-		this.load.image('tiles', './assets/images/tilemapv2.png');
+		this.load.image('tiles', './assets/images/tilemapv3.png');
 		this.load.tilemapTiledJSON('s0r6', './assets/map/s0r6.json')
 
 		/* ---------- LOADS SPRITES FOR GAME OBJECTS ---------- */

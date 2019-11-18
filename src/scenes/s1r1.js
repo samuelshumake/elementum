@@ -58,7 +58,7 @@ export default class s1r1 extends Phaser.Scene {
 		});
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
-		this.load.image('tiles', './assets/images/tilemapv2.png');
+		this.load.image('tiles', './assets/images/tilemapv3.png');
 		this.load.tilemapTiledJSON('s1r1', './assets/map/s1r1.json')
 
 		/* ---------- LOADS SPRITES FOR GAME OBJECTS ---------- */

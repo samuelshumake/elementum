@@ -58,7 +58,7 @@ export default class s1r5 extends Phaser.Scene {
 		});
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
-		this.load.image('tiles', './assets/images/tilemapv2.png');
+		this.load.image('tiles', './assets/images/tilemapv3.png');
 		this.load.tilemapTiledJSON('s1r5', './assets/map/s1r5.json')
 
 		/* ---------- LOADS SPRITES FOR GAME OBJECTS ---------- */
@@ -118,7 +118,7 @@ export default class s1r5 extends Phaser.Scene {
 		this.physics.add.collider(this.enemyGroup, this.platform);
 		this.physics.add.collider(this.enemyGroup, this.rockGroup);
 
-		this.plate = new PressurePlate(this, 350, 453, 'pressurePlate');
+		this.plate = new PressurePlate(this, 300, 453, 'pressurePlate');
 		this.plate.flipY = true
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
@@ -140,7 +140,7 @@ export default class s1r5 extends Phaser.Scene {
 
 		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {
-			this.scene.start('Boot')
+			this.scene.start('s1r7')
 		}
 
 		/* ---------- MOVES PLAYER ---------- */

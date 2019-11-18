@@ -99,7 +99,7 @@ export default class s1r8 extends Phaser.Scene {
 		camera.setBounds(0, 0, 800, 640);
 
 		/* ---------- CREATES DOOR ---------- */
-		this.door = this.physics.add.sprite(754, 576);
+		this.door = this.physics.add.sprite(650, 576);
 
 		/* ------ CREATE SPIKES ---------------- */
 		this.spikeGroup = [];
@@ -108,16 +108,19 @@ export default class s1r8 extends Phaser.Scene {
 		}
 
 		/* ---------- CREATES BOX ---------- */
-		this.rock = new Rock(this, 620, 195, 'rock');
-		this.rockGroup = [this.rock];
+		this.box = new Box(this, 400, 195, 'box');
+		this.physics.add.collider(this.box, this.spikeGroup);
+		this.boxGroup = [this.box];
+
+
 
 		// /* ---------- CREATES ENEMIES ---------- */
-		this.enemy1 = new Enemy(this, 600, 455, 'slimeAni');
-		this.enemy2 = new Enemy(this, 60, 250, 'slimeAni');
+		this.enemy1 = new Enemy(this, 6000, 455, 'slimeAni');
+		this.enemy2 = new Enemy(this, 6000, 250, 'slimeAni');
 		this.enemyGroup = [this.enemy1, this.enemy2];
 
 		/* ---------- CREATES PLATFORMS ---------- */
-		this.platform1 = new Platform(this, 365, 480, 'platform');
+		this.platform1 = new Platform(this, 365, 430, 'platform');
 		this.platform1.options = ['right', 500, this.platform1, 0.8, 3000];
 		this.platform2 = new Platform(this, 120, 560, 'platform');
 		this.platform2.options = ['left', 200, this.platform2, 1, 2000];
@@ -125,11 +128,13 @@ export default class s1r8 extends Phaser.Scene {
 
 		this.physics.add.collider(this.enemyGroup, this.platform1);
 		this.physics.add.collider(this.enemyGroup, this.platform2);
-		this.physics.add.collider(this.platform1,this.rock);
+		this.physics.add.collider(this.platform1,this.box);
 		this.physics.add.collider(this.enemyGroup, this.rock);
 
 		this.lever1 = new Lever(this, 48, 498, 'lever');
 		this.lever2 = new Lever(this, 270, 375, 'lever');
+
+		this.plate = new PressurePlate(this, 725, 378, 'pressurePlate');
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
 		this.switchFire = this.input.keyboard.addKey('one');
@@ -239,6 +244,10 @@ export default class s1r8 extends Phaser.Scene {
 		if (this.interact.isDown) {
 			this.lever1.flip(this, [this.platform1]);
 			this.lever2.flip(this, [this.platform1]);
+		}
+		if (this.physics.overlap(this.boxGroup, this.plate)) {
+			this.platform1.options = ['left', 500, this.platform1, 0.8, 3000];
+			this.plate.trip(this, [this.platform1]);
 		}
 	}	// ----- END OF UPDATE ----- //
 
