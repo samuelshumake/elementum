@@ -12,6 +12,7 @@ import s1r2 from './scenes/s1r2.js';
 import s1r3 from './scenes/s1r3.js';
 import s1r4 from './scenes/s1r4.js';
 import s1r5 from './scenes/s1r5.js';
+import s1r7 from './scenes/s1r7.js';
 import Config from './config/config.js';
 
 class Game extends Phaser.Game {
@@ -30,7 +31,8 @@ class Game extends Phaser.Game {
 		this.scene.add('s1r3', s1r3);
 		this.scene.add('s1r4', s1r4);
 		this.scene.add('s1r5', s1r5);
-		this.scene.start('s1r1');
+		this.scene.add('s1r7', s1r7);
+		this.scene.start('s1r7');
   }
 }
 
