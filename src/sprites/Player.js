@@ -107,6 +107,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 					return;
 				}
 				this.fire = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'fire'));
+				this.fire.body.setSize(32, 10);
 				this.spellActive['fire'] = true;
 				this.fire.shoot(scene, direction);
 				break;

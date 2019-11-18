@@ -87,7 +87,7 @@ export default class s1r5 extends Phaser.Scene {
 		this.layer.setCollisionByProperty({ collides: true });
 
 		/* ---------- CREATES PLAYER ---------- */
-		this.player = new Player(this, 150, 492, 'player');
+		this.player = new Player(this, 150, 600, 'player');
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;

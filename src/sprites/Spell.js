@@ -10,7 +10,6 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		this.key = key;
 
 		/* ---------- SPELL ANIMATIONS ---------- */
-
 		scene.anims.create({
 			key: "waterAni",
 			frames: scene.anims.generateFrameNumbers("water", {start: 0, end: 21}),
@@ -24,8 +23,20 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 			repeat: 0
 		});
 		scene.anims.create({
-			key: "fireAni",
-			frames: scene.anims.generateFrameNumbers("fire", {start: 0, end: 7}),
+			key: "fireBegin",
+			frames: scene.anims.generateFrameNumbers("fire", {start: 0, end: 3}),
+			frameRate: 10,
+			repeat: 0
+		});
+		scene.anims.create({
+			key: "fireMiddle",
+			frames: scene.anims.generateFrameNumbers("fire", {start: 4, end: 5}),
+			frameRate: 10,
+			repeat: -1
+		});
+		scene.anims.create({
+			key: "fireEnd",
+			frames: scene.anims.generateFrameNumbers("fire", {start: 6, end: 8}),
 			frameRate: 10,
 			repeat: -1
 		});
@@ -38,10 +49,7 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 	}
 
 	deactivate(scene, enemyGroup) {
-		if (this.x < 0 || this.x > scene.gameWidth) {
-			scene.player.spellActive[`${this.key}`] = false;
-			this.destroy();
-		} else if (this.body.x > scene.player.x + 400 || this.body.x < scene.player.x - 400) {
+		if (this.body.x > scene.player.x + 400 || this.body.x < scene.player.x - 400) {
 			scene.player.spellActive[`${this.key}`] = false;
 			this.destroy();
 		} else if (this.body.velocity.x === 0) {
@@ -55,7 +63,12 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		if (this.key === 'water') {
 			this.play('waterAni', true);
 		} else if (this.key === 'fire') {
-			this.play('fireAni', true);
+			this.play('fireBegin', true);
+			setTimeout(() => {
+				if (this.active) {
+					this.play('fireMiddle', true);
+				}
+			}, 450);
 		} else if (this.key === 'air') {
 			this.play('airAni', true);
 		}
@@ -96,5 +109,4 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		}
 		setTimeout(() => {enemy.body.setVelocityX(0); enemy.canMove = true}, 1200);
 	}
-
 }
