@@ -147,9 +147,9 @@ export default class s1r3 extends Phaser.Scene {
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
 		this.switchFire = this.input.keyboard.addKey('one');
-		this.switchEarth = this.input.keyboard.addKey('two');
-		this.switchWater = this.input.keyboard.addKey('three');
-		this.switchAir = this.input.keyboard.addKey('four');
+		this.switchAir = this.input.keyboard.addKey('two');
+		this.switchEarth = this.input.keyboard.addKey('three');
+		this.switchWater = this.input.keyboard.addKey('four');
 		this.interact = this.input.keyboard.addKey('e');
 		this.reset = this.input.keyboard.addKey('r');
 		this.castSpell = this.input.keyboard.addKey('space');

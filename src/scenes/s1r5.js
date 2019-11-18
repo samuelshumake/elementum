@@ -137,13 +137,13 @@ export default class s1r5 extends Phaser.Scene {
 		this.physics.add.collider(this.enemyGroup, this.rockGroup);
 
 		this.plate = new PressurePlate(this, 350, 453, 'pressurePlate');
-		this.plate.flipY = true
+		this.plate.flipY = true;
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
 		this.switchFire = this.input.keyboard.addKey('one');
-		this.switchEarth = this.input.keyboard.addKey('two');
-		this.switchWater = this.input.keyboard.addKey('three');
-		this.switchAir = this.input.keyboard.addKey('four');
+		this.switchAir = this.input.keyboard.addKey('two');
+		this.switchEarth = this.input.keyboard.addKey('three');
+		this.switchWater = this.input.keyboard.addKey('four');
 		this.interact = this.input.keyboard.addKey('e');
 		this.reset = this.input.keyboard.addKey('r');
 		this.castSpell = this.input.keyboard.addKey('space');
