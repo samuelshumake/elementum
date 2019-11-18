@@ -133,6 +133,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 						this.spellActive['earth'] = true;
 						this.platformBox = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom + 15));
 						this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom, 'earth'));
+						this.platform.setScale(1, 1.2);
 						this.platform.setOrigin(0.5, 1);
 						this.platformBox.body.setSize(32, 1);
 

@@ -25,8 +25,8 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 		});
 		scene.anims.create({
 			key: "earthAni2",
-				frames: scene.anims.generateFrameNumbers("earth", {start:0, end:12}),
-			frameRate: 16,
+				frames: scene.anims.generateFrameNumbers("earth", {start:0, end:26}),
+			frameRate: 30,
 			repeat: 0
 		});
 		scene.anims.create({
