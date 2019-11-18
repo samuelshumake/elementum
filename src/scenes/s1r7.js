@@ -98,7 +98,7 @@ export default class s1r7 extends Phaser.Scene {
 		this.layer3 = map.createStaticLayer("Vines", tileset, 0,0);
 
 		/* ---------- CREATES PLAYER ---------- */
-		this.player = new Player(this, 750, 210, 'player');
+		this.player = new Player(this, 550, 210, 'player');
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
@@ -117,17 +117,16 @@ export default class s1r7 extends Phaser.Scene {
 		});
 
 		/* ---------- CREATES DOOR ---------- */
-		this.door = this.physics.add.sprite(754, 576);
+		this.door = this.physics.add.sprite(780, 350);
 
 		/* ------ CREATE SPIKES ---------------- */
 		this.spikeGroup = [];
 		for (let i = 0; i <= 7; i++) {
-			this.spikeGroup.push(this.physics.add.sprite(16*i + 201, 603, 'spike').setScale(0.3))
+			this.spikeGroup.push(this.physics.add.sprite(16*i + 2010, 603, 'spike').setScale(0.3))
 		}
 
 		/* ---------- CREATES BOX ---------- */
-		this.rock = new Rock(this, 130, 600, 'rock');
-		this.rock.setScale(2, 0.5);
+		this.rock = new Rock(this, 350, 300, 'rock');
 		this.rockGroup = [this.rock];
 
 		// /* ---------- CREATES ENEMIES ---------- */
@@ -136,19 +135,22 @@ export default class s1r7 extends Phaser.Scene {
 		this.enemyGroup = [this.enemy1, this.enemy2];
 
 		/* ---------- CREATES PLATFORMS ---------- */
-		this.platform1 = new Platform(this, 187, 176, 'platform').setScale(1.4, 1.65);
-		this.platform1.options = ['right', 500, this.platform1, 0.8, 3000];
-		this.platform2 = new Platform(this, 623, 560, 'platform');
-		this.platform2.options = ['left', 200, this.platform2, 1, 2000];
+		this.platform1 = new Platform(this, 688, 336, 'platform').setScale(.33, 1);
+		this.platform1.options = ['up', 64, this.platform1, 0.8, 3000];
+		this.platform2 = new Platform(this, 752, 336, 'platform').setScale(.33, 1);
+		this.platform2.options = ['down', 64, this.platform2, 1, 2000];
 		this.platform2.flipX = true;
 
 		this.physics.add.collider(this.enemyGroup, this.platform1);
 		this.physics.add.collider(this.enemyGroup, this.platform2);
 		this.physics.add.collider(this.enemyGroup, this.rock);
 
-		this.lever1 = new Lever(this, 48, 598, 'lever');
-		this.lever2 = new Lever(this, 42, 220, 'lever');
+		this.lever1 = new Lever(this, 48, 5980, 'lever');
+		this.lever2 = new Lever(this, 42, 2200, 'lever');
 		this.lever2.angle = 90;
+
+		this.plate1 = new PressurePlate(this, 300, 572, 'pressurePlate');
+		this.plate2 = new PressurePlate(this, 250, 347, 'pressurePlate');
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
 		this.switchFire = this.input.keyboard.addKey('one');
@@ -263,6 +265,12 @@ export default class s1r7 extends Phaser.Scene {
 		if (this.interact.isDown) {
 			this.lever1.flip(this, [this.platform1]);
 			this.lever2.flip(this, [this.platform2]);
+		}
+		if (this.physics.overlap(this.enemyGroup, this.plate1)) {
+			this.plate1.trip(this, [this.platform1]);
+		}
+		if (this.physics.overlap(this.rockGroup, this.plate2)) {
+			this.plate2.trip(this, [this.platform2]);
 		}
 	}	// ----- END OF UPDATE ----- //
 
