@@ -56,7 +56,7 @@ export default class s0r1 extends Phaser.Scene {
 			frameHeight: 6,
 			frameWidth: 32
 		});
-		this.load.spritesheet('gui', './assets/spriteSheets/gui.png', {
+		this.load.spritesheet('guiMana', './assets/spriteSheets/guiMana.png', {
 			frameHeight: 32,
 			frameWidth: 32
 		});
@@ -95,6 +95,8 @@ export default class s0r1 extends Phaser.Scene {
 		camera.setZoom(2);
 		camera.startFollow(this.player);
 		camera.setBounds(0, 0, 800, 640);
+
+		this.guiMana = this.physics.add.sprite(this.cameras.main.width / 3.75, this.cameras.main.height / 3.5, 'guiMana').setScrollFactor(0, 0);
 
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(432, 130);
