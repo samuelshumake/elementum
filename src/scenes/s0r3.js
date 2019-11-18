@@ -88,7 +88,7 @@ export default class s0r3 extends Phaser.Scene {
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
-		//camera.setZoom(2);
+		camera.setZoom(2);
 		camera.startFollow(this.player);
 		camera.setBounds(0, 0, 800, 640);
 
@@ -195,7 +195,7 @@ export default class s0r3 extends Phaser.Scene {
 	 	}
 
 		if (this.player.raisingEarth) {
-			if (this.player.earthBox.body.height >= 111) {
+			if (this.player.earthBox.body.height >= 117) {
 				this.player.raisingEarth = false;
 			}
 			this.player.earthBox.body.height += 2.1;

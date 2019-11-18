@@ -37,7 +37,7 @@ export default class PressurePlate extends Phaser.GameObjects.Sprite {
 			let direction;
 			object.forEach(i => {
 				i.move(scene, i.options[0], i.options[1]);
-				if (object[2]) {
+				if (object[0].options[2]) {
 					let newCamera = scene.cameras.add(screenX - 275, screenY - 575, 250, 150).startFollow(object[0].options[2]).setZoom(object[0].options[3]).fadeIn(700);
 					setTimeout(() => {scene.cameras.remove(newCamera)}, object[0].options[4]);
 				}
@@ -55,7 +55,7 @@ export default class PressurePlate extends Phaser.GameObjects.Sprite {
 			object.forEach(i => {
 				direction = this.reverse(i);
 				i.move(scene, direction, i.options[1]);
-				if (object[2]) {
+				if (object[0].options[2]) {
 					let newCamera = scene.cameras.add(screenX - 275, screenY - 575, 250, 150).startFollow(object[0].options[2]).setZoom(object[0].options[3]).fadeIn(700);
 					setTimeout(() => {scene.cameras.remove(newCamera)}, object[0].options[4]);
 				}

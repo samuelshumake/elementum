@@ -54,7 +54,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 	}
 
-
 	/* ---------- MOVEMENT FUNCTIONS ---------- */
 	move(scene) {
 		var cursors = this.scene.input.keyboard.createCursorKeys();
@@ -94,15 +93,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 			this.body.setVelocityY(-600)
 			this.body.setAccelerationY(1300);
 		}
-
-		// Allows the player to crouch
-		// if (cursors.down.isDown) {
-		// 	this.body.setSize(this.width, 32);
-		// } else {
-		// 	this.body.setSize(this.width, this.height);
-		// }
 	}
-
 
 	/* ---------- SPELL-CASTING FUNCTIONS ---------- */
 	cast(scene, spell, direction = false) {
@@ -124,17 +115,12 @@ export default class Player extends Phaser.GameObjects.Sprite {
 				if (this.body.blocked.down || this.body.touching.down) {
 					if (this.spellActive['earth'] === true) {
 						this.spellActive['earth'] = false;
-						this.earth.destroy();
 						this.earthBox.destroy();
+						this.earthBox.animation.destroy();
 					} else {
 						this.spellActive['earth'] = true;
 						this.earthBox = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom + 15));
-						this.earth = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom, 'earth'));
-						this.earth.setScale(1, 1.3);
-						this.earth.setOrigin(0.5, 1);
 						this.earthBox.body.setSize(32, 1);
-
-						this.earth.play('earthAni', true);
 						this.earthBox.raise(scene, this);
 					}
 				}

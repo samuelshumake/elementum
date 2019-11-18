@@ -13,25 +13,25 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 
 		scene.anims.create({
 			key: "waterAni",
-			frames: scene.anims.generateFrameNumbers("water", {start:0, end:21}),
+			frames: scene.anims.generateFrameNumbers("water", {start: 0, end: 21}),
 			frameRate: 32,
 			repeat: -1
 		});
 		scene.anims.create({
 			key: "earthAni",
-				frames: scene.anims.generateFrameNumbers("earth", {start:0, end:6}),
-			frameRate: 15,
-			repeat: -1
+				frames: scene.anims.generateFrameNumbers("earth", {start: 0, end: 24}),
+			frameRate: 28,
+			repeat: 0
 		});
 		scene.anims.create({
 			key: "fireAni",
-			frames: scene.anims.generateFrameNumbers("fire", {start:0, end:7}),
+			frames: scene.anims.generateFrameNumbers("fire", {start: 0, end: 7}),
 			frameRate: 10,
 			repeat: -1
 		});
 		scene.anims.create({
 			key: "airAni",
-			frames: scene.anims.generateFrameNumbers("air", {start:0, end:3}),
+			frames: scene.anims.generateFrameNumbers("air", {start: 0, end: 3}),
 			frameRate: 10,
 			repeat: -1
 		});
@@ -68,11 +68,14 @@ export default class Spell extends Phaser.GameObjects.Sprite {
 	}
 
 	raise(scene, player) {
-		this.n = 1;
 		scene.physics.add.collider(player, this);
 		if (scene.enemyGroup) {
 			scene.physics.add.collider(scene.enemyGroup, this);
 		}
+		this.animation = scene.physics.add.existing(new Spell(scene, player.x, player.body.bottom, 'earth'));
+		this.animation.setScale(1, 1.31);
+		this.animation.setOrigin(0.5, 1);
+		this.animation.play('earthAni', true);
 		player.raisingEarth = true;
 	}
 
