@@ -60,6 +60,10 @@ export default class s0r1 extends Phaser.Scene {
 			frameHeight: 32,
 			frameWidth: 32
 		});
+		this.load.spritesheet('guiSpell', './assets/spriteSheets/guiSpell.png', {
+			frameHeight: 10,
+			frameWidth: 40
+		});
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/tilemapv2.png');
@@ -96,7 +100,15 @@ export default class s0r1 extends Phaser.Scene {
 		camera.startFollow(this.player);
 		camera.setBounds(0, 0, 800, 640);
 
-		this.guiMana = this.physics.add.sprite(this.cameras.main.width / 3.75, this.cameras.main.height / 3.5, 'guiMana').setScrollFactor(0, 0);
+		/* ---------- CREATES GUI ---------- */
+		this.guiMana = this.physics.add.sprite(this.cameras.main.width / 3.75, this.cameras.main.height / 3.5, 'guiMana').setFrame(22).setScrollFactor(0, 0);
+		this.guiSpell = this.physics.add.sprite(this.cameras.main.width / 3.75 + 33, this.cameras.main.height / 3.5, 'guiSpell').setScrollFactor(0, 0);
+		this.anims.create({
+			key: 'manaRegen',
+			frames: this.anims.generateFrameNumbers('guiMana', {start: 0, end: 21}),
+			frameRate: 20,
+			repeat: 0
+		});
 
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(432, 130);
@@ -109,9 +121,9 @@ export default class s0r1 extends Phaser.Scene {
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
 		this.switchFire = this.input.keyboard.addKey('one');
-		this.switchEarth = this.input.keyboard.addKey('two');
-		this.switchWater = this.input.keyboard.addKey('three');
-		this.switchAir = this.input.keyboard.addKey('four');
+		this.switchAir = this.input.keyboard.addKey('two');
+		this.switchEarth = this.input.keyboard.addKey('three');
+		this.switchWater = this.input.keyboard.addKey('four');
 		this.interact = this.input.keyboard.addKey('e');
 		this.reset = this.input.keyboard.addKey('r');
 		this.castSpell = this.input.keyboard.addKey('space');
@@ -180,12 +192,16 @@ export default class s0r1 extends Phaser.Scene {
 		/* ---------- CASTING SPELLS ---------- */
 		if (this.switchFire.isDown) {
 			this.player.currentSpell = 'fire';
-		} else if (this.switchEarth.isDown) {
-			this.player.currentSpell = 'earth';
-		} else if (this.switchWater.isDown) {
-			this.player.currentSpell = 'water';
+			this.guiSpell.setFrame(0);
 		} else if (this.switchAir.isDown) {
 			this.player.currentSpell = 'air';
+			this.guiSpell.setFrame(1);
+		} else if (this.switchEarth.isDown) {
+			this.player.currentSpell = 'earth';
+			this.guiSpell.setFrame(2);
+		} else if (this.switchWater.isDown) {
+			this.player.currentSpell = 'water';
+			this.guiSpell.setFrame(3);
 		}
 
 		if (this.reset.isDown) {
@@ -195,6 +211,7 @@ export default class s0r1 extends Phaser.Scene {
 		// Casts spell if cooldown timer has been met
 		if (this.castSpell.isDown && this.player.spellTimer > 70 ) {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
+			this.guiMana.play('manaRegen', true);
 	 	}
 
 		if (this.player.raisingEarth) {

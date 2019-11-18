@@ -51,14 +51,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
 			frameRate: 15,
 			repeat: 0
 		});
-
 	}
 
 	/* ---------- MOVEMENT FUNCTIONS ---------- */
 	move(scene) {
 		var cursors = this.scene.input.keyboard.createCursorKeys();
-
-		this.spellTimer++;
 
 		if (this.jumpHeld) {
 			this.jumpHeld = !cursors.up._justUp;
@@ -93,6 +90,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
 			this.body.setVelocityY(-600)
 			this.body.setAccelerationY(1300);
 		}
+
+		this.spellTimer++;
 	}
 
 	/* ---------- SPELL-CASTING FUNCTIONS ---------- */
