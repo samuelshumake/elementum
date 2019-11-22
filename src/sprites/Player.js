@@ -6,18 +6,14 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		scene.sys.updateList.add(this);
 		scene.sys.displayList.add(this);
 
-
 		/* ------CONSTANTS AND VARIBLES------- */
-		// Sets players physical body
 		scene.physics.world.enableBody(this, 0);
 		scene.physics.add.collider(this, scene.layer);
 		scene.physics.add.collider(this.body, scene.spikes, scene.resetLevel, null, this);
 		this.body.setGravity(0, 600);
-
-		// Initializes spell cooldown timer
 		this.spellTimer = 100;
-
 		this.jumpHeld = false;
+		this.raisingEarth = false;
 
 		// Checks which spells are active
 		this.spellActive = {
@@ -29,12 +25,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 		// Initializes player's current spell
 		this.currentSpell = 'fire';
-
-		// Makes spell frames transparent
-		// scene.earthFrame.alpha = 0.2;
-		// scene.waterFrame.alpha = 0.2;
-		// scene.airFrame.alpha = 0.2;
-
 
 		/* ------ ANIMATIONS ------- */
 		scene.anims.create({
@@ -61,15 +51,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
 			frameRate: 15,
 			repeat: 0
 		});
-
 	}
-
 
 	/* ---------- MOVEMENT FUNCTIONS ---------- */
 	move(scene) {
 		var cursors = this.scene.input.keyboard.createCursorKeys();
-
-		this.spellTimer++;
 
 		if (this.jumpHeld) {
 			this.jumpHeld = !cursors.up._justUp;
@@ -105,14 +91,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
 			this.body.setAccelerationY(1300);
 		}
 
-		// Allows the player to crouch
-		// if (cursors.down.isDown) {
-		// 	this.body.setSize(this.width, 32);
-		// } else {
-		// 	this.body.setSize(this.width, this.height);
-		// }
+		this.spellTimer++;
 	}
-
 
 	/* ---------- SPELL-CASTING FUNCTIONS ---------- */
 	cast(scene, spell, direction = false) {
@@ -125,52 +105,46 @@ export default class Player extends Phaser.GameObjects.Sprite {
 				if (this.spellActive['fire'] === true) {
 					return;
 				}
-				this.fireball = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'fire'));
+				this.fire = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'fire'));
+				this.fire.body.setSize(32, 10);
 				this.spellActive['fire'] = true;
-				this.fireball.shoot(scene, direction);
+				this.fire.shoot(scene, direction);
 				break;
-
-
 			/* ----- EARTH ----- */
 			case 'earth':
 				if (this.body.blocked.down || this.body.touching.down) {
 					if (this.spellActive['earth'] === true) {
 						this.spellActive['earth'] = false;
-						this.platform.destroy();
+						this.earthBox.destroy();
+						this.earthBox.animation.destroy();
 					} else {
-						this.platform = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom + 50, 'earth'));
 						this.spellActive['earth'] = true;
-						this.platform.raise(scene, this);
+						this.earthBox = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom + 15));
+						this.earthBox.body.setSize(32, 1);
+						this.earthBox.raise(scene, this);
 					}
 				}
 				break;
-
 			/* ----- WATER ----- */
 			case 'water':
 				if (this.spellActive['water'] === true) {
 					return;
 				}
-				this.bubble = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'water'));
+				this.water = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'water'));
 				this.spellActive['water'] = true;
-				this.bubble.shoot(scene, direction);
+				this.water.shoot(scene, direction);
 				break;
-
-
 			/* ----- AIR ----- */
 			case 'air':
 				if (this.spellActive['air'] === true) {
 					return;
 				}
-				this.airwave = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'air'));
+				this.air = scene.physics.add.existing(new Spell(scene, this.x, this.y, 'air'));
 				this.spellActive['air'] = true;
-				this.airwave.shoot(scene, direction);
+				this.air.shoot(scene, direction);
 				break;
 		}
 
 	}
 
-	// changeSpellFrame(scene, frame) {
-	// 	scene.frameGroup.forEach( obj => obj.alpha = 0.2);
-	// 	scene.frameGroup[frame].alpha = 1;
-	// }
 }

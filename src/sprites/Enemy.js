@@ -40,8 +40,10 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 		} else {
 			if (this.canMove && this.moveTimer < 250) {
 				this.body.setVelocityX(20);
+				this.flipX = false;
 			} else if (this.canMove && this.moveTimer < 500) {
 				this.body.setVelocityX(-20);
+				this.flipX = true;
 			} else {
 				this.moveTimer = 0;
 			}
