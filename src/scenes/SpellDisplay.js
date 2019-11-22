@@ -86,9 +86,11 @@ export default class SpellDisplay extends Phaser.Scene {
 		this.bottomRight = this.physics.add.sprite(720, 720, '1');
 
 		this.player1 = new Player(this, 130, 205, 'player');
+		this.player1.spellActive = false;
 		this.player2 = new Player(this, 570, 205, 'player');
 		this.player3 = new Player(this, 272, 780, 'player');
 		this.player4 = new Player(this, 570, 780, 'player');
+		this.player3.raisingEarth = false;
 
 		this.enemy = new Enemy(this, 410, 205, 'slimeAni').setScale(2);
 		this.enemy.flipX = true;
@@ -97,59 +99,92 @@ export default class SpellDisplay extends Phaser.Scene {
 		this.rock = new Rock(this, 720, 750, 'rock');
 
 		let camera = this.cameras.main;
-		// camera.startFollow(this.centerScreen);
-		camera.startFollow(this.player4);
+		camera.startFollow(this.centerScreen);
+		// camera.startFollow(this.player1);
 		camera.setZoom(2);
 
-		this.spellTimer = 0;
+		this.roundTimer = 0;
 		this.firstTime = true;
 	}
 
 	update (time, delta) {
-		this.spellTimer++;
 
-		// if (this.spellTimer === 150 && !this.firstTime) {
-		// 	this.enemy = new Enemy(this, 200, 305, 'slimeAni').setScale(2);
-		// 	this.rock = new Rock(this, 600, 465, 'rock').setScale(1.5);
-		// 	this.player1.cast(this, 'earth', this.player1.flipX);
-		// }
-		//
-		// if (this.spellTimer >= 300) {
-		// this.player1.cast(this, 'fire', this.player1.flipX);
-		// 	this.player2.cast(this, 'air', this.player2.flipX);
-		// 	this.player3.cast(this, 'earth', this.player3.flipX);
-		// 	this.player4.cast(this, 'water', this.player4.flipX);
-		// 	this.spellTimer = 0;
-		// 	this.firstTime = false;
-		// }
-		//
-		// this.physics.add.overlap(this.rock, this.player2.air, () => {
-		// 	this.player2.spellActive['air'] = false;
-		// 	this.player2.air.destroy();
-		// 	this.player2.air.push(this, this.rock, this.player2.direction);
-		// });
-		//
-		// this.physics.add.overlap(this.box, this.player4.water, () => {
-		// 	this.player4.spellActive['water'] = false;
-		// 	this.player4.water.destroy();
-		// 	this.player4.water.suspend(this, this.box, this.player4.direction);
-		// });
-		//
-		// this.physics.add.overlap(this.enemy, this.player3.fire, () => {
-		// 	this.player3.spellActive['fire'] = false;
-		// 	this.player3.fire.destroy();
-		// 	this.enemy.destroy();
-		// });
-		//
-		// if (this.player1.raisingEarth) {
-		// 	if (this.player1.earthBox.body.height >= 117) {
-		// 		this.player1.raisingEarth = false;
-		// 	}
-		// 	this.player1.earthBox.body.height += 2.1;
-		// 	this.player1.y -= 1;
-		// 	this.player1.earthBox.body.offset.set(0, -this.player1.earthBox.body.height);
-		// }
+		if (this.roundTimer == 100) {
 
+			// ---------- FIRE SPELL ---------- //
+			this.fire = this.physics.add.existing(new Spell(this, this.player1.x, this.player1.y, 'fire'));
+			this.fire.body.setSize(32, 10);
+			this.fire.play('fireBegin', true);
+			setTimeout(() => {
+				if (this.fire.active) {
+					this.fire.play('fireMiddle', true);
+				}
+			}, 450);
+			this.fire.body.setVelocityX(300);
+
+			// ---------- WATER SPELL ---------- //
+			this.water = this.physics.add.existing(new Spell(this, this.player2.x, this.player2.y, 'water'));
+			this.water.play('waterAni', true);
+			this.water.body.setVelocityX(300);
+
+			// ---------- AIR SPELL ---------- //
+			this.air = this.physics.add.existing(new Spell(this, this.player4.x, this.player4.y, 'air'));
+			this.air.play('airAni', true);
+			this.air.body.setVelocityX(300);
+
+			// ---------- EARTH SPELL ---------- //
+			this.earthBox = this.physics.add.existing(new Spell(this, this.player3.x, this.player3.body.bottom + 15));
+			this.earthBox.animation = this.physics.add.existing(new Spell(this, this.player3.x, this.player3.body.bottom, 'earth'));
+			this.earthBox.body.setSize(32, 1);
+			this.earthBox.animation.setScale(1, 1.31);
+			this.earthBox.animation.setOrigin(0.5, 1);
+			this.earthBox.animation.play('earthAni', true);
+			this.player3.raisingEarth = true;
+			this.physics.add.collider(this.earthBox, this.player3);
+		}
+		// ---------- EARTH SPELL PHYSICS ---------- //
+		if (this.player3.raisingEarth) {
+			if (this.earthBox.body.height >= 113) {
+				this.player3.raisingEarth = false;
+			}
+			this.earthBox.body.height += 2.1;
+			this.player3.y -= 1;
+			this.earthBox.body.offset.set(0, -this.earthBox.body.height);
+		}
+		// ---------- SPELL DEACTIVATION ---------- //
+		if (this.fire) {
+			// ------- FIRE ------- //
+			this.physics.overlap(this.fire, this.enemy, () => {
+				this.fire.destroy();
+				this.enemy.visible = false;
+			});
+			// ------- WATER ------- //
+			this.physics.overlap(this.water, this.box, () => {
+				this.water.destroy();
+				this.box.body.setGravity(0, 0);
+				this.box.body.setVelocityX(0);
+				this.box.body.setVelocityY(-200);
+				setTimeout(() => this.box.body.setGravity(0, 600), 1000);
+
+			});
+			// ------- AIR ------- //
+			this.physics.overlap(this.air, this.rock, () => {
+				this.air.destroy();
+				this.rock.body.setVelocityX(150);
+				setTimeout(() => this.rock.body.setVelocityX(0), 1200);
+			});
+			// ------- EARTH ------- //
+			if (!this.player3.raisingEarth) {
+				if (this.roundTimer > 200) {
+					this.earthBox.destroy();
+					this.earthBox.animation.destroy();
+					this.rock.x = 720;
+					this.enemy.visible = true;
+					this.roundTimer = 0;
+				}
+			}
+		}
+		this.roundTimer++;
 	}
 
 }
