@@ -4,8 +4,6 @@ import Player from '../sprites/Player.js';
 import Enemy from '../sprites/Enemy.js';
 import Spell from '../sprites/Spell.js';
 import Platform from '../sprites/Platform.js';
-import Lever from '../sprites/Lever.js';
-import PressurePlate from '../sprites/PressurePlate.js';
 import Rock from '../sprites/Rock.js';
 import Box from '../sprites/Box.js';
 export default class SpellDisplay extends Phaser.Scene {
@@ -24,10 +22,6 @@ export default class SpellDisplay extends Phaser.Scene {
 			frameHeight: 39,
 			frameWidth: 32,
 		});
-		this.load.spritesheet('lever', './assets/spriteSheets/lever.png',{
-			frameHeight: 6,
-			frameWidth: 9
-		});
 		this.load.spritesheet('run', './assets/spriteSheets/runPlayer.png',{
 			frameHeight: 39,
 			frameWidth: 34
@@ -38,23 +32,23 @@ export default class SpellDisplay extends Phaser.Scene {
 		});
 		this.load.spritesheet('water', './assets/spriteSheets/water.png', {
 			frameHeight: 32,
-			frameWidth: 32,
+			frameWidth: 32
 		});
 		this.load.spritesheet('earth', './assets/spriteSheets/earth.png', {
 			frameHeight: 96,
-			frameWidth: 32,
+			frameWidth: 32
 		});
 		this.load.spritesheet('fire', './assets/spriteSheets/fire.png', {
 			frameHeight: 32,
-			frameWidth: 32,
+			frameWidth: 32
 		});
 		this.load.spritesheet('air', './assets/spriteSheets/air.png', {
 			frameHeight: 32,
-			frameWidth: 48,
+			frameWidth: 48
 		});
-		this.load.spritesheet('pressurePlate', './assets/spriteSheets/pressureplate.png', {
-			frameHeight: 6,
-			frameWidth: 32
+		this.load.spritesheet('spellTiles', './assets/spriteSheets/spellTiles.png', {
+			frameHeight: 160,
+			frameWidth: 96
 		});
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
@@ -79,11 +73,11 @@ export default class SpellDisplay extends Phaser.Scene {
 		this.layer = map.createStaticLayer('Tile Layer 1', tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
 
-		this.centerScreen = this.physics.add.sprite(496, 433, '1');
-		this.topLeft = this.physics.add.sprite(272, 144, '1');
-		this.topRight = this.physics.add.sprite(720, 144, '1');
-		this.bottomLeft = this.physics.add.sprite(272, 720, '1');
-		this.bottomRight = this.physics.add.sprite(720, 720, '1');
+		this.centerScreen = this.physics.add.sprite(496, 433);
+		this.topLeft = this.physics.add.sprite(272, 144);
+		this.topRight = this.physics.add.sprite(720, 144);
+		this.bottomLeft = this.physics.add.sprite(272, 720);
+		this.bottomRight = this.physics.add.sprite(720, 720);
 
 		this.player1 = new Player(this, 130, 205, 'player');
 		this.player1.spellActive = false;
@@ -102,10 +96,76 @@ export default class SpellDisplay extends Phaser.Scene {
 		this.camera.startFollow(this.centerScreen);
 		this.camera.setZoom(2);
 
-		this.roundTimer = 0;
-		this.firstTime = true;
+		this.fireTile = this.physics.add.sprite(this.centerScreen.x - 192, this.centerScreen.y, "spellTiles");
+		this.airTile = this.physics.add.sprite(this.centerScreen.x - 64, this.centerScreen.y, "spellTiles", 1);
+		this.earthTile = this.physics.add.sprite(this.centerScreen.x + 64, this.centerScreen.y, "spellTiles", 2);
+		this.waterTile = this.physics.add.sprite(this.centerScreen.x + 192, this.centerScreen.y, "spellTiles", 3);
 
-		this.spellClicked;
+		this.fireTile.setInteractive().on('pointerdown', () => {
+			this.camera.setZoom(2.7);
+			this.camera.startFollow(this.topLeft);
+			this.spellClicked = true;
+			if (this.player.raisingEarth) {
+				this.roundTimer = 50;
+			}
+		});
+		this.airTile.setInteractive().on('pointerdown', () => {
+			this.camera.setZoom(2.7);
+			this.camera.startFollow(this.bottomRight);
+			this.spellClicked = true;
+			if (this.player.raisingEarth) {
+				this.roundTimer = 50;
+			}
+		});
+		this.earthTile.setInteractive().on('pointerdown', () => {
+			this.camera.setZoom(2.7);
+			this.camera.startFollow(this.bottomLeft);
+			this.spellClicked = true;
+			if (this.player.raisingEarth) {
+				this.roundTimer = 50;
+			}
+		});
+		this.waterTile.setInteractive().on('pointerdown', () => {
+			this.camera.setZoom(2.7);
+			this.camera.startFollow(this.topRight);
+			this.spellClicked = true;
+			if (this.player.raisingEarth) {
+				this.roundTimer = 50;
+			}
+		});
+
+		this.backButtonTL = this.physics.add.sprite(this.topLeft.x - 115, this.topLeft.y - 55, "cameraFrame").setScale(1.5, 0.5);
+		this.add.text(this.topLeft.x - 144, this.topLeft.y - 68, 'BACK', {color: '#fff', fontSize: 24});
+		this.backButtonTR = this.physics.add.sprite(this.topRight.x - 115, this.topRight.y - 55, "cameraFrame").setScale(1.5, 0.5);
+		this.add.text(this.topRight.x - 144, this.topRight.y - 68, 'BACK', {color: '#fff', fontSize: 24});
+		this.backButtonBL = this.physics.add.sprite(this.bottomLeft.x - 115, this.bottomLeft.y - 55, "cameraFrame").setScale(1.5, 0.5);
+		this.add.text(this.bottomLeft.x - 144, this.bottomLeft.y - 68, 'BACK', {color: '#fff', fontSize: 24});
+		this.backButtonBR = this.physics.add.sprite(this.bottomRight.x - 115, this.bottomRight.y - 55, "cameraFrame").setScale(1.5, 0.5);
+		this.add.text(this.bottomRight.x - 144, this.bottomRight.y - 68, 'BACK', {color: '#fff', fontSize: 24});
+
+		this.backButtonTL.setInteractive().on('pointerdown', () => {
+			this.camera.setZoom(2);
+			this.camera.startFollow(this.centerScreen);
+			this.spellClicked = false;
+		});
+		this.backButtonTR.setInteractive().on('pointerdown', () => {
+			this.camera.setZoom(2);
+			this.camera.startFollow(this.centerScreen);
+			this.spellClicked = false;
+		});
+		this.backButtonBL.setInteractive().on('pointerdown', () => {
+			this.camera.setZoom(2);
+			this.camera.startFollow(this.centerScreen);
+			this.spellClicked = false;
+		});
+		this.backButtonBR.setInteractive().on('pointerdown', () => {
+			this.camera.setZoom(2);
+			this.camera.startFollow(this.centerScreen);
+			this.spellClicked = false;
+		});
+
+		this.roundTimer = 0;
+		this.spellClicked = false;
 	}
 
 	update (time, delta) {
@@ -113,7 +173,7 @@ export default class SpellDisplay extends Phaser.Scene {
 		if (this.roundTimer == 100) {
 
 			// ---------- FIRE SPELL ---------- //
-			this.fire = this.physics.add.existing(new Spell(this, this.player1.x, this.player1.y, 'fire'));
+			this.fire = this.physics.add.existing(new Spell(this, this.player1.x + 30, this.player1.y, 'fire'));
 			this.fire.body.setSize(32, 10);
 			this.fire.play('fireBegin', true);
 			setTimeout(() => {
@@ -124,16 +184,17 @@ export default class SpellDisplay extends Phaser.Scene {
 			this.fire.body.setVelocityX(300);
 
 			// ---------- WATER SPELL ---------- //
-			this.water = this.physics.add.existing(new Spell(this, this.player2.x, this.player2.y, 'water'));
+			this.water = this.physics.add.existing(new Spell(this, this.player2.x + 30, this.player2.y, 'water'));
 			this.water.play('waterAni', true);
 			this.water.body.setVelocityX(300);
 
 			// ---------- AIR SPELL ---------- //
-			this.air = this.physics.add.existing(new Spell(this, this.player4.x, this.player4.y, 'air'));
+			this.air = this.physics.add.existing(new Spell(this, this.player4.x + 30, this.player4.y, 'air'));
 			this.air.play('airAni', true);
 			this.air.body.setVelocityX(300);
 
 			// ---------- EARTH SPELL ---------- //
+			this.canRaise = false;
 			this.earthBox = this.physics.add.existing(new Spell(this, this.player3.x, this.player3.body.bottom + 15));
 			this.earthBox.animation = this.physics.add.existing(new Spell(this, this.player3.x, this.player3.body.bottom, 'earth'));
 			this.earthBox.body.setSize(32, 1);
@@ -185,7 +246,9 @@ export default class SpellDisplay extends Phaser.Scene {
 				}
 			}
 		}
+
 		this.roundTimer++;
+
 
 	}
 
