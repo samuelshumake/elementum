@@ -34,7 +34,7 @@ export default class BootScene extends Phaser.Scene {
 
 		// Spell display button
 		let spellButton = this.physics.add.sprite(this.centerX - 190, this.centerY + 35).setScale(6.8, 2.2).setInteractive();
-		// spellButton.on('pointerdown', () => this.scene.start('SpellDisplay'));
+		spellButton.on('pointerdown', () => this.scene.start('SpellDisplay'));
 
 	}
 

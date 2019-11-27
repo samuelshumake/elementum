@@ -79,6 +79,12 @@ export default class SpellDisplay extends Phaser.Scene {
 		this.bottomLeft = this.physics.add.sprite(272, 720);
 		this.bottomRight = this.physics.add.sprite(720, 720);
 
+		this.menuButton = this.physics.add.sprite(this.centerScreen.x - 220, this.centerScreen.y - 120, "cameraFrame").setScale(1.5, 0.5);
+		this.add.text(this.centerScreen.x - 250, this.centerScreen.y - 133, 'BACK', {color: '#fff', fontSize: 24});
+		this.menuButton.setInteractive().on("pointerdown", () => {
+			this.scene.start("Boot");
+		});
+
 		this.player1 = new Player(this, 130, 205, 'player');
 		this.player1.spellActive = false;
 		this.player2 = new Player(this, 570, 205, 'player');

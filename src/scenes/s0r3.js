@@ -109,6 +109,8 @@ export default class s0r3 extends Phaser.Scene {
 			frameRate: 20,
 			repeat: 0
 		});
+		this.guiMana.depth = 2;
+		this.guiSpell.depth = 2;
 
 		/* ---------- CREATES BOX ---------- */
 		this.box = new Box(this, 400, 415, 'box').setScale(3);

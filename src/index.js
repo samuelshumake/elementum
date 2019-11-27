@@ -38,7 +38,7 @@ class Game extends Phaser.Game {
 		this.scene.add('s1r8', s1r8);
 		this.scene.add('s1r9', s1r9);
 		this.scene.add('s2r1', s2r1);
-		this.scene.start('SpellDisplay');
+		this.scene.start('s2r1');
 	}
 }
 

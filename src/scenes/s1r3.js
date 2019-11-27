@@ -111,6 +111,8 @@ export default class s1r3 extends Phaser.Scene {
 			frameRate: 20,
 			repeat: 0
 		});
+		this.guiMana.depth = 2;
+		this.guiSpell.depth = 2;
 
 		this.spikeGroup = [];
 		for (let i = 0; i <= 5; i++) {

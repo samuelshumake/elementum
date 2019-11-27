@@ -56,6 +56,18 @@ export default class s1r5 extends Phaser.Scene {
 			frameHeight: 6,
 			frameWidth: 32
 		});
+		this.load.spritesheet('gui','./assets/spriteSheets/gui.png',{
+			frameHeight: 32,
+			frameWidth: 32
+		});
+		this.load.spritesheet('guiMana', './assets/spriteSheets/guiMana.png', {
+			frameHeight: 32,
+			frameWidth: 32
+		});
+		this.load.spritesheet('guiSpell', './assets/spriteSheets/guiSpell.png', {
+			frameHeight: 10,
+			frameWidth: 40
+		});
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/tilemapv3.png');
@@ -91,25 +103,26 @@ export default class s1r5 extends Phaser.Scene {
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
-		// camera.setZoom(2);
-		// camera.startFollow(this.player);
-		// camera.setBounds(0, 0, 800, 640);
+		camera.setZoom(2);
+		camera.startFollow(this.player);
+		camera.setBounds(0, 0, 800, 640);
+
+		this.enemyGroup = [];
+
+		/* ---------- CREATES GUI ---------- */
+		this.guiMana = this.physics.add.sprite(this.cameras.main.width / 3.75, this.cameras.main.height / 3.5, 'guiMana').setFrame(22).setScrollFactor(0, 0);
+		this.guiSpell = this.physics.add.sprite(this.cameras.main.width / 3.75 + 33, this.cameras.main.height / 3.5, 'guiSpell').setScrollFactor(0, 0);
+		this.anims.create({
+			key: 'manaRegen',
+			frames: this.anims.generateFrameNumbers('guiMana', {start: 0, end: 21}),
+			frameRate: 20,
+			repeat: 0
+		});
+		this.guiMana.depth = 2;
+		this.guiSpell.depth = 2;
 
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(712, 325);
-
-		/* ---------- CREATES ROCKS ---------- */
-		// this.rock = new Rock(this, 4150, 485, 'rock');
-		// this.rock.setScale(1, 1);
-		// this.rock2 = new Rock(this, 6400, 593, 'rock');
-		// this.rock2.setScale(1, 0.50)
-		// this.rockGroup = [this.rock, this.rock2];
-
-		// /* ---------- CREATES ENEMIES ---------- */
-		// this.enemy1 = new Enemy(this, 550, 500, 'slimeAni');
-		// this.enemy2 = new Enemy(this, 475, 500, 'slimeAni');
-		// this.enemy3= new Enemy(this, 300, 500, 'slimeAni');
-		// this.enemyGroup = [this.enemy1, this.enemy2, this.enemy3];
 
 		/* ---------- CREATES SPIKES ------------ */
 		this.spikeGroup = [];
@@ -123,23 +136,13 @@ export default class s1r5 extends Phaser.Scene {
 		this.platform = new Platform(this, 704, 463, 'platform').setScale(1.33, 0.3);
 		this.platform.options = ['left', 130];
 
-		/* ---------- CREATES COLLIDERS --------- */
-		// this.physics.add.collider(this.enemyGroup, this.platform);
-		// this.physics.add.collider(this.enemyGroup, this.rockGroup);
-
 		/* ---------- CREATES BOXES -------------- */
 		this.box = new Box(this, 170, 200, 'box').setScale(1.75);
 		this.box.body.setImmovable(true);
 		this.boxGroup = [this.box];
 
-		/* ---------- CREATES PRESSURE PLATES -------- */
-		// this.plate = new PressurePlate(this, 60, 250, 'pressurePlate');
-		// this.plate.flipY = true
-
 		/* --------- CREATES LEVERS ----------- */
 		this.lever = new Lever(this, 170, 439, 'lever');
-		// this.lever.angle = 90;
-		// this.lever.flipX = true;
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
 		this.switchFire = this.input.keyboard.addKey('one');
@@ -167,28 +170,22 @@ export default class s1r5 extends Phaser.Scene {
 		/* ---------- MOVES PLAYER ---------- */
 		this.player.move(this);
 
-		/*----------- ENEMY MOVEMENT -------------- */
-		// for(var x in this.enemyGroup){
-		// 	this.enemyGroup[x].move(this, this.player);
-		// }
-
 		/* ----------- PLAYER KILLERS ----------- */
-		//this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
 		this.physics.overlap(this.player, this.spikeGroup, () => this.resetLevel = true);
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
 		if (this.player.spellActive['fire']) {
-			// this.player.fire.deactivate(this, this.enemyGroup);
-			// for (let x in this.enemyGroup) {
-			// 	this.physics.overlap(this.player.fire, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.fire, x));
-			// }
+			this.player.fire.deactivate(this, this.enemyGroup);
+			for (let x in this.enemyGroup) {
+				this.physics.overlap(this.player.fire, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.fire, x));
+			}
 		}
 		if (this.player.spellActive['water']) {
-			// this.player.water.deactivate(this, this.enemyGroup);
-			// for (let x in this.enemyGroup) {
-			// 	this.physics.overlap(this.player.water, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.water, x));
-			// }
+			this.player.water.deactivate(this, this.enemyGroup);
+			for (let x in this.enemyGroup) {
+				this.physics.overlap(this.player.water, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.water, x));
+			}
 			if (this.boxGroup) {
 				this.player.water.deactivate(this, this.boxGroup);
 				for (let x in this.boxGroup) {
@@ -199,10 +196,10 @@ export default class s1r5 extends Phaser.Scene {
 			}
 		}
 		if (this.player.spellActive['air']) {
-			// this.player.air.deactivate(this, this.enemyGroup);
-			// for (let x in this.enemyGroup) {
-			// 	this.physics.overlap(this.player.air, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.air, x));
-			// }
+			this.player.air.deactivate(this, this.enemyGroup);
+			for (let x in this.enemyGroup) {
+				this.physics.overlap(this.player.air, this.enemyGroup[x], () => this.enemyGroup[x].deactivate(this, this.player.air, x));
+			}
 			if (this.rockGroup) {
 				this.player.water.deactivate(this, this.RockGroup);
 				for (let x in this.rockGroup) {
@@ -239,6 +236,7 @@ export default class s1r5 extends Phaser.Scene {
 		// Casts spell if cooldown timer has been met
 		if (this.castSpell.isDown && this.player.spellTimer > 70 ) {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
+			this.guiMana.play('manaRegen', true);
 	 	}
 
 		if (this.player.raisingEarth) {
@@ -249,20 +247,6 @@ export default class s1r5 extends Phaser.Scene {
 			this.player.y -= 1;
 			this.player.earthBox.body.offset.set(0, -this.player.earthBox.body.height);
 		}
-
-		/* ---------- PRESSURE PLATE INTERACTIONS ------- */
-		// if (this.physics.overlap(this.enemyGroup, this.plate)) {
-		// 	this.plate.trip(this, [this.platform]);
-		// }
-		// if (this.physics.overlap(this.player, this.plate)) {
-		// 	this.plate.trip(this, [this.platform]);
-		// }
-		// if (!this.physics.overlap(this.player, this.plate)) {
-		// 	this.plate.untrip(this, [this.platform]);
-		// }
-		// if (this.physics.overlap(this.boxGroup, this.plate)) {
-		// 	this.plate.trip(this, [this.platform]);
-		// }
 
 		/* ----------- LEVER INTERACTIONS ------- */
 		if (this.interact.isDown) {

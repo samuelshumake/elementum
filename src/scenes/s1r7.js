@@ -115,6 +115,8 @@ export default class s1r7 extends Phaser.Scene {
 			frameRate: 20,
 			repeat: 0
 		});
+		this.guiMana.depth = 2;
+		this.guiSpell.depth = 2;
 
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(780, 350);

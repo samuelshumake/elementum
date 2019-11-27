@@ -109,6 +109,8 @@ export default class s0r5 extends Phaser.Scene {
 			frameRate: 20,
 			repeat: 0
 		});
+		this.guiMana.depth = 2;
+		this.guiSpell.depth = 2;
 
 		/* ---------- CREATE ROCK ------------- */
 		this.rock = new Rock(this, 300, 345, 'rock');
