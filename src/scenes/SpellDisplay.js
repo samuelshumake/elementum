@@ -98,13 +98,14 @@ export default class SpellDisplay extends Phaser.Scene {
 		this.box = new Box(this, 720, 205, 'box').setScale(1.5);
 		this.rock = new Rock(this, 720, 750, 'rock');
 
-		let camera = this.cameras.main;
-		camera.startFollow(this.centerScreen);
-		// camera.startFollow(this.player1);
-		camera.setZoom(2);
+		this.camera = this.cameras.main;
+		this.camera.startFollow(this.centerScreen);
+		this.camera.setZoom(2);
 
 		this.roundTimer = 0;
 		this.firstTime = true;
+
+		this.spellClicked;
 	}
 
 	update (time, delta) {
@@ -185,6 +186,7 @@ export default class SpellDisplay extends Phaser.Scene {
 			}
 		}
 		this.roundTimer++;
+
 	}
 
 }
