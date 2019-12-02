@@ -141,11 +141,11 @@ export default class s0r2 extends Phaser.Scene {
 			this.enemyGroup[x].move(this, this.player);
 		}
 
-		if (this.player.platform) {
-			console.log(this.player.platform);
-		}
-
+		/* ----------- PLAYER KILLERS ----------- */
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
+		if (this.box && this.box.body.touching.down && this.player.body.touching.up) {
+			this.resetLevel = true;
+		}
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
 		if (this.player.spellActive['fire']) {

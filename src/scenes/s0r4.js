@@ -133,6 +133,10 @@ export default class s0r4 extends Phaser.Scene {
 
 	update (time, delta) {
 
+		if (this.box && this.box.body.touching.down && this.player.body.touching.up) {
+			this.resetLevel = true;
+		}
+
 		/* ---------- RESETS LEVEL ---------- */
 		if (this.resetLevel) {
 			this.scene.start('s0r4')

@@ -174,6 +174,9 @@ export default class s1r5 extends Phaser.Scene {
 		/* ----------- PLAYER KILLERS ----------- */
 		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
+		if (this.box && this.box.body.touching.down && this.player.body.touching.up) {
+			this.resetLevel = true;
+		}
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
 		if (this.player.spellActive['fire']) {
