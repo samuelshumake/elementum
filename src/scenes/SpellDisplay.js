@@ -111,33 +111,21 @@ export default class SpellDisplay extends Phaser.Scene {
 			this.camera.setZoom(2.7);
 			this.camera.startFollow(this.topLeft);
 			this.spellClicked = true;
-			if (this.player.raisingEarth) {
-				this.roundTimer = 50;
-			}
 		});
 		this.airTile.setInteractive().on('pointerdown', () => {
 			this.camera.setZoom(2.7);
 			this.camera.startFollow(this.bottomRight);
 			this.spellClicked = true;
-			if (this.player.raisingEarth) {
-				this.roundTimer = 50;
-			}
 		});
 		this.earthTile.setInteractive().on('pointerdown', () => {
 			this.camera.setZoom(2.7);
 			this.camera.startFollow(this.bottomLeft);
 			this.spellClicked = true;
-			if (this.player.raisingEarth) {
-				this.roundTimer = 50;
-			}
 		});
 		this.waterTile.setInteractive().on('pointerdown', () => {
 			this.camera.setZoom(2.7);
 			this.camera.startFollow(this.topRight);
 			this.spellClicked = true;
-			if (this.player.raisingEarth) {
-				this.roundTimer = 50;
-			}
 		});
 
 		this.backButtonTL = this.physics.add.sprite(this.topLeft.x - 115, this.topLeft.y - 55, "cameraFrame").setScale(1.5, 0.5);

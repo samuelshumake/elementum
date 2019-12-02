@@ -119,8 +119,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
 						this.earthBox.animation.destroy();
 					} else {
 						this.spellActive['earth'] = true;
-						this.earthBox = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom + 15));
-						this.earthBox.body.setSize(32, 1);
+						this.earthBox = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom + 60));
+						this.earthBox.body.setSize(32, 119);
 						this.earthBox.raise(scene, this);
 					}
 				}

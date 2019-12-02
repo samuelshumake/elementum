@@ -250,12 +250,11 @@ export default class s1r1 extends Phaser.Scene {
 		}
 
 		if (this.player.raisingEarth) {
-			if (this.player.earthBox.body.height >= 117) {
+			this.player.earthBox.body.setVelocityY(-135);
+			if (!this.player.earthBox.animation.anims.isPlaying) {
 				this.player.raisingEarth = false;
+				this.player.earthBox.body.setVelocityY(0);
 			}
-			this.player.earthBox.body.height += 2.1;
-			this.player.body.setVelocityY(-160);
-			this.player.earthBox.body.offset.set(0, -this.player.earthBox.body.height);
 		}
 
 		if (this.interact.isDown) {
