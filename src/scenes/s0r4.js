@@ -27,12 +27,12 @@ export default class s0r4 extends Phaser.Scene {
 		this.load.spritesheet('lever', './assets/spriteSheets/lever.png',{
 			frameHeight: 6,
 			frameWidth: 9
-	    });
+		});
 		this.load.spritesheet('run', './assets/spriteSheets/runPlayer.png',{
 			frameHeight: 39,
 			frameWidth: 34
-	    });
-		this.load.spritesheet('slimeAni', './assets/spriteSheets/slimesprite.png',{
+		});
+		this.load.spritesheet('slimeAni', './assets/spriteSheets/slimesprite-sheet.png',{
 			frameHeight: 14,
 			frameWidth:	 21
 		});
@@ -133,10 +133,6 @@ export default class s0r4 extends Phaser.Scene {
 
 	update (time, delta) {
 
-		if (this.box && this.box.body.touching.down && this.player.body.touching.up) {
-			this.resetLevel = true;
-		}
-
 		/* ---------- RESETS LEVEL ---------- */
 		if (this.resetLevel) {
 			this.scene.start('s0r4')
@@ -158,6 +154,9 @@ export default class s0r4 extends Phaser.Scene {
 		/* ----------- PLAYER KILLERS ----------- */
 		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
+		if (this.box && this.box.body.touching.down && this.player.body.touching.up) {
+			this.resetLevel = true;
+		}
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
 		if (this.player.spellActive['fire']) {

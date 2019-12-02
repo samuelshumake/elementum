@@ -32,7 +32,7 @@ export default class s1r5 extends Phaser.Scene {
 			frameHeight: 39,
 			frameWidth: 34
 		});
-		this.load.spritesheet('slimeAni', './assets/spriteSheets/slimesprite.png',{
+		this.load.spritesheet('slimeAni', './assets/spriteSheets/slimesprite-sheet.png',{
 			frameHeight: 14,
 			frameWidth:	 21
 		});

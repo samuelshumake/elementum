@@ -17,6 +17,12 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 			frameRate: 15,
 			repeat: 0
 		});
+		scene.anims.create({
+			key: "die",
+			frames: scene.anims.generateFrameNumbers("slimeAni", {start:11, end:21}),
+			frameRate: 32,
+			repeat: 0
+		});
 
 		this.canMove = true;
 		this.moveTimer = Math.floor(Math.random() * 100);
@@ -54,7 +60,8 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 	deactivate(scene, spell, x) {
 		switch (spell.key) {
 			case 'fire':
-				this.destroy();
+				this.play("die", true);
+				setTimeout(() => this.destroy(), 400);
 				scene.enemyGroup.splice(x, 1);
 				break;
 			case 'water':
