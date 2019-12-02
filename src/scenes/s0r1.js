@@ -75,6 +75,9 @@ export default class s0r1 extends Phaser.Scene {
 		this.load.image('rock', './assets/sprites/rock.png');
 		this.load.image('box', './assets/sprites/box.png');
 		this.load.image('cameraFrame', './assets/sprites/cameraFrame.png');
+
+		/*-----------Audio----------------------*/
+		this.load.audio("backgroundMusic","assets/sound/background.mp3");
 	}	// ---------- END OF PRELOAD ---------- //
 
 	create (data) {
@@ -120,7 +123,13 @@ export default class s0r1 extends Phaser.Scene {
 		for (let i = 0; i <= 23; i++) {
 			this.spikeGroup.push(this.physics.add.sprite(16*i + 200, 635, 'spike').setScale(0.3))
 		}
-
+		/*---- ---------------MUSIC ------------------ */
+		this.music = this.sound.add("backgroundMusic");
+		var musicConfig = {
+			volume: .1,
+			loop:true
+		}
+		this.music.play(musicConfig);
 		/* ---------- KEYS FOR INTERACTING ---------- */
 		this.switchFire = this.input.keyboard.addKey('one');
 		this.switchAir = this.input.keyboard.addKey('two');
