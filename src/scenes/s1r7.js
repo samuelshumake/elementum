@@ -260,7 +260,7 @@ export default class s1r7 extends Phaser.Scene {
 				this.player.raisingEarth = false;
 			}
 			this.player.earthBox.body.height += 2.1;
-			this.player.y -= 1;
+			this.player.body.setVelocityY(-160);
 			this.player.earthBox.body.offset.set(0, -this.player.earthBox.body.height);
 		}
 
