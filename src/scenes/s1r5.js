@@ -91,14 +91,13 @@ export default class s1r5 extends Phaser.Scene {
 
 		/* ---------- CREATES MAP ---------- */
 		const map = this.make.tilemap({key: "s1r7"});
-		const tileset = map.addTilesetImage("tilemapv3", "tiles");
+		const tileset = map.addTilesetImage("tilemapv2", "tiles");
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
 		this.layer2 = map.createStaticLayer("Foreground", tileset, 0,0);
-		this.layer3 = map.createStaticLayer("Vines", tileset, 0,0);
 
 		/* ---------- CREATES PLAYER ---------- */
-		this.player = new Player(this, 550, 210, 'player');
+		this.player = new Player(this, 550, 320, 'player');
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
@@ -132,7 +131,7 @@ export default class s1r5 extends Phaser.Scene {
 		this.rockGroup = [this.rock];
 
 		// /* ---------- CREATES ENEMIES ---------- */
-		this.enemy1 = new Enemy(this, 600, 455, 'slimeAni');
+		this.enemy1 = new Enemy(this, 400, 550, 'slimeAni');
 		this.enemy2 = new Enemy(this, 60, 250, 'slimeAni');
 		this.enemyGroup = [this.enemy1, this.enemy2];
 

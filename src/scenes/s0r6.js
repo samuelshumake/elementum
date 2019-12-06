@@ -257,9 +257,9 @@ export default class s0r6 extends Phaser.Scene {
 		}
 
 		if (this.interact.isDown) {
+			this.lever2.flip(this, [this.platform2]);
 			try {
 				this.lever1.flip(this, [this.platform1]);
-				this.lever2.flip(this, [this.platform2]);
 			} catch {
 				this.platform1.move(this, this.platform1.options[0], this.platform1.options[1]);
 				let newCamera = this.cameras.add(this.cameras.main.width - 275, this.cameras.main.height - 575, 250, 150).startFollow(this.platform1.options[2]).setZoom(this.platform1.options[3]).fadeIn(700);
