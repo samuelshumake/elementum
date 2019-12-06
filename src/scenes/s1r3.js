@@ -100,7 +100,7 @@ export default class s1r3 extends Phaser.Scene {
 		camera.setZoom(2);
 		camera.startFollow(this.player, true, 0.1);
 		camera.setFollowOffset(0, 50);
-		camera.setBounds(0, 0, 800, 690);
+		camera.setBounds(0, 0, 800, 640);
 
 		/* ---------- CREATES GUI ---------- */
 		this.guiMana = this.physics.add.sprite(this.cameras.main.width / 3.75, this.cameras.main.height / 3.5, 'guiMana').setFrame(22).setScrollFactor(0, 0);
