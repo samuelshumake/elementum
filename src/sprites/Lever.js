@@ -5,7 +5,6 @@ export default class Lever extends Phaser.GameObjects.Sprite {
 		scene.sys.updateList.add(this);
 		scene.sys.displayList.add(this);
 
-
 		/* ------ PROPERTIES ------- */
 		scene.physics.world.enableBody(this, 0);
 		this.body.immovable = true;

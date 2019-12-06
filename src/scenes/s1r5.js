@@ -56,6 +56,10 @@ export default class s1r5 extends Phaser.Scene {
 			frameHeight: 6,
 			frameWidth: 32
 		});
+		this.load.spritesheet('gui','./assets/spriteSheets/gui.png',{
+			frameHeight: 32,
+			frameWidth: 32
+		});
 		this.load.spritesheet('guiMana', './assets/spriteSheets/guiMana.png', {
 			frameHeight: 32,
 			frameWidth: 32
@@ -67,7 +71,7 @@ export default class s1r5 extends Phaser.Scene {
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/tilemapv3.png');
-		this.load.tilemapTiledJSON('s1r5', './assets/map/s1r5.json')
+		this.load.tilemapTiledJSON('s1r7', './assets/map/s1r7.json')
 
 		/* ---------- LOADS SPRITES FOR GAME OBJECTS ---------- */
 		this.load.image('platform', './assets/sprites/platform.png');
@@ -81,26 +85,25 @@ export default class s1r5 extends Phaser.Scene {
 		ChangeScene.addSceneEventListeners(this);
 
 		/* ---------- GLOBAL VARIABLES --------- */
-		this.resetLevel = false
-		this.gameWidth = this.cameras.main.width
-		this.gameHeight = this.cameras.main.height
-
-		/* --------- CREATES BACKGROUND --------- */
-		this.add.image(350, 325,'background').setScale(1.1);
+		this.resetLevel = false;
+		this.gameWidth = this.cameras.main.width;
+		this.gameHeight = this.cameras.main.height;
 
 		/* ---------- CREATES MAP ---------- */
-		const map = this.make.tilemap({key: "s1r5"});
-		const tileset = map.addTilesetImage("tilemapv2", "tiles");
+		const map = this.make.tilemap({key: "s1r7"});
+		const tileset = map.addTilesetImage("tilemapv3", "tiles");
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
+		this.layer2 = map.createStaticLayer("Foreground", tileset, 0,0);
+		this.layer3 = map.createStaticLayer("Vines", tileset, 0,0);
 
 		/* ---------- CREATES PLAYER ---------- */
-		this.player = new Player(this, 150, 600, 'player');
+		this.player = new Player(this, 550, 210, 'player');
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
 		camera.setZoom(2);
-		camera.startFollow(this.player);
+		camera.startFollow(this.player, true, 0.1);
 		camera.setBounds(0, 0, 800, 640);
 
 		/* ---------- CREATES GUI ---------- */
@@ -116,30 +119,40 @@ export default class s1r5 extends Phaser.Scene {
 		this.guiSpell.depth = 2;
 
 		/* ---------- CREATES DOOR ---------- */
-		this.door = this.physics.add.sprite(80, 575);
+		this.door = this.physics.add.sprite(780, 350);
+
+		/* ------ CREATE SPIKES ---------------- */
+		this.spikeGroup = [];
+		for (let i = 0; i <= 7; i++) {
+			this.spikeGroup.push(this.physics.add.sprite(16*i + 2010, 603, 'spike').setScale(0.3))
+		}
 
 		/* ---------- CREATES BOX ---------- */
-		this.rock = new Rock(this, 4150, 485, 'rock');
-		this.rock.setScale(1, 1);
-		this.rock2 = new Rock(this, 6400, 593, 'rock');
-		this.rock2.setScale(1, 0.50)
-		this.rockGroup = [this.rock, this.rock2];
+		this.rock = new Rock(this, 350, 300, 'rock');
+		this.rockGroup = [this.rock];
 
 		// /* ---------- CREATES ENEMIES ---------- */
-		this.enemy1 = new Enemy(this, 550, 500, 'slimeAni');
-		this.enemy2 = new Enemy(this, 475, 500, 'slimeAni');
-		this.enemy3= new Enemy(this, 300, 500, 'slimeAni');
-		this.enemyGroup = [this.enemy1, this.enemy2, this.enemy3];
+		this.enemy1 = new Enemy(this, 600, 455, 'slimeAni');
+		this.enemy2 = new Enemy(this, 60, 250, 'slimeAni');
+		this.enemyGroup = [this.enemy1, this.enemy2];
 
 		/* ---------- CREATES PLATFORMS ---------- */
-		this.platform = new Platform(this, 112, 527, 'platform').setScale(0.3, 1.65);
-		this.platform.options = ['up', 500];
+		this.platform1 = new Platform(this, 688, 336, 'platform').setScale(.33, 1);
+		this.platform1.options = ['up', 64, this.platform1, 0.8, 3000];
+		this.platform2 = new Platform(this, 752, 336, 'platform').setScale(.33, 1);
+		this.platform2.options = ['down', 64, this.platform2, 1, 2000];
+		this.platform2.flipX = true;
 
-		this.physics.add.collider(this.enemyGroup, this.platform);
-		this.physics.add.collider(this.enemyGroup, this.rockGroup);
+		this.physics.add.collider(this.enemyGroup, this.platform1);
+		this.physics.add.collider(this.enemyGroup, this.platform2);
+		this.physics.add.collider(this.enemyGroup, this.rock);
 
-		this.plate = new PressurePlate(this, 300, 453, 'pressurePlate');
-		this.plate.flipY = true;
+		this.lever1 = new Lever(this, 48, 5980, 'lever');
+		this.lever2 = new Lever(this, 42, 2200, 'lever');
+		this.lever2.angle = 90;
+
+		this.plate1 = new PressurePlate(this, 300, 572, 'pressurePlate');
+		this.plate2 = new PressurePlate(this, 250, 347, 'pressurePlate');
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
 		this.switchFire = this.input.keyboard.addKey('one');
@@ -160,7 +173,7 @@ export default class s1r5 extends Phaser.Scene {
 
 		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {
-			this.scene.start('s1r7')
+			this.scene.start('Boot');
 		}
 
 		/* ---------- MOVES PLAYER ---------- */
@@ -173,6 +186,7 @@ export default class s1r5 extends Phaser.Scene {
 
 		/* ----------- PLAYER KILLERS ----------- */
 		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
+		this.physics.overlap(this.player, Object.values(this.spikeGroup), () => this.resetLevel = true);
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
 		if (this.box && this.box.body.touching.down && this.player.body.touching.up) {
 			this.resetLevel = true;
@@ -252,8 +266,15 @@ export default class s1r5 extends Phaser.Scene {
 			}
 		}
 
-		if (this.physics.overlap(this.enemyGroup, this.plate)) {
-			this.plate.trip(this, [this.platform]);
+		if (this.interact.isDown) {
+			this.lever1.flip(this, [this.platform1]);
+			this.lever2.flip(this, [this.platform2]);
+		}
+		if (this.physics.overlap(this.enemyGroup, this.plate1)) {
+			this.plate1.trip(this, [this.platform1]);
+		}
+		if (this.physics.overlap(this.rockGroup, this.plate2)) {
+			this.plate2.trip(this, [this.platform2]);
 		}
 	}	// ----- END OF UPDATE ----- //
 

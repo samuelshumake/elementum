@@ -1,4 +1,4 @@
-//*global Phaser*/
+/*global Phaser*/
 import * as ChangeScene from './ChangeScene.js';
 import Player from '../sprites/Player.js';
 import Enemy from '../sprites/Enemy.js';
@@ -67,7 +67,7 @@ export default class s1r2 extends Phaser.Scene {
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/tilemapv3.png');
-		this.load.tilemapTiledJSON('s1r2', './assets/map/s1r2.json')
+		this.load.tilemapTiledJSON('s1r3', './assets/map/s1r3.json')
 
 		/* ---------- LOADS SPRITES FOR GAME OBJECTS ---------- */
 		this.load.image('platform', './assets/sprites/platform.png');
@@ -81,26 +81,25 @@ export default class s1r2 extends Phaser.Scene {
 		ChangeScene.addSceneEventListeners(this);
 
 		/* ---------- GLOBAL VARIABLES --------- */
-		this.resetLevel = false
-		this.gameWidth = this.cameras.main.width
-		this.gameHeight = this.cameras.main.height
-
-		/* --------- CREATES BACKGROUND --------- */
-		this.add.image(350, 325,'background').setScale(1.1);
+		this.resetLevel = false;
+		this.gameWidth = this.cameras.main.width;
+		this.gameHeight = this.cameras.main.height;
 
 		/* ---------- CREATES MAP ---------- */
-		const map = this.make.tilemap({key: "s1r2"});
+		const map = this.make.tilemap({key: "s1r3"});
 		const tileset = map.addTilesetImage("tilemapv2", "tiles");
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
+		this.layer2 = map.createStaticLayer("Foreground", tileset, 0,0);
 
 		/* ---------- CREATES PLAYER ---------- */
-		this.player = new Player(this, 50, 492, 'player');
+		this.player = new Player(this, 300, 530, 'player');
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
 		camera.setZoom(2);
-		camera.startFollow(this.player);
+		camera.startFollow(this.player, true, 0.1);
+		camera.setFollowOffset(0, 50);
 		camera.setBounds(0, 0, 800, 640);
 
 		/* ---------- CREATES GUI ---------- */
@@ -115,41 +114,38 @@ export default class s1r2 extends Phaser.Scene {
 		this.guiMana.depth = 2;
 		this.guiSpell.depth = 2;
 
-		/* ---------- CREATES DOOR ---------- */
-		this.door = this.physics.add.sprite(754, 128, 'door');
-
-		/* ------ CREATE SPIKES ---------------- */
 		this.spikeGroup = [];
 		for (let i = 0; i <= 5; i++) {
-			this.spikeGroup.push(this.physics.add.sprite(16*i + 680, 603, 'spike').setScale(0.3))
+			var spike = this.physics.add.sprite(16*i + 585, 635, 'spike').setScale(0.3);
+			spike.body.immovable = true;
+			this.spikeGroup.push(spike);
 		}
 
+		/* ---------- CREATES DOOR ---------- */
+		this.door = this.physics.add.sprite(754, 352);
+
 		/* ---------- CREATES BOX ---------- */
-		this.rock = new Rock(this, 120, 485, 'rock');
-		this.rock.setScale(1, 1);
-		this.rockGroup = [this.rock];
+		this.box = new Box(this, 80, 515, 'box');
+		this.physics.add.collider(this.box, this.spikeGroup);
+		this.boxGroup = [this.box];
 
 		// /* ---------- CREATES ENEMIES ---------- */
-		this.enemy1 = new Enemy(this, 150, 100, 'slimeAni');
-		this.enemyGroup = [this.enemy1];
+		this.enemy1 = new Enemy(this, 500, 400, 'slimeAni');
+		this.enemy2 = new Enemy(this, 200, 400, 'slimeAni');
+		this.enemyGroup = [this.enemy1, this.enemy2];
 
 		/* ---------- CREATES PLATFORMS ---------- */
-		this.platform1 = new Platform(this, 574, 271, 'platform').setScale(0.65, 0.5);
-		this.platform1.options = ['up', 95, this.platform1, 1, 0];
-		this.platform2 = new Platform(this, 640, 528, 'platform').setScale(1);
-		this.platform2.options = ['up', 95, this.platform2, 1, 0];
-		this.platform3 = new Platform(this, 500, 144, 'platform').setScale(1);
-		this.platform3.options = ['right', 95, this.platform3, 1, 1300];
+		this.platform1 = new Platform(this, 80, 560, 'platform').setScale(1, 0.3);
+		this.platform1.options = ['up', 383, this.box, 1, 4500];
+		this.physics.add.collider(this.platform1, this.box);
+		this.platform2 = new Platform(this, 15, 112, 'platform').setScale(0.35, 0.96);
+		this.platform2.options = ['right', 540, this.box, 1, 5700];
+		this.physics.add.collider(this.platform2, this.box);
+		this.platform3 = new Platform(this, 400, 497, 'platform').setScale(0.3, 1);
+		this.platform3.options = ['down', 95, this.box, 1, 0];
 
-		this.physics.add.collider(this.enemyGroup, this.platform2);
-		this.physics.add.collider(this.enemyGroup, this.rock);
-
-		this.lever1 = new Lever(this, 50, 150, 'lever');
-		this.lever2 = new Lever(this, 788, 560, 'lever');
-		this.lever2.flipY = true;
-		this.lever2.angle = 90;
-
-		this.plate = new PressurePlate(this, 255, 507, 'pressurePlate');
+		this.lever1 = new Lever(this, 350, 535, 'lever');
+		this.lever2 = new Lever(this, 353, 279, 'lever');
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
 		this.switchFire = this.input.keyboard.addKey('one');
@@ -164,6 +160,11 @@ export default class s1r2 extends Phaser.Scene {
 
 	update (time, delta) {
 
+		if (this.box.y > 630) {
+			this.box.body.setVelocity(0);
+			this.box.body.setGravity(0);
+		}
+
 		/* ---------- RESETS LEVEL ---------- */
 		if (this.resetLevel) {
 			this.scene.start('s1r2')
@@ -171,7 +172,7 @@ export default class s1r2 extends Phaser.Scene {
 
 		/* ---------- STARTS NEXT LEVEL ---------- */
 		if (this.nextLevel) {
-			this.scene.start('s1r3');
+			this.scene.start('s1r3')
 		}
 
 		/* ---------- MOVES PLAYER ---------- */
@@ -266,13 +267,7 @@ export default class s1r2 extends Phaser.Scene {
 
 		if (this.interact.isDown) {
 			this.lever1.flip(this, [this.platform1]);
-			this.lever2.flip(this, [this.platform2]);
-		}
-
-		if (this.physics.overlap(this.rock, this.plate)) {
-			this.plate.trip(this, [this.platform3]);
-		} else if (this.plate.tripped) {
-			this.plate.untrip(this, [this.platform3]);
+			this.lever2.flip(this, [this.platform2, this.platform3]);
 		}
 	}	// ----- END OF UPDATE ----- //
 
