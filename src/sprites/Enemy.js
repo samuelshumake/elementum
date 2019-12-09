@@ -6,6 +6,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
 		scene.physics.world.enableBody(this, 0);
 		scene.physics.add.collider(this, scene.layer);
+		this.body.setSize(10, 14);
 		this.body.setGravity(0, 600);
 		this.setScale(2);
 
@@ -15,6 +16,12 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 			key: "jump",
 			frames: scene.anims.generateFrameNumbers("slimeAni", {start:0, end:10}),
 			frameRate: 15,
+			repeat: 0
+		});
+		scene.anims.create({
+			key: "die",
+			frames: scene.anims.generateFrameNumbers("slimeAni", {start:11, end:21}),
+			frameRate: 32,
 			repeat: 0
 		});
 
@@ -54,7 +61,8 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 	deactivate(scene, spell, x) {
 		switch (spell.key) {
 			case 'fire':
-				this.destroy();
+				this.play("die", true);
+				setTimeout(() => this.destroy(), 400);
 				scene.enemyGroup.splice(x, 1);
 				break;
 			case 'water':

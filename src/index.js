@@ -12,10 +12,7 @@ import s1r2 from './scenes/s1r2.js';
 import s1r3 from './scenes/s1r3.js';
 import s1r4 from './scenes/s1r4.js';
 import s1r5 from './scenes/s1r5.js';
-import s1r7 from './scenes/s1r7.js';
-import s1r8 from './scenes/s1r8.js';
-import s1r9 from './scenes/s1r9.js';
-import s2r1 from './scenes/s2r1.js';
+import EndScreen from './scenes/EndScreen.js';
 import Config from './config/config.js';
 
 class Game extends Phaser.Game {
@@ -34,10 +31,7 @@ class Game extends Phaser.Game {
 		this.scene.add('s1r3', s1r3);
 		this.scene.add('s1r4', s1r4);
 		this.scene.add('s1r5', s1r5);
-		this.scene.add('s1r7', s1r7);
-		this.scene.add('s1r8', s1r8);
-		this.scene.add('s1r9', s1r9);
-		this.scene.add('s2r1', s2r1);
+		this.scene.add('EndScreen', EndScreen);
 		this.scene.start('Boot');
 	}
 }

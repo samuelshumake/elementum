@@ -32,7 +32,7 @@ export default class s0r6 extends Phaser.Scene {
 			frameHeight: 39,
 			frameWidth: 34
 		});
-		this.load.spritesheet('slimeAni', './assets/spriteSheets/slimesprite.png',{
+		this.load.spritesheet('slimeAni', './assets/spriteSheets/slimesprite-sheet.png',{
 			frameHeight: 14,
 			frameWidth:	 21
 		});
@@ -74,7 +74,6 @@ export default class s0r6 extends Phaser.Scene {
 		this.load.image('spike', './assets/sprites/spike.png');
 		this.load.image('rock', './assets/sprites/rock.png');
 		this.load.image('box', './assets/sprites/box.png');
-		this.load.image('cameraFrame', './assets/sprites/cameraFrame.png');
 	}	// ---------- END OF PRELOAD ---------- //
 
 	create (data) {
@@ -90,6 +89,11 @@ export default class s0r6 extends Phaser.Scene {
 		const tileset = map.addTilesetImage("tilemapv2", "tiles");
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
+
+		this.add.text(175, 500, "Press E to pull levers.", {fontSize: 12});
+		this.add.text(165, 360, "R will restart the level.", {fontSize: 12});
+		this.add.text(460, 170, "Congratulations! You're on", {fontSize: 12});
+		this.add.text(460, 190, "your own now.", {fontSize: 12});
 
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 60, 600, 'player');
@@ -109,6 +113,8 @@ export default class s0r6 extends Phaser.Scene {
 			frameRate: 20,
 			repeat: 0
 		});
+		this.guiMana.depth = 2;
+		this.guiSpell.depth = 2;
 
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(754, 192);
@@ -177,6 +183,9 @@ export default class s0r6 extends Phaser.Scene {
 		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
 		this.physics.overlap(this.player, Object.values(this.spikeGroup), () => this.resetLevel = true);
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
+		if (this.box && this.box.body.touching.down && this.player.body.touching.up) {
+			this.resetLevel = true;
+		}
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
 		if (this.player.spellActive['fire']) {
@@ -241,20 +250,25 @@ export default class s0r6 extends Phaser.Scene {
 		if (this.castSpell.isDown && this.player.spellTimer > 70 ) {
 			this.player.cast(this, this.player.currentSpell, this.player.flipX);
 			this.guiMana.play('manaRegen', true);
-	 	}
+		}
 
 		if (this.player.raisingEarth) {
-			if (this.player.earthBox.body.height >= 117) {
+			this.player.earthBox.body.setVelocityY(-135);
+			if (!this.player.earthBox.animation.anims.isPlaying) {
 				this.player.raisingEarth = false;
+				this.player.earthBox.body.setVelocityY(0);
 			}
-			this.player.earthBox.body.height += 2.1;
-			this.player.y -= 1;
-			this.player.earthBox.body.offset.set(0, -this.player.earthBox.body.height);
 		}
 
 		if (this.interact.isDown) {
-			this.lever1.flip(this, [this.platform1]);
 			this.lever2.flip(this, [this.platform2]);
+			try {
+				this.lever1.flip(this, [this.platform1]);
+			} catch {
+				this.platform1.move(this, this.platform1.options[0], this.platform1.options[1]);
+				let newCamera = this.cameras.add(this.cameras.main.width - 275, this.cameras.main.height - 575, 250, 150).startFollow(this.platform1.options[2]).setZoom(this.platform1.options[3]).fadeIn(700);
+				setTimeout(() => {this.cameras.remove(newCamera)}, this.platform1.options[4]);
+			}
 		}
 	}	// ----- END OF UPDATE ----- //
 

@@ -32,7 +32,7 @@ export default class s0r1 extends Phaser.Scene {
 			frameHeight: 39,
 			frameWidth: 34
 	    });
-		this.load.spritesheet('slimeAni', './assets/spriteSheets/slimesprite.png',{
+		this.load.spritesheet('slimeAni', './assets/spriteSheets/slimesprite-sheet.png',{
 			frameHeight: 14,
 			frameWidth:	 21
 		});
@@ -74,7 +74,10 @@ export default class s0r1 extends Phaser.Scene {
 		this.load.image('spike', './assets/sprites/spike.png');
 		this.load.image('rock', './assets/sprites/rock.png');
 		this.load.image('box', './assets/sprites/box.png');
-		this.load.image('cameraFrame', './assets/sprites/cameraFrame.png');
+
+		/*-----------Audio----------------------*/
+		this.load.audio("backgroundMusic","assets/sound/background.mp3");
+
 	}	// ---------- END OF PRELOAD ---------- //
 
 	create (data) {
@@ -90,6 +93,9 @@ export default class s0r1 extends Phaser.Scene {
 		const tileset = map.addTilesetImage('tilemapv2', 'tiles');
 		this.layer = map.createStaticLayer('Tile Layer 1', tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
+
+		this.add.text(50, 350, "Try using the left and right arrow keys", {fontSize: 12});
+		this.add.text(50, 380, "to move and the up arrow key to jump.", {fontSize: 12});
 
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 50, 460, 'player');
@@ -109,6 +115,8 @@ export default class s0r1 extends Phaser.Scene {
 			frameRate: 20,
 			repeat: 0
 		});
+		this.guiMana.depth = 2;
+		this.guiSpell.depth = 2;
 
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(432, 130);
@@ -118,6 +126,14 @@ export default class s0r1 extends Phaser.Scene {
 		for (let i = 0; i <= 23; i++) {
 			this.spikeGroup.push(this.physics.add.sprite(16*i + 200, 635, 'spike').setScale(0.3))
 		}
+
+		/*---- ---------------MUSIC ------------------ */
+		this.music = this.sound.add("backgroundMusic");
+		var musicConfig = {
+			volume: .1,
+			loop:true
+		}
+		this.music.play(musicConfig);
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
 		this.switchFire = this.input.keyboard.addKey('one');
@@ -147,6 +163,9 @@ export default class s0r1 extends Phaser.Scene {
 		/* ----------- PLAYER KILLERS ----------- */
 		this.physics.overlap(this.player, Object.values(this.spikeGroup), () => this.resetLevel = true);
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
+		if (this.box && this.box.body.touching.down && this.player.body.touching.up) {
+			this.resetLevel = true;
+		}
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
 		if (this.player.spellActive['fire']) {
@@ -215,12 +234,11 @@ export default class s0r1 extends Phaser.Scene {
 	 	}
 
 		if (this.player.raisingEarth) {
-			if (this.player.earthBox.body.height >= 117) {
+			this.player.earthBox.body.setVelocityY(-135);
+			if (!this.player.earthBox.animation.anims.isPlaying) {
 				this.player.raisingEarth = false;
+				this.player.earthBox.body.setVelocityY(0);
 			}
-			this.player.earthBox.body.height += 2.1;
-			this.player.y -= 1;
-			this.player.earthBox.body.offset.set(0, -this.player.earthBox.body.height);
 		}
 	}	// ----- END OF UPDATE ----- //
 

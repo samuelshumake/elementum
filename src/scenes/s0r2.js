@@ -32,7 +32,7 @@ export default class s0r2 extends Phaser.Scene {
 			frameHeight: 39,
 			frameWidth: 34
 	    });
-		this.load.spritesheet('slimeAni', './assets/spriteSheets/slimesprite.png',{
+		this.load.spritesheet('slimeAni', './assets/spriteSheets/slimesprite-sheet.png',{
 			frameHeight: 14,
 			frameWidth:	 21
 		});
@@ -70,7 +70,6 @@ export default class s0r2 extends Phaser.Scene {
 		this.load.image('spike', './assets/sprites/spike.png');
 		this.load.image('rock', './assets/sprites/rock.png');
 		this.load.image('box', './assets/sprites/box.png');
-		this.load.image('cameraFrame', './assets/sprites/cameraFrame.png');
 	}	// ---------- END OF PRELOAD ---------- //
 
 	create (data) {
@@ -86,6 +85,9 @@ export default class s0r2 extends Phaser.Scene {
 		const tileset = map.addTilesetImage('tilemapv2', 'tiles');
 		this.layer = map.createStaticLayer('Tile Layer 1', tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
+
+		this.add.text(150, 400, "Switch to your earth spell by pressing 3", {fontSize: 12});
+		this.add.text(150, 420, "and cast it by pressing space.", {fontSize: 12});
 
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 50, 520, 'player');
@@ -105,6 +107,8 @@ export default class s0r2 extends Phaser.Scene {
 			frameRate: 20,
 			repeat: 0
 		});
+		this.guiMana.depth = 2;
+		this.guiSpell.depth = 2;
 
 		/* ---------- CREATES DOOR ---------- */
 		this.door = this.physics.add.sprite(755, 350);
@@ -139,11 +143,11 @@ export default class s0r2 extends Phaser.Scene {
 			this.enemyGroup[x].move(this, this.player);
 		}
 
-		if (this.player.platform) {
-			console.log(this.player.platform);
-		}
-
+		/* ----------- PLAYER KILLERS ----------- */
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
+		if (this.box && this.box.body.touching.down && this.player.body.touching.up) {
+			this.resetLevel = true;
+		}
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
 		if (this.player.spellActive['fire']) {
@@ -212,12 +216,11 @@ export default class s0r2 extends Phaser.Scene {
 	 	}
 
 		if (this.player.raisingEarth) {
-			if (this.player.earthBox.body.height >= 117) {
+			this.player.earthBox.body.setVelocityY(-135);
+			if (!this.player.earthBox.animation.anims.isPlaying) {
 				this.player.raisingEarth = false;
+				this.player.earthBox.body.setVelocityY(0);
 			}
-			this.player.earthBox.body.height += 2.1;
-			this.player.y -= 1;
-			this.player.earthBox.body.offset.set(0, -this.player.earthBox.body.height);
 		}
 	}	// ----- END OF UPDATE ----- //
 

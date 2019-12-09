@@ -32,7 +32,7 @@ export default class s1r3 extends Phaser.Scene {
 			frameHeight: 39,
 			frameWidth: 34
 		});
-		this.load.spritesheet('slimeAni', './assets/spriteSheets/slimesprite.png',{
+		this.load.spritesheet('slimeAni', './assets/spriteSheets/slimesprite-sheet.png',{
 			frameHeight: 14,
 			frameWidth:	 21
 		});
@@ -66,7 +66,7 @@ export default class s1r3 extends Phaser.Scene {
 		});
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
-		this.load.image('tiles', './assets/images/tilemapv3.png');
+		this.load.image('tiles', './assets/images/tilemapv2.png');
 		this.load.tilemapTiledJSON('s1r3', './assets/map/s1r3.json')
 
 		/* ---------- LOADS SPRITES FOR GAME OBJECTS ---------- */
@@ -74,33 +74,33 @@ export default class s1r3 extends Phaser.Scene {
 		this.load.image('spike', './assets/sprites/spike.png');
 		this.load.image('rock', './assets/sprites/rock.png');
 		this.load.image('box', './assets/sprites/box.png');
-		this.load.image('cameraFrame', './assets/sprites/cameraFrame.png');
 	}	// ---------- END OF PRELOAD ---------- //
 
 	create (data) {
 		ChangeScene.addSceneEventListeners(this);
 
 		/* ---------- GLOBAL VARIABLES --------- */
-		this.resetLevel = false;
-		this.gameWidth = this.cameras.main.width;
-		this.gameHeight = this.cameras.main.height;
+		this.resetLevel = false
+		this.gameWidth = this.cameras.main.width
+		this.gameHeight = this.cameras.main.height
+
+		/* --------- CREATES BACKGROUND --------- */
+		this.add.image(350, 325,'background').setScale(1.1);
 
 		/* ---------- CREATES MAP ---------- */
 		const map = this.make.tilemap({key: "s1r3"});
 		const tileset = map.addTilesetImage("tilemapv2", "tiles");
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
-		this.layer2 = map.createStaticLayer("Foreground", tileset, 0,0);
 
 		/* ---------- CREATES PLAYER ---------- */
-		this.player = new Player(this, 300, 530, 'player');
+		this.player = new Player(this, 50, 492, 'player');
 
 		/* ---------- ADJUSTS CAMERA ---------- */
 		let camera = this.cameras.main;
 		camera.setZoom(2);
-		camera.startFollow(this.player, true, 0.1);
-		camera.setFollowOffset(0, 50);
-		camera.setBounds(0, 0, 800, 690);
+		camera.startFollow(this.player);
+		camera.setBounds(0, 0, 800, 640);
 
 		/* ---------- CREATES GUI ---------- */
 		this.guiMana = this.physics.add.sprite(this.cameras.main.width / 3.75, this.cameras.main.height / 3.5, 'guiMana').setFrame(22).setScrollFactor(0, 0);
@@ -111,39 +111,26 @@ export default class s1r3 extends Phaser.Scene {
 			frameRate: 20,
 			repeat: 0
 		});
-
-		this.spikeGroup = [];
-		for (let i = 0; i <= 5; i++) {
-			var spike = this.physics.add.sprite(16*i + 585, 635, 'spike').setScale(0.3);
-			spike.body.immovable = true;
-			this.spikeGroup.push(spike);
-		}
+		this.guiMana.depth = 2;
+		this.guiSpell.depth = 2;
 
 		/* ---------- CREATES DOOR ---------- */
-		this.door = this.physics.add.sprite(754, 352);
+		this.door = this.physics.add.sprite(720, 416);
 
 		/* ---------- CREATES BOX ---------- */
-		this.box = new Box(this, 80, 515, 'box');
-		this.physics.add.collider(this.box, this.spikeGroup);
-		this.boxGroup = [this.box];
-
-		// /* ---------- CREATES ENEMIES ---------- */
-		this.enemy1 = new Enemy(this, 500, 400, 'slimeAni');
-		this.enemy2 = new Enemy(this, 200, 400, 'slimeAni');
-		this.enemyGroup = [this.enemy1, this.enemy2];
+		this.rock = new Rock(this, 150, 485, 'rock');
+		this.rock.setScale(1, 1);
+		this.rock2 = new Rock(this, 6400, 593, 'rock');
+		this.rock2.setScale(1, 0.50)
+		this.rockGroup = [this.rock, this.rock2];
 
 		/* ---------- CREATES PLATFORMS ---------- */
-		this.platform1 = new Platform(this, 80, 560, 'platform').setScale(1, 0.3);
-		this.platform1.options = ['up', 383, this.box, 1, 4500];
-		this.physics.add.collider(this.platform1, this.box);
-		this.platform2 = new Platform(this, 15, 112, 'platform').setScale(0.35, 0.96);
-		this.platform2.options = ['right', 540, this.box, 1, 5700];
-		this.physics.add.collider(this.platform2, this.box);
-		this.platform3 = new Platform(this, 400, 497, 'platform').setScale(0.3, 1);
-		this.platform3.options = ['down', 95, this.box, 1, 0];
+		this.platform1 = new Platform(this, 304, 560, 'platform').setScale(0.3, 0.98);
+		this.platform1.options = ['up', 100];
+		this.platform2 = new Platform(this, 400, 464, 'platform').setScale(0.3, 1);
+		this.platform2.options = ['down', 100];
 
-		this.lever1 = new Lever(this, 350, 535, 'lever');
-		this.lever2 = new Lever(this, 353, 279, 'lever');
+		this.plate = new PressurePlate(this, 150, 603, 'pressurePlate');
 
 		/* ---------- KEYS FOR INTERACTING ---------- */
 		this.switchFire = this.input.keyboard.addKey('one');
@@ -153,15 +140,9 @@ export default class s1r3 extends Phaser.Scene {
 		this.interact = this.input.keyboard.addKey('e');
 		this.reset = this.input.keyboard.addKey('r');
 		this.castSpell = this.input.keyboard.addKey('space');
-
 	}	// ---------- END OF CREATE ---------- //
 
 	update (time, delta) {
-
-		if (this.box.y > 630) {
-			this.box.body.setVelocity(0);
-			this.box.body.setGravity(0);
-		}
 
 		/* ---------- RESETS LEVEL ---------- */
 		if (this.resetLevel) {
@@ -176,15 +157,11 @@ export default class s1r3 extends Phaser.Scene {
 		/* ---------- MOVES PLAYER ---------- */
 		this.player.move(this);
 
-		/*----------- ENEMY MOVEMENT -------------- */
-		for(var x in this.enemyGroup){
-			this.enemyGroup[x].move(this, this.player);
-		}
-
 		/* ----------- PLAYER KILLERS ----------- */
-		this.physics.overlap(this.player, Object.values(this.enemyGroup), () => this.resetLevel = true);
-		this.physics.overlap(this.player, Object.values(this.spikeGroup), () => this.resetLevel = true);
 		this.physics.overlap(this.player, this.door, () => this.nextLevel = true);
+		if (this.box && this.box.body.touching.down && this.player.body.touching.up) {
+			this.resetLevel = true;
+		}
 
 		/* ---------- CHECKS TO DEACTIVATE SPELLS ---------- */
 		if (this.player.spellActive['fire']) {
@@ -253,17 +230,21 @@ export default class s1r3 extends Phaser.Scene {
 		}
 
 		if (this.player.raisingEarth) {
-			if (this.player.earthBox.body.height >= 117) {
+			this.player.earthBox.body.setVelocityY(-135);
+			if (!this.player.earthBox.animation.anims.isPlaying) {
 				this.player.raisingEarth = false;
+				this.player.earthBox.body.setVelocityY(0);
 			}
-			this.player.earthBox.body.height += 2.1;
-			this.player.y -= 1;
-			this.player.earthBox.body.offset.set(0, -this.player.earthBox.body.height);
 		}
 
 		if (this.interact.isDown) {
-			this.lever1.flip(this, [this.platform1]);
-			this.lever2.flip(this, [this.platform2, this.platform3]);
+			this.lever1.flip(this, [this.platform3, this.platform1]);
+		}
+
+		if (this.physics.overlap(this.rock, this.plate)) {
+			this.plate.trip(this, [this.platform1, this.platform2]);
+		} else if (this.plate.tripped == true) {
+			this.plate.untrip(this, [this.platform1, this.platform2]);
 		}
 	}	// ----- END OF UPDATE ----- //
 

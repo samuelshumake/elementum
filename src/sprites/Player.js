@@ -8,6 +8,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
 		/* ------CONSTANTS AND VARIBLES------- */
 		scene.physics.world.enableBody(this, 0);
+		this.body.setSize(19, 39)
 		scene.physics.add.collider(this, scene.layer);
 		scene.physics.add.collider(this.body, scene.spikes, scene.resetLevel, null, this);
 		this.body.setGravity(0, 600);
@@ -87,7 +88,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 		if (cursors.up.isDown && this.canJump) {
 			this.jumpTimer = 0;
 			this.jumpHeld = true;
-			this.body.setVelocityY(-600)
+			this.body.setVelocityY(-600);
 			this.body.setAccelerationY(1300);
 		}
 
@@ -119,8 +120,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
 						this.earthBox.animation.destroy();
 					} else {
 						this.spellActive['earth'] = true;
-						this.earthBox = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom + 15));
-						this.earthBox.body.setSize(32, 1);
+						this.earthBox = scene.physics.add.existing(new Spell(scene, this.x, this.body.bottom + 60));
+						this.earthBox.body.setSize(32, 119);
 						this.earthBox.raise(scene, this);
 					}
 				}
