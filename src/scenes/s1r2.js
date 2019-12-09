@@ -66,15 +66,14 @@ export default class s1r2 extends Phaser.Scene {
 		});
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
-		this.load.image('tiles', './assets/images/tilemapv3.png');
-		this.load.tilemapTiledJSON('s1r3', './assets/map/s1r3.json')
+		this.load.image('tiles', './assets/images/tilemapv2.png');
+		this.load.tilemapTiledJSON('s1r2', './assets/map/s1r2.json')
 
 		/* ---------- LOADS SPRITES FOR GAME OBJECTS ---------- */
 		this.load.image('platform', './assets/sprites/platform.png');
 		this.load.image('spike', './assets/sprites/spike.png');
 		this.load.image('rock', './assets/sprites/rock.png');
 		this.load.image('box', './assets/sprites/box.png');
-		this.load.image('cameraFrame', './assets/sprites/cameraFrame.png');
 	}	// ---------- END OF PRELOAD ---------- //
 
 	create (data) {
@@ -86,7 +85,7 @@ export default class s1r2 extends Phaser.Scene {
 		this.gameHeight = this.cameras.main.height;
 
 		/* ---------- CREATES MAP ---------- */
-		const map = this.make.tilemap({key: "s1r3"});
+		const map = this.make.tilemap({key: "s1r2"});
 		const tileset = map.addTilesetImage("tilemapv2", "tiles");
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });

@@ -74,7 +74,6 @@ export default class s0r3 extends Phaser.Scene {
 		this.load.image('spike', './assets/sprites/spike.png');
 		this.load.image('rock', './assets/sprites/rock.png');
 		this.load.image('box', './assets/sprites/box.png');
-		this.load.image('cameraFrame', './assets/sprites/cameraFrame.png');
 	}	// ---------- END OF PRELOAD ---------- //
 
 	create (data) {
@@ -90,6 +89,9 @@ export default class s0r3 extends Phaser.Scene {
 		const tileset = map.addTilesetImage('tilemapv2', 'tiles');
 		this.layer = map.createStaticLayer('Tile Layer 1', tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
+
+		this.add.text(100, 480, "A ball of water could suspend this box in the air.", {fontSize: 12});
+		this.add.text(100, 500, "Try pressing 4.", {fontSize: 12});
 
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 50, 428, 'player');

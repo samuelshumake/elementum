@@ -74,7 +74,6 @@ export default class s0r6 extends Phaser.Scene {
 		this.load.image('spike', './assets/sprites/spike.png');
 		this.load.image('rock', './assets/sprites/rock.png');
 		this.load.image('box', './assets/sprites/box.png');
-		this.load.image('cameraFrame', './assets/sprites/cameraFrame.png');
 	}	// ---------- END OF PRELOAD ---------- //
 
 	create (data) {
@@ -90,6 +89,11 @@ export default class s0r6 extends Phaser.Scene {
 		const tileset = map.addTilesetImage("tilemapv2", "tiles");
 		this.layer = map.createStaticLayer("Tile Layer 1", tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
+
+		this.add.text(175, 500, "Press E to pull levers.", {fontSize: 12});
+		this.add.text(165, 360, "R will restart the level.", {fontSize: 12});
+		this.add.text(460, 170, "Congratulations! You're on", {fontSize: 12});
+		this.add.text(460, 190, "your own now.", {fontSize: 12});
 
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 60, 600, 'player');

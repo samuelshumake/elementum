@@ -53,7 +53,7 @@ export default class SpellDisplay extends Phaser.Scene {
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
 		this.load.image('tiles', './assets/images/tilemapv2.png');
-		this.load.tilemapTiledJSON('display', './assets/map/display.json')
+		this.load.tilemapTiledJSON('display', './assets/map/display.json');
 
 		/* ---------- LOADS SPRITES FOR GAME OBJECTS ---------- */
 		this.load.image('platform', './assets/sprites/platform.png');
@@ -61,7 +61,6 @@ export default class SpellDisplay extends Phaser.Scene {
 		this.load.image('rock', './assets/sprites/rock.png');
 		this.load.image('box', './assets/sprites/box.png');
 		this.load.image('cameraFrame', './assets/sprites/cameraFrame.png');
-
 	}	// ---------- END OF PRELOAD ---------- //
 
 	create (data) {

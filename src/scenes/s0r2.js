@@ -70,7 +70,6 @@ export default class s0r2 extends Phaser.Scene {
 		this.load.image('spike', './assets/sprites/spike.png');
 		this.load.image('rock', './assets/sprites/rock.png');
 		this.load.image('box', './assets/sprites/box.png');
-		this.load.image('cameraFrame', './assets/sprites/cameraFrame.png');
 	}	// ---------- END OF PRELOAD ---------- //
 
 	create (data) {
@@ -86,6 +85,9 @@ export default class s0r2 extends Phaser.Scene {
 		const tileset = map.addTilesetImage('tilemapv2', 'tiles');
 		this.layer = map.createStaticLayer('Tile Layer 1', tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
+
+		this.add.text(150, 400, "Switch to your earth spell by pressing 3", {fontSize: 12});
+		this.add.text(150, 420, "and cast it by pressing space.", {fontSize: 12});
 
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 50, 520, 'player');

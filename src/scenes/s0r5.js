@@ -27,11 +27,11 @@ export default class s0r5 extends Phaser.Scene {
 		this.load.spritesheet('lever', './assets/spriteSheets/lever.png',{
 			frameHeight: 6,
 			frameWidth: 9
-	    });
+		});
 		this.load.spritesheet('run', './assets/spriteSheets/runPlayer.png',{
 			frameHeight: 39,
 			frameWidth: 34
-	    });
+		});
 		this.load.spritesheet('slimeAni', './assets/spriteSheets/slimesprite-sheet.png',{
 			frameHeight: 14,
 			frameWidth:	 21
@@ -74,7 +74,6 @@ export default class s0r5 extends Phaser.Scene {
 		this.load.image('spike', './assets/sprites/spike.png');
 		this.load.image('rock', './assets/sprites/rock.png');
 		this.load.image('box', './assets/sprites/box.png');
-		this.load.image('cameraFrame', './assets/sprites/cameraFrame.png');
 	}	// ---------- END OF PRELOAD ---------- //
 
 	create (data) {
@@ -90,6 +89,9 @@ export default class s0r5 extends Phaser.Scene {
 		const tileset = map.addTilesetImage('tilemapv2', 'tiles');
 		this.layer = map.createStaticLayer('Tile Layer 1', tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
+
+		this.add.text(100, 230, "An air blast should push this rock out of the way.", {fontSize: 12});
+		this.add.text(100, 250, "Go ahead and switch by pressing 2.", {fontSize: 12});
 
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 50, 364, 'player');

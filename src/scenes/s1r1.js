@@ -66,7 +66,7 @@ export default class s1r1 extends Phaser.Scene {
 		});
 
 		/* ---------- LOADS LEVEL TILEMAP ---------- */
-		this.load.image('tiles', './assets/images/tilemapv3.png');
+		this.load.image('tiles', './assets/images/tilemapv2.png');
 		this.load.tilemapTiledJSON('s1r1', './assets/map/s1r1.json')
 
 		/* ---------- LOADS SPRITES FOR GAME OBJECTS ---------- */
@@ -74,7 +74,6 @@ export default class s1r1 extends Phaser.Scene {
 		this.load.image('spike', './assets/sprites/spike.png');
 		this.load.image('rock', './assets/sprites/rock.png');
 		this.load.image('box', './assets/sprites/box.png');
-		this.load.image('cameraFrame', './assets/sprites/cameraFrame.png');
 	}	// ---------- END OF PRELOAD ---------- //
 
 	create (data) {

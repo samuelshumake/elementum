@@ -74,10 +74,10 @@ export default class s0r1 extends Phaser.Scene {
 		this.load.image('spike', './assets/sprites/spike.png');
 		this.load.image('rock', './assets/sprites/rock.png');
 		this.load.image('box', './assets/sprites/box.png');
-		this.load.image('cameraFrame', './assets/sprites/cameraFrame.png');
 
 		/*-----------Audio----------------------*/
 		this.load.audio("backgroundMusic","assets/sound/background.mp3");
+
 	}	// ---------- END OF PRELOAD ---------- //
 
 	create (data) {
@@ -93,6 +93,9 @@ export default class s0r1 extends Phaser.Scene {
 		const tileset = map.addTilesetImage('tilemapv2', 'tiles');
 		this.layer = map.createStaticLayer('Tile Layer 1', tileset, 0, 0);
 		this.layer.setCollisionByProperty({ collides: true });
+
+		this.add.text(50, 350, "Try using the left and right arrow keys", {fontSize: 12});
+		this.add.text(50, 380, "to move and the up arrow key to jump.", {fontSize: 12});
 
 		/* ---------- CREATES PLAYER ---------- */
 		this.player = new Player(this, 50, 460, 'player');
@@ -123,6 +126,7 @@ export default class s0r1 extends Phaser.Scene {
 		for (let i = 0; i <= 23; i++) {
 			this.spikeGroup.push(this.physics.add.sprite(16*i + 200, 635, 'spike').setScale(0.3))
 		}
+
 		/*---- ---------------MUSIC ------------------ */
 		this.music = this.sound.add("backgroundMusic");
 		var musicConfig = {
@@ -130,6 +134,7 @@ export default class s0r1 extends Phaser.Scene {
 			loop:true
 		}
 		this.music.play(musicConfig);
+
 		/* ---------- KEYS FOR INTERACTING ---------- */
 		this.switchFire = this.input.keyboard.addKey('one');
 		this.switchAir = this.input.keyboard.addKey('two');
